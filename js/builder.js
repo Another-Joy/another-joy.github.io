@@ -1,11 +1,12 @@
 import supabase from './supabase-client.js';
 import { requireAuth, signOut } from './auth.js';
+import { MAIN_TAGS, KEYWORDS } from './config.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
 
 let currentUser  = null;
 let listId       = null;
-let listData     = null;   // { id, name, units: [...], size, cost }
+let listData     = null;   // { id, name, units: [...], size, mp_cost, mats_cost, mp_limit, mats_limit }
 let allRegiments = [];     // regiment objects loaded from JSON
 let selectedUnit = null;   // unit object currently shown in detail panel
 let saveTimeout  = null;
@@ -73,10 +74,11 @@ async function loadRegiments() {
 
     allRegiments = results.filter(Boolean);
 
-    // Tag each unit with its regiment name for display purposes
+    // Tag each unit with its regiment and main tag for grouping
     allRegiments.forEach(regiment => {
       regiment.units.forEach(unit => {
         unit._regiment = regiment.regiment;
+        unit._main_tag = MAIN_TAGS.find(t => unit.tags?.includes(t)) ?? MAIN_TAGS[0];
       });
     });
   } catch (err) {
@@ -112,25 +114,44 @@ function renderSidebar() {
   }
 
   regimentsToShow.forEach(regiment => {
-    const header = document.createElement('div');
-    header.className = 'px-3 pt-3 pb-1 text-uppercase fw-bold text-secondary';
-    header.style.fontSize = '0.7rem';
-    header.style.letterSpacing = '0.05em';
-    header.textContent = regiment.regiment;
-    container.appendChild(header);
+    // Regiment header
+    const regHeader = document.createElement('div');
+    regHeader.className = 'px-3 pt-3 pb-1 fw-bold text-secondary border-bottom mb-1';
+    regHeader.style.cssText = 'font-size:0.7rem;text-transform:uppercase;letter-spacing:0.05em';
+    regHeader.textContent = regiment.regiment;
+    container.appendChild(regHeader);
 
+    // Group units by main tag
+    const byTag = {};
+    MAIN_TAGS.forEach(t => { byTag[t] = []; });
     regiment.units.forEach(unit => {
-      const card = document.createElement('div');
-      card.className = 'unit-card border border-secondary rounded mx-2 mb-2 p-2';
-      card.dataset.unitId = unit.id;
-      card.innerHTML = `
-        <div class="d-flex justify-content-between align-items-center">
-          <span class="fw-semibold" style="font-size:0.85rem">${escapeHtml(unit.name)}</span>
-          <span class="badge bg-secondary">${unit.cost} pts</span>
-        </div>
-        <div class="text-secondary" style="font-size:0.75rem">${escapeHtml(unit.description || '')}</div>`;
-      card.addEventListener('click', () => selectUnit(unit, card));
-      container.appendChild(card);
+      const t = unit._main_tag ?? MAIN_TAGS[0];
+      byTag[t].push(unit);
+    });
+
+    MAIN_TAGS.forEach(tag => {
+      const tagUnits = byTag[tag];
+      if (!tagUnits || tagUnits.length === 0) return;
+
+      // Tag sub-header
+      const tagHeader = document.createElement('div');
+      tagHeader.className = 'px-3 pt-2 text-secondary';
+      tagHeader.style.cssText = 'font-size:0.65rem;text-transform:uppercase;letter-spacing:0.05em;opacity:0.6';
+      tagHeader.textContent = tag;
+      container.appendChild(tagHeader);
+
+      tagUnits.forEach(unit => {
+        const card = document.createElement('div');
+        card.className = 'unit-card border border-secondary rounded mx-2 mb-1 p-2';
+        card.dataset.unitId = unit.id;
+        card.innerHTML = `
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-semibold" style="font-size:0.85rem">${escapeHtml(unit.name)}</span>
+            <span class="text-secondary" style="font-size:0.75rem">${unit.cost?.mp ?? 0} MP / ${unit.cost?.mats ?? 0} Mats</span>
+          </div>`;
+        card.addEventListener('click', () => selectUnit(unit, card));
+        container.appendChild(card);
+      });
     });
   });
 }
@@ -151,26 +172,52 @@ function renderList() {
 
   container.innerHTML = '';
 
+  // Group by main tag, preserving original indexes for qty/remove buttons
+  const byTag = {};
+  MAIN_TAGS.forEach(t => { byTag[t] = []; });
   units.forEach((entry, index) => {
-    const card = document.createElement('div');
-    card.className = 'card mb-2 bg-body-secondary border-secondary';
-    card.innerHTML = `
-      <div class="card-body py-2 px-3 d-flex align-items-center gap-3">
-        <div class="flex-grow-1">
-          <div class="fw-semibold">${escapeHtml(entry.name)}</div>
-          <div class="text-secondary small">${escapeHtml(entry.regiment || '')}</div>
-        </div>
-        <div class="d-flex align-items-center gap-1 flex-shrink-0">
-          <button class="btn btn-sm btn-outline-secondary btn-qty-dec px-2 py-0" data-index="${index}" title="Remove one">−</button>
-          <span class="fw-semibold px-1">${entry.count}×</span>
-          <button class="btn btn-sm btn-outline-secondary btn-qty-inc px-2 py-0" data-index="${index}" title="Add one">+</button>
-          <span class="badge bg-secondary ms-2">${entry.count * entry.cost_per_unit} pts</span>
-          <button class="btn btn-sm btn-outline-danger btn-remove ms-1 px-2 py-0" data-index="${index}" title="Remove unit">
-            <i class="bi bi-x"></i>
-          </button>
-        </div>
-      </div>`;
-    container.appendChild(card);
+    const tag = entry.main_tag ?? MAIN_TAGS[0];
+    if (!byTag[tag]) byTag[tag] = [];
+    byTag[tag].push({ entry, index });
+  });
+
+  MAIN_TAGS.forEach(tag => {
+    const group = byTag[tag];
+    if (!group || group.length === 0) return;
+
+    // Sort within group: regiment name, then unit name
+    group.sort((a, b) => {
+      const regCmp = (a.entry.regiment || '').localeCompare(b.entry.regiment || '');
+      return regCmp !== 0 ? regCmp : a.entry.name.localeCompare(b.entry.name);
+    });
+
+    // Section header
+    const sectionHeader = document.createElement('div');
+    sectionHeader.className = 'list-section-header';
+    sectionHeader.textContent = tag;
+    container.appendChild(sectionHeader);
+
+    group.forEach(({ entry, index }) => {
+      const card = document.createElement('div');
+      card.className = 'card mb-2 bg-body-secondary border-secondary';
+      card.innerHTML = `
+        <div class="card-body py-2 px-3 d-flex align-items-center gap-3">
+          <div class="flex-grow-1">
+            <div class="fw-semibold">${escapeHtml(entry.name)}</div>
+            <div class="text-secondary small">${escapeHtml(entry.regiment || '')}</div>
+          </div>
+          <div class="d-flex align-items-center gap-1 flex-shrink-0">
+            <button class="btn btn-sm btn-outline-secondary btn-qty-dec px-2 py-0" data-index="${index}" title="Remove one">−</button>
+            <span class="fw-semibold px-1">${entry.count}×</span>
+            <button class="btn btn-sm btn-outline-secondary btn-qty-inc px-2 py-0" data-index="${index}" title="Add one">+</button>
+            <span class="ms-2 text-secondary small">${entry.count * (entry.mp_per_unit ?? 0)} MP / ${entry.count * (entry.mats_per_unit ?? 0)} Mats</span>
+            <button class="btn btn-sm btn-outline-danger btn-remove ms-1 px-2 py-0" data-index="${index}" title="Remove unit">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>`;
+      container.appendChild(card);
+    });
   });
 
   container.querySelectorAll('.btn-qty-inc').forEach(btn =>
@@ -193,53 +240,115 @@ function renderDetail() {
     return;
   }
 
-  const statsHtml = selectedUnit.stats
-    ? Object.entries(selectedUnit.stats)
-        .map(([k, v]) =>
-          `<div class="stat-item"><span class="stat-label">${escapeHtml(k)}</span>${v}</div>`
-        )
-        .join('')
+  const u = selectedUnit;
+
+  // Tags
+  const tagsHtml = u.tags?.length
+    ? `<div class="mb-3">${u.tags.map(t => `<span class="badge bg-secondary me-1 mb-1">${escapeHtml(t)}</span>`).join('')}</div>`
     : '';
 
-  const keywordsHtml = selectedUnit.keywords?.length
-    ? selectedUnit.keywords
-        .map(kw => `<span class="badge bg-secondary me-1 mb-1">${escapeHtml(kw)}</span>`)
-        .join('')
+  // MACH stat block (horizontal 4-cell row)
+  const mach = u.mach ?? {};
+  const machHtml = `
+    <div class="mach-row mb-3">
+      <div class="mach-cell"><div class="mach-label">MOV</div><div class="mach-value">${mach.movement ?? '—'}</div></div>
+      <div class="mach-cell"><div class="mach-label">ARM</div><div class="mach-value">${mach.armor ?? '—'}</div></div>
+      <div class="mach-cell"><div class="mach-label">CON</div><div class="mach-value">${mach.control ?? '—'}</div></div>
+      <div class="mach-cell"><div class="mach-label">HP</div><div class="mach-value">${mach.health ?? '—'}</div></div>
+    </div>`;
+
+  // Weapons table
+  let weaponsHtml = '';
+  if (u.weapons?.length) {
+    const rows = u.weapons.map(w => {
+      const pen = w.penetration ?? {};
+      const kws = w.keywords?.length
+        ? w.keywords.map(k => `<span class="badge bg-secondary me-1">${escapeHtml(k)}</span>`).join('')
+        : '<span class="text-secondary">—</span>';
+      return `<tr>
+        <td>${escapeHtml(w.name)}</td>
+        <td class="text-center">${w.range}</td>
+        <td class="text-center">${pen.N ?? 'NA'}</td>
+        <td class="text-center">${pen.L ?? 'NA'}</td>
+        <td class="text-center">${pen.M ?? 'NA'}</td>
+        <td class="text-center">${pen.H ?? 'NA'}</td>
+        <td class="text-center">${w.fortification_damage ?? 'NA'}</td>
+        <td>${kws}</td>
+      </tr>`;
+    }).join('');
+    weaponsHtml = `
+      <div class="section-label mb-1">Weapons</div>
+      <div class="table-responsive mb-3">
+        <table class="table table-sm table-dark table-bordered mb-0 weapons-table">
+          <thead><tr><th>Name</th><th>Rng</th><th>N</th><th>L</th><th>M</th><th>H</th><th>Fort</th><th>Keywords</th></tr></thead>
+          <tbody>${rows}</tbody>
+        </table>
+      </div>`;
+  }
+
+  // Abilities
+  let abilitiesHtml = '';
+  if (u.abilities?.length) {
+    const items = u.abilities.map(a =>
+      `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(a.name)}.</span> <span class="text-secondary small">${escapeHtml(a.description)}</span></div>`
+    ).join('');
+    abilitiesHtml = `<div class="section-label mb-1">Abilities</div><div class="mb-3">${items}</div>`;
+  }
+
+  // Keyword glossary — collect unique keywords from all weapons
+  const allKeywords = [...new Set((u.weapons ?? []).flatMap(w => w.keywords ?? []))];
+  const glossaryItems = allKeywords
+    .map(kw => {
+      const desc = KEYWORDS[kw];
+      return desc
+        ? `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(kw)}</span><span class="text-secondary small"> — ${escapeHtml(desc)}</span></div>`
+        : null;
+    })
+    .filter(Boolean).join('');
+  const keywordGlossaryHtml = glossaryItems
+    ? `<div class="border-top pt-2 mt-1"><div class="section-label mb-1">Keywords</div>${glossaryItems}</div>`
     : '';
 
   panel.innerHTML = `
     <div class="p-3">
-      <h6 class="fw-bold mb-1">${escapeHtml(selectedUnit.name)}</h6>
-      <p class="text-secondary small mb-2">${escapeHtml(selectedUnit.description || '')}</p>
-      <div class="d-flex justify-content-between align-items-center mb-3">
-        <span class="small text-secondary">Cost per unit</span>
-        <span class="badge fs-6" style="background-color:var(--wg-accent)">${selectedUnit.cost} pts</span>
+      <div class="d-flex justify-content-between align-items-start mb-2">
+        <h6 class="fw-bold mb-0">${escapeHtml(u.name)}</h6>
+        <span class="badge bg-accent">${u.cost?.mp ?? 0} MP / ${u.cost?.mats ?? 0} Mats</span>
       </div>
-      ${statsHtml ? `<div class="stat-grid mb-3">${statsHtml}</div>` : ''}
-      ${keywordsHtml ? `<div class="mb-3">${keywordsHtml}</div>` : ''}
-      <button class="btn btn-accent w-100" id="btn-add-unit">
+      ${tagsHtml}
+      ${machHtml}
+      ${weaponsHtml}
+      ${abilitiesHtml}
+      ${keywordGlossaryHtml}
+      <button class="btn btn-accent w-100 mt-2" id="btn-add-unit">
         <i class="bi bi-plus-lg me-1"></i>Add to List
       </button>
     </div>`;
 
-  document.getElementById('btn-add-unit')
-    .addEventListener('click', () => addUnit(selectedUnit));
+  document.getElementById('btn-add-unit').addEventListener('click', () => addUnit(u));
 }
 
 function updateTotals() {
-  const units      = listData?.units ?? [];
-  const sizeLimit  = listData?.size_limit ?? null;
+  const units     = listData?.units ?? [];
+  const mpLimit   = listData?.mp_limit ?? null;
+  const matsLimit = listData?.mats_limit ?? null;
   const totalUnits = units.reduce((s, e) => s + e.count, 0);
-  const totalCost  = units.reduce((s, e) => s + e.count * e.cost_per_unit, 0);
+  const totalMp    = units.reduce((s, e) => s + e.count * (e.mp_per_unit ?? 0), 0);
+  const totalMats  = units.reduce((s, e) => s + e.count * (e.mats_per_unit ?? 0), 0);
 
   document.getElementById('total-units').textContent = totalUnits;
 
-  const costEl    = document.getElementById('total-cost');
-  const overLimit = sizeLimit !== null && totalCost > sizeLimit;
-  costEl.textContent = sizeLimit !== null
-    ? `${totalCost} / ${sizeLimit} pts`
-    : `${totalCost} pts`;
-  costEl.className = `fw-semibold ${overLimit ? 'text-danger' : 'text-body'}`;
+  const mpEl   = document.getElementById('total-mp');
+  const matsEl = document.getElementById('total-mats');
+
+  const overMp   = mpLimit !== null && totalMp > mpLimit;
+  const overMats = matsLimit !== null && totalMats > matsLimit;
+
+  mpEl.textContent = mpLimit !== null ? `${totalMp} / ${mpLimit}` : String(totalMp);
+  mpEl.className   = `fw-semibold ${overMp ? 'text-danger' : 'text-body'}`;
+
+  matsEl.textContent = matsLimit !== null ? `${totalMats} / ${matsLimit}` : String(totalMats);
+  matsEl.className   = `fw-semibold ${overMats ? 'text-danger' : 'text-body'}`;
 }
 
 // ── List mutations ────────────────────────────────────────────────────────────
@@ -262,7 +371,9 @@ function addUnit(unit) {
       unit_id:       unit.id,
       name:          unit.name,
       regiment:      unit._regiment || '',
-      cost_per_unit: unit.cost,
+      main_tag:      unit._main_tag || MAIN_TAGS[0],
+      mp_per_unit:   unit.cost?.mp ?? 0,
+      mats_per_unit: unit.cost?.mats ?? 0,
       count:         1,
     });
   }
@@ -300,21 +411,23 @@ async function saveList() {
   clearTimeout(saveTimeout);
   setSaveStatus('saving');
 
-  const units = listData.units;
-  const size  = units.reduce((s, e) => s + e.count, 0);
-  const cost  = units.reduce((s, e) => s + e.count * e.cost_per_unit, 0);
+  const units     = listData.units;
+  const size      = units.reduce((s, e) => s + e.count, 0);
+  const mp_cost   = units.reduce((s, e) => s + e.count * (e.mp_per_unit ?? 0), 0);
+  const mats_cost = units.reduce((s, e) => s + e.count * (e.mats_per_unit ?? 0), 0);
 
   const { error } = await supabase
     .from('army_lists')
-    .update({ units, size, cost, updated_at: new Date().toISOString() })
+    .update({ units, size, mp_cost, mats_cost, updated_at: new Date().toISOString() })
     .eq('id', listId);
 
   if (error) {
     setSaveStatus('error');
     showToast('Save failed: ' + error.message, 'danger');
   } else {
-    listData.size = size;
-    listData.cost = cost;
+    listData.size      = size;
+    listData.mp_cost   = mp_cost;
+    listData.mats_cost = mats_cost;
     setSaveStatus('saved');
   }
 }

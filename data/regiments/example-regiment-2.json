@@ -1,20 +1,44 @@
 {
   "regiment": "2nd Example Regiment",
-  "description": "A template regiment demonstrating the file format. Delete or replace this file.",
   "units": [
     {
-      "id": "goblin",
-      "name": "Goblin",
-      "description": "Basic infantry armed with a spear and shield.",
-      "cost": 10,
-      "stats": {
-        "Move":    6,
-        "Fight":   3,
-        "Shoot":   0,
-        "Defence": 4,
-        "Morale":  5
-      },
-      "keywords": ["infantry", "basic", "melee"]
+      "id": "goblin-runner",
+      "name": "Goblin Runner",
+      "tags": ["Infantry"],
+      "cost": { "mp": 1, "mats": 0 },
+      "mach": { "movement": 7, "armor": "N", "control": 2, "health": 2 },
+      "weapons": [
+        {
+          "name": "Crude Blade",
+          "range": 0,
+          "penetration": { "N": "3+", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": []
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Scavenge",
+          "description": "When this unit destroys an enemy, gain 1 Mats resource."
+        }
+      ]
+    },
+    {
+      "id": "goblin-bolt-thrower",
+      "name": "Bolt Thrower",
+      "tags": ["Vehicle"],
+      "cost": { "mp": 1, "mats": 4 },
+      "mach": { "movement": 3, "armor": "M", "control": 2, "health": 5 },
+      "weapons": [
+        {
+          "name": "Heavy Bolt",
+          "range": 6,
+          "penetration": { "N": "2+", "L": "2+", "M": "3+", "H": "5+" },
+          "fortification_damage": 3,
+          "keywords": ["Piercing"]
+        }
+      ],
+      "abilities": []
     }
   ]
 }

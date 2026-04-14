@@ -1,6 +1,6 @@
 import supabase from './supabase-client.js';
 import { requireAuth, signOut } from './auth.js';
-import { SIZE_LIMITS } from './config.js';
+import { MP_LIMITS, MATS_LIMITS } from './config.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
 
@@ -18,13 +18,20 @@ async function init() {
   document.getElementById('btn-new-list').addEventListener('click', openNewListModal);
   document.getElementById('btn-create-list').addEventListener('click', submitNewList);
 
-  // Populate size-limit <select> from config
-  const sizeSelect = document.getElementById('new-list-size');
-  SIZE_LIMITS.forEach(s => {
+  // Populate MP and Mats limit selects from config
+  const mpSelect   = document.getElementById('new-list-mp-limit');
+  const matsSelect = document.getElementById('new-list-mats-limit');
+  MP_LIMITS.forEach(s => {
     const opt = document.createElement('option');
     opt.value       = s.points;
-    opt.textContent = `${s.label} — ${s.points} pts`;
-    sizeSelect.appendChild(opt);
+    opt.textContent = `${s.label} — ${s.points} MP`;
+    mpSelect.appendChild(opt);
+  });
+  MATS_LIMITS.forEach(s => {
+    const opt = document.createElement('option');
+    opt.value       = s.points;
+    opt.textContent = `${s.label} — ${s.points} Mats`;
+    matsSelect.appendChild(opt);
   });
 
   await Promise.all([loadLists(), loadRegimentsIndex()]);
@@ -80,7 +87,8 @@ async function submitNewList() {
   }
   nameInput.classList.remove('is-invalid');
 
-  const sizeLimit = parseInt(document.getElementById('new-list-size').value, 10);
+  const mpLimit   = parseInt(document.getElementById('new-list-mp-limit').value, 10);
+  const matsLimit = parseInt(document.getElementById('new-list-mats-limit').value, 10);
   const allowedRegiments = Array.from(
     document.querySelectorAll('#new-list-regiments .form-check-input:checked')
   ).map(cb => cb.value);
@@ -94,8 +102,10 @@ async function submitNewList() {
       user_id:           currentUser.id,
       name,
       size:              0,
-      cost:              0,
-      size_limit:        sizeLimit,
+      mp_cost:           0,
+      mats_cost:         0,
+      mp_limit:          mpLimit,
+      mats_limit:        matsLimit,
       allowed_regiments: allowedRegiments,
       units:             [],
     })
@@ -126,7 +136,7 @@ async function loadLists() {
 
   const { data: lists, error } = await supabase
     .from('army_lists')
-    .select('id, name, size, cost, size_limit, updated_at')
+    .select('id, name, size, mp_cost, mats_cost, mp_limit, mats_limit, updated_at')
     .eq('user_id', currentUser.id)
     .order('updated_at', { ascending: false });
 
@@ -146,7 +156,8 @@ async function loadLists() {
   tbody.innerHTML = '';
 
   lists.forEach(list => {
-    const overLimit = list.size_limit && list.cost > list.size_limit;
+    const overMp   = list.mp_limit   && list.mp_cost   > list.mp_limit;
+    const overMats = list.mats_limit && list.mats_cost > list.mats_limit;
     const tr = document.createElement('tr');
     tr.className = 'list-row';
     tr.dataset.id = list.id;
@@ -154,7 +165,8 @@ async function loadLists() {
       <td>${escapeHtml(list.name)}</td>
       <td>${formatDate(list.updated_at)}</td>
       <td>${list.size ?? 0}</td>
-      <td class="${overLimit ? 'text-danger fw-semibold' : ''}">${list.cost ?? 0}${list.size_limit ? ' / ' + list.size_limit : ''} pts</td>
+      <td class="${overMp ? 'text-danger fw-semibold' : ''}">${list.mp_cost ?? 0}${list.mp_limit ? ' / ' + list.mp_limit : ''}</td>
+      <td class="${overMats ? 'text-danger fw-semibold' : ''}">${list.mats_cost ?? 0}${list.mats_limit ? ' / ' + list.mats_limit : ''}</td>
       <td class="text-end">
         <button class="btn btn-sm btn-outline-secondary me-1 btn-edit" data-id="${list.id}" title="Edit">
           <i class="bi bi-pencil"></i>

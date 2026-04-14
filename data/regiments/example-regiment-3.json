@@ -1,20 +1,49 @@
 {
   "regiment": "3rd Example Regiment",
-  "description": "A template regiment demonstrating the file format. Delete or replace this file.",
   "units": [
     {
-      "id": "ork",
-      "name": "Ork",
-      "description": "Basic infantry armed with a spear and shield.",
-      "cost": 10,
-      "stats": {
-        "Move":    6,
-        "Fight":   3,
-        "Shoot":   0,
-        "Defence": 4,
-        "Morale":  5
-      },
-      "keywords": ["infantry", "basic", "melee"]
+      "id": "ork-warrior",
+      "name": "Ork Warrior",
+      "tags": ["Infantry"],
+      "cost": { "mp": 2, "mats": 0 },
+      "mach": { "movement": 4, "armor": "L", "control": 3, "health": 5 },
+      "weapons": [
+        {
+          "name": "Ork Axe",
+          "range": 0,
+          "penetration": { "N": "2+", "L": "3+", "M": "NA", "H": "NA" },
+          "fortification_damage": 1,
+          "keywords": []
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Brutal Charge",
+          "description": "When this unit moves at least 3 hexes before attacking, add +1 to all Penetration checks this activation."
+        }
+      ]
+    },
+    {
+      "id": "ork-bunker",
+      "name": "Ork Bunker",
+      "tags": ["Fortification"],
+      "cost": { "mp": 0, "mats": 6 },
+      "mach": { "movement": 0, "armor": "H", "control": 0, "health": 8 },
+      "weapons": [
+        {
+          "name": "Mounted Gun",
+          "range": 4,
+          "penetration": { "N": "2+", "L": "3+", "M": "4+", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Suppressing", "Reliable"]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Cover",
+          "description": "Adjacent friendly units with None armor gain Light armor for the purpose of incoming Penetration checks."
+        }
+      ]
     }
   ]
 }

@@ -114,3 +114,69 @@ body.builder-page {
   opacity: 0.6;
   margin-bottom: 1px;
 }
+
+/* ── MACH stat row ────────────────────────────────────────────────────────────  */
+.mach-row {
+  display: flex;
+  gap: 0.4rem;
+}
+.mach-cell {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 0.35rem 0.4rem;
+  text-align: center;
+}
+.mach-label {
+  display: block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+  margin-bottom: 2px;
+}
+.mach-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* ── Weapons table ────────────────────────────────────────────────────────────  */
+.weapons-table {
+  font-size: 0.72rem;
+}
+.weapons-table th,
+.weapons-table td {
+  padding: 0.2rem 0.35rem;
+  white-space: nowrap;
+}
+.weapons-table thead th {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  opacity: 0.7;
+}
+
+/* ── Detail panel section labels ─────────────────────────────────────────────  */
+.section-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bs-secondary-color);
+  font-weight: 700;
+}
+
+/* ── Center list section headers ─────────────────────────────────────────────  */
+.list-section-header {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--bs-secondary-color);
+  padding: 0.5rem 0.25rem 0.25rem;
+  margin-top: 0.5rem;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  margin-bottom: 0.5rem;
+}
+.list-section-header:first-child {
+  margin-top: 0;
+}
