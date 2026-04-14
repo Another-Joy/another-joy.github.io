@@ -1,5 +1,7 @@
 {
   "regiments": [
-    { "file": "example-regiment.json", "name": "Example Regiment" }
+    { "file": "example-regiment.json", "name": "Example Regiment" },
+    { "file": "example-regiment-2.json", "name": "2nd Example Regiment" },
+    { "file": "example-regiment-3.json", "name": "3rd Example Regiment" }
   ]
 }
