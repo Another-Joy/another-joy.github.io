@@ -1,0 +1,116 @@
+/* ── Custom theme variables ──────────────────────────────────────────────────── */
+:root {
+  --wg-accent:        #5a7a3a;
+  --wg-accent-hover:  #6a9045;
+  --wg-bg-panel:      #1a1a1a;
+  --wg-sidebar-width: 280px;
+}
+
+/* ── Global ───────────────────────────────────────────────────────────────────  */
+body {
+  min-height: 100vh;
+}
+
+/* ── Navbar ───────────────────────────────────────────────────────────────────  */
+.navbar-brand {
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── Accent colour helpers ────────────────────────────────────────────────────  */
+.btn-accent {
+  background-color: var(--wg-accent);
+  border-color:     var(--wg-accent);
+  color: #fff;
+}
+.btn-accent:hover,
+.btn-accent:focus {
+  background-color: var(--wg-accent-hover);
+  border-color:     var(--wg-accent-hover);
+  color: #fff;
+}
+.bg-accent {
+  background-color: var(--wg-accent) !important;
+}
+
+/* ── Home page — army list table ────────────────────────────────────────────── */
+.list-row {
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+/* ── Auth page ────────────────────────────────────────────────────────────────  */
+.auth-card {
+  max-width: 420px;
+  margin: 4rem auto;
+}
+
+/* ── Builder page ── full-height three-column layout ────────────────────────── */
+body.builder-page {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.builder-wrapper {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+.builder-sidebar-left,
+.builder-sidebar-right {
+  width: var(--wg-sidebar-width);
+  min-width: var(--wg-sidebar-width);
+  max-width: var(--wg-sidebar-width);
+  overflow-y: auto;
+  background-color: var(--wg-bg-panel);
+}
+
+.builder-sidebar-left  { border-right: 1px solid rgba(255, 255, 255, 0.1); }
+.builder-sidebar-right { border-left:  1px solid rgba(255, 255, 255, 0.1); }
+
+.builder-main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Unit cards (left sidebar) ────────────────────────────────────────────────  */
+.unit-card {
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+.unit-card:hover {
+  border-color: var(--wg-accent) !important;
+}
+.unit-card.selected {
+  border-color: var(--wg-accent) !important;
+  background-color: rgba(90, 122, 58, 0.15);
+}
+
+/* ── Unit stats grid (right sidebar) ─────────────────────────────────────────  */
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+.stat-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 0.3rem 0.5rem;
+  font-size: 0.8rem;
+}
+.stat-label {
+  display: block;
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  opacity: 0.6;
+  margin-bottom: 1px;
+}

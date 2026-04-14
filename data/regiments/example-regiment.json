@@ -1,0 +1,48 @@
+{
+  "regiment": "Example Regiment",
+  "description": "A template regiment demonstrating the file format. Delete or replace this file.",
+  "units": [
+    {
+      "id": "example-spearman",
+      "name": "Spearman",
+      "description": "Basic infantry armed with a spear and shield.",
+      "cost": 10,
+      "stats": {
+        "Move":    6,
+        "Fight":   3,
+        "Shoot":   0,
+        "Defence": 4,
+        "Morale":  5
+      },
+      "keywords": ["infantry", "basic", "melee"]
+    },
+    {
+      "id": "example-archer",
+      "name": "Archer",
+      "description": "Ranged infantry capable of supporting from afar.",
+      "cost": 12,
+      "stats": {
+        "Move":    6,
+        "Fight":   2,
+        "Shoot":   4,
+        "Defence": 3,
+        "Morale":  4
+      },
+      "keywords": ["infantry", "ranged"]
+    },
+    {
+      "id": "example-cavalry",
+      "name": "Cavalry",
+      "description": "Fast-moving mounted warriors.",
+      "cost": 20,
+      "stats": {
+        "Move":    10,
+        "Fight":   4,
+        "Shoot":   0,
+        "Defence": 4,
+        "Morale":  5
+      },
+      "keywords": ["cavalry", "fast", "melee"]
+    }
+  ]
+}
