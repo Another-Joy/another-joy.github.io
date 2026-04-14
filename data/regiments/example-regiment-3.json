@@ -1,0 +1,20 @@
+{
+  "regiment": "3rdExample Regiment",
+  "description": "A template regiment demonstrating the file format. Delete or replace this file.",
+  "units": [
+    {
+      "id": "ork",
+      "name": "Ork",
+      "description": "Basic infantry armed with a spear and shield.",
+      "cost": 10,
+      "stats": {
+        "Move":    6,
+        "Fight":   3,
+        "Shoot":   0,
+        "Defence": 4,
+        "Morale":  5
+      },
+      "keywords": ["infantry", "basic", "melee"]
+    }
+  ]
+}

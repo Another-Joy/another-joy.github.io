@@ -1,0 +1,20 @@
+{
+  "regiment": "2nd Example Regiment",
+  "description": "A template regiment demonstrating the file format. Delete or replace this file.",
+  "units": [
+    {
+      "id": "goblin",
+      "name": "Goblin",
+      "description": "Basic infantry armed with a spear and shield.",
+      "cost": 10,
+      "stats": {
+        "Move":    6,
+        "Fight":   3,
+        "Shoot":   0,
+        "Defence": 4,
+        "Morale":  5
+      },
+      "keywords": ["infantry", "basic", "melee"]
+    }
+  ]
+}
