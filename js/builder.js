@@ -26,7 +26,7 @@ async function init() {
   listId = params.get('id');
 
   if (!listId) {
-    window.location.href = 'index.html';
+    window.location.href = '/home';
     return;
   }
 
@@ -47,7 +47,7 @@ async function loadList() {
 
   if (error || !data) {
     alert('Army list not found or access denied.');
-    window.location.href = 'index.html';
+    window.location.href = '/home';
     return;
   }
 
@@ -61,12 +61,12 @@ async function loadRegiments() {
   try {
     const indexRes = await fetch(REGIMENTS_INDEX);
     if (!indexRes.ok) throw new Error('Regiment index not found');
-    const { files } = await indexRes.json();
+    const { regiments } = await indexRes.json();
 
     const results = await Promise.all(
-      files.map(file =>
-        fetch(`data/regiments/${file}`)
-          .then(r => r.ok ? r.json() : null)
+      (regiments || []).map(r =>
+        fetch(`data/regiments/${r.file}`)
+          .then(res => res.ok ? res.json() : null)
           .catch(() => null)
       )
     );
@@ -98,14 +98,20 @@ function renderSidebar() {
   const container = document.getElementById('available-units');
   container.innerHTML = '';
 
-  if (allRegiments.length === 0) {
+  // Filter to only the regiments allowed for this list (if set)
+  const allowedRegiments = listData?.allowed_regiments;
+  const regimentsToShow = (allowedRegiments && allowedRegiments.length > 0)
+    ? allRegiments.filter(r => allowedRegiments.includes(r.regiment))
+    : allRegiments;
+
+  if (regimentsToShow.length === 0) {
     container.innerHTML =
       '<p class="text-secondary small p-3">No regiment data found.<br>' +
       'Add JSON files to <code>data/regiments/</code> and list them in <code>index.json</code>.</p>';
     return;
   }
 
-  allRegiments.forEach(regiment => {
+  regimentsToShow.forEach(regiment => {
     const header = document.createElement('div');
     header.className = 'px-3 pt-3 pb-1 text-uppercase fw-bold text-secondary';
     header.style.fontSize = '0.7rem';
@@ -221,11 +227,19 @@ function renderDetail() {
 }
 
 function updateTotals() {
-  const units     = listData?.units ?? [];
+  const units      = listData?.units ?? [];
+  const sizeLimit  = listData?.size_limit ?? null;
   const totalUnits = units.reduce((s, e) => s + e.count, 0);
   const totalCost  = units.reduce((s, e) => s + e.count * e.cost_per_unit, 0);
+
   document.getElementById('total-units').textContent = totalUnits;
-  document.getElementById('total-cost').textContent  = totalCost + ' pts';
+
+  const costEl    = document.getElementById('total-cost');
+  const overLimit = sizeLimit !== null && totalCost > sizeLimit;
+  costEl.textContent = sizeLimit !== null
+    ? `${totalCost} / ${sizeLimit} pts`
+    : `${totalCost} pts`;
+  costEl.className = `fw-semibold ${overLimit ? 'text-danger' : 'text-body'}`;
 }
 
 // ── List mutations ────────────────────────────────────────────────────────────

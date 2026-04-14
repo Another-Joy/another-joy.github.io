@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Army Lists — Army Builder</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg bg-body-secondary border-bottom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/home">⚔️ Army Builder</a>
+      <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse" data-bs-target="#navMenu"
+        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account">Account</a>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <span class="text-secondary small" id="nav-user"></span>
+          <button class="btn btn-sm btn-outline-secondary" id="btn-logout">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+
+    <div class="d-flex align-items-center justify-content-between mb-4">
+      <h2 class="h4 mb-0">My Army Lists</h2>
+      <button class="btn btn-accent" id="btn-new-list">
+        <i class="bi bi-plus-lg me-1"></i>New List
+      </button>
+    </div>
+
+    <!-- Loading spinner -->
+    <div id="lists-loading" class="text-center py-5">
+      <div class="spinner-border text-secondary" role="status">
+        <span class="visually-hidden">Loading…</span>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div id="lists-empty" class="d-none text-center py-5 text-secondary">
+      <i class="bi bi-shield display-3 d-block mb-3 opacity-25"></i>
+      <p class="mb-0 fw-semibold">No army lists yet.</p>
+      <p class="small">Click <strong>New List</strong> to get started.</p>
+    </div>
+
+    <!-- Army list table -->
+    <div id="lists-table" class="d-none">
+      <table class="table table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>Name</th>
+            <th>Last Edited</th>
+            <th>Units</th>
+            <th>Cost</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="lists-tbody"></tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <!-- ── New Army List Modal ─────────────────────────────────────────────────── -->
+  <div class="modal fade" id="modal-new-list" tabindex="-1"
+       aria-labelledby="modal-new-list-label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modal-new-list-label">New Army List</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="new-list-name" class="form-label">List Name</label>
+            <input type="text" id="new-list-name" class="form-control"
+              placeholder="e.g. Northern Expedition" autocomplete="off">
+            <div class="invalid-feedback">Please enter a name.</div>
+          </div>
+          <div class="mb-3">
+            <label for="new-list-size" class="form-label">Size Limit</label>
+            <select id="new-list-size" class="form-select">
+              <!-- populated by home.js from js/config.js -->
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Regiments</label>
+            <div id="new-list-regiments"
+                 class="border rounded p-2"
+                 style="max-height: 200px; overflow-y: auto">
+              <!-- checkboxes populated by home.js -->
+            </div>
+            <div class="form-text">Select which regiments are available for this list.</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-accent" id="btn-create-list">
+            <i class="bi bi-plus-lg me-1"></i>Create
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

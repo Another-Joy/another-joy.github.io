@@ -1,5 +1,5 @@
 {
-  "files": [
-    "example-regiment.json"
+  "regiments": [
+    { "file": "example-regiment.json", "name": "Example Regiment" }
   ]
 }

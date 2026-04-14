@@ -16,7 +16,6 @@ async function init() {
 
   // Pre-fill form fields
   document.getElementById('input-username').value = currentUser.user_metadata?.username || '';
-  document.getElementById('input-email').value    = currentUser.email || '';
 
   document.getElementById('form-profile').addEventListener('submit', updateProfile);
   document.getElementById('form-password').addEventListener('submit', updatePassword);
@@ -129,7 +128,7 @@ async function handleDeleteAccount() {
   //   2. Call supabase.functions.invoke('delete-account') here before signOut.
   //
   await supabase.auth.signOut();
-  window.location.href = 'auth.html?deleted=1';
+  window.location.href = '/auth?deleted=1';
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

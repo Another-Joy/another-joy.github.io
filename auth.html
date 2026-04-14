@@ -119,7 +119,7 @@
           document.getElementById('login-email').value.trim(),
           document.getElementById('login-password').value
         );
-        window.location.href = 'index.html';
+        window.location.href = '/home';
       } catch (err) {
         errEl.textContent = err.message;
         errEl.classList.remove('d-none');
@@ -142,8 +142,7 @@
       try {
         await signUp(
           document.getElementById('signup-email').value.trim(),
-          document.getElementById('signup-password').value,
-          document.getElementById('signup-username').value.trim()
+          document.getElementById('signup-password').value
         );
         succEl.classList.remove('d-none');
         document.getElementById('form-signup').reset();
