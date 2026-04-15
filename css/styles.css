@@ -4,6 +4,7 @@
   --wg-accent-hover:  #6a9045;
   --wg-bg-panel:      #1a1a1a;
   --wg-sidebar-width: 280px;
+  --wg-sidebar-right-width: 560px;
 }
 
 /* ── Global ───────────────────────────────────────────────────────────────────  */
@@ -61,11 +62,18 @@ body.builder-page {
   overflow: hidden;
 }
 
-.builder-sidebar-left,
-.builder-sidebar-right {
+.builder-sidebar-left {
   width: var(--wg-sidebar-width);
   min-width: var(--wg-sidebar-width);
   max-width: var(--wg-sidebar-width);
+  overflow-y: auto;
+  background-color: var(--wg-bg-panel);
+}
+
+.builder-sidebar-right {
+  width: var(--wg-sidebar-right-width);
+  min-width: var(--wg-sidebar-right-width);
+  max-width: var(--wg-sidebar-right-width);
   overflow-y: auto;
   background-color: var(--wg-bg-panel);
 }
