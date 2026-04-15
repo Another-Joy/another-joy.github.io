@@ -1,6 +1,6 @@
 import supabase from './supabase-client.js';
 import { requireAuth, signOut } from './auth.js';
-import { MP_LIMITS, MATS_LIMITS } from './config.js';
+import { GAME_SIZES } from './config.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
 
@@ -18,20 +18,13 @@ async function init() {
   document.getElementById('btn-new-list').addEventListener('click', openNewListModal);
   document.getElementById('btn-create-list').addEventListener('click', submitNewList);
 
-  // Populate MP and Mats limit selects from config
-  const mpSelect   = document.getElementById('new-list-mp-limit');
-  const matsSelect = document.getElementById('new-list-mats-limit');
-  MP_LIMITS.forEach(s => {
+  // Populate game size select from config
+  const sizeSelect = document.getElementById('new-list-size');
+  GAME_SIZES.forEach(s => {
     const opt = document.createElement('option');
-    opt.value       = s.points;
-    opt.textContent = `${s.label} — ${s.points} MP`;
-    mpSelect.appendChild(opt);
-  });
-  MATS_LIMITS.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value       = s.points;
-    opt.textContent = `${s.label} — ${s.points} Mats`;
-    matsSelect.appendChild(opt);
+    opt.value       = JSON.stringify({ mp: s.mp, mats: s.mats });
+    opt.textContent = `${s.label} — ${s.mp} MP / ${s.mats} Mats`;
+    sizeSelect.appendChild(opt);
   });
 
   await Promise.all([loadLists(), loadRegimentsIndex()]);
@@ -87,8 +80,7 @@ async function submitNewList() {
   }
   nameInput.classList.remove('is-invalid');
 
-  const mpLimit   = parseInt(document.getElementById('new-list-mp-limit').value, 10);
-  const matsLimit = parseInt(document.getElementById('new-list-mats-limit').value, 10);
+  const { mp: mpLimit, mats: matsLimit } = JSON.parse(document.getElementById('new-list-size').value);
   const allowedRegiments = Array.from(
     document.querySelectorAll('#new-list-regiments .form-check-input:checked')
   ).map(cb => cb.value);

@@ -1,0 +1,199 @@
+{
+  "regiment": "Ordak Arms Group",
+  "units": [
+    {
+      "id": "ordak-rookie-squad",
+      "name": "Rookie Squad",
+      "tags": ["Infantry"],
+      "cost": { "mp": 45, "mats": 20 },
+      "mach": { "movement": 2, "armor": "N", "control": 2, "health": 3 },
+      "weapons": [
+        {
+          "name": "5.56mm Rifle",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Assault"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-longshot-duo",
+      "name": "Longshot Duo",
+      "tags": ["Infantry"],
+      "cost": { "mp": 20, "mats": 15 },
+      "mach": { "movement": 2, "armor": "N", "control": 1, "health": 2 },
+      "weapons": [
+        {
+          "name": ".300 Win Sniper Rifle",
+          "range": 4,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Long", "Precision"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-wildcats",
+      "name": "Wildcats",
+      "tags": ["Infantry"],
+      "cost": { "mp": 20, "mats": 5 },
+      "mach": { "movement": 2, "armor": "N", "control": 1, "health": 2 },
+      "weapons": [
+        {
+          "name": "9mm SMG",
+          "range": 1,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": []
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m8-coyote",
+      "name": "M8 Coyote",
+      "tags": ["Vehicle", "Armored Car", "Brittle"],
+      "cost": { "mp": 25, "mats": 35 },
+      "mach": { "movement": 4, "armor": "L", "control": 1, "health": 3 },
+      "weapons": [
+        {
+          "name": "7.62mm LMG",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": []
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m11-jackal",
+      "name": "M11 Jackal",
+      "tags": ["Vehicle", "APC", "Transport"],
+      "cost": { "mp": 25, "mats": 35 },
+      "mach": { "movement": 3, "armor": "L", "control": 0, "health": 4 },
+      "weapons": [
+        {
+          "name": "20mm AC",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": []
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m14-puma",
+      "name": "M14 Puma",
+      "tags": ["Vehicle", "Light Tank"],
+      "cost": { "mp": 15, "mats": 50 },
+      "mach": { "movement": 3, "armor": "L", "control": 0, "health": 3 },
+      "weapons": [
+        {
+          "name": "105mm Assault HEAT",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Assault"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m16-badger",
+      "name": "M16 Badger",
+      "tags": ["Vehicle", "Light Tank"],
+      "cost": { "mp": 15, "mats": 50 },
+      "mach": { "movement": 3, "armor": "M", "control": 0, "health": 3 },
+      "weapons": [
+        {
+          "name": "40mm HE AC",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["HE"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m24-grizzly",
+      "name": "M24 Grizzly",
+      "tags": ["Vehicle", "IFV"],
+      "cost": { "mp": 15, "mats": 60 },
+      "mach": { "movement": 2, "armor": "M", "control": 0, "health": 4 },
+      "weapons": [
+        {
+          "name": "50mm AC",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Linked"]
+        },
+        {
+          "name": "7.62mm MG",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Linked"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m29-vindicator",
+      "name": "M29 Vindicator",
+      "tags": ["Vehicle", "Tank Hunter", "Sloped Armor", "NERA Armor"],
+      "cost": { "mp": 15, "mats": 60 },
+      "mach": { "movement": 2, "armor": "M", "control": 0, "health": 2 },
+      "weapons": [
+        {
+          "name": "130mm APFSDS",
+          "range": 5,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Frontal", "Long"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m51-bison",
+      "name": "M51 Bison",
+      "tags": ["Vehicle", "MBT", "Slat Armor"],
+      "cost": { "mp": 15, "mats": 70 },
+      "mach": { "movement": 2, "armor": "H", "control": 0, "health": 5 },
+      "weapons": [
+        {
+          "name": "105mm HEAT",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": []
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "ordak-m60-thunderbolt",
+      "name": "M60 Thunderbolt",
+      "tags": ["Vehicle", "Artillery"],
+      "cost": { "mp": 15, "mats": 55 },
+      "mach": { "movement": 1, "armor": "L", "control": 0, "health": 2 },
+      "weapons": [
+        {
+          "name": "155mm Howitzer",
+          "range": "5-7",
+          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+        }
+      ],
+      "abilities": []
+    }
+  ]
+}

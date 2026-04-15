@@ -1,6 +1,6 @@
 import supabase from './supabase-client.js';
 import { requireAuth, signOut } from './auth.js';
-import { MAIN_TAGS, KEYWORDS } from './config.js';
+import { MAIN_TAGS, KEYWORDS, TAG_DESCRIPTIONS } from './config.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
 
@@ -296,17 +296,31 @@ function renderDetail() {
   }
 
   // Keyword glossary — collect unique keywords from all weapons
+  // Supports parameterised keywords like "Loading 3" by stripping the trailing number.
+  function getKeywordDesc(kw) {
+    if (KEYWORDS[kw] !== undefined) return KEYWORDS[kw];
+    const base = kw.replace(/\s+\d+$/, '');
+    return base !== kw ? KEYWORDS[base] : undefined;
+  }
+
   const allKeywords = [...new Set((u.weapons ?? []).flatMap(w => w.keywords ?? []))];
-  const glossaryItems = allKeywords
+  const kwGlossaryItems = allKeywords
     .map(kw => {
-      const desc = KEYWORDS[kw];
+      const desc = getKeywordDesc(kw);
       return desc
         ? `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(kw)}</span><span class="text-secondary small"> — ${escapeHtml(desc)}</span></div>`
         : null;
     })
-    .filter(Boolean).join('');
-  const keywordGlossaryHtml = glossaryItems
-    ? `<div class="border-top pt-2 mt-1"><div class="section-label mb-1">Keywords</div>${glossaryItems}</div>`
+    .filter(Boolean);
+
+  // Tag descriptions — only tags that have an entry in TAG_DESCRIPTIONS
+  const tagGlossaryItems = (u.tags ?? [])
+    .filter(t => TAG_DESCRIPTIONS[t])
+    .map(t => `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(t)}</span><span class="text-secondary small"> — ${escapeHtml(TAG_DESCRIPTIONS[t])}</span></div>`);
+
+  const allGlossaryItems = [...tagGlossaryItems, ...kwGlossaryItems].join('');
+  const keywordGlossaryHtml = allGlossaryItems
+    ? `<div class="border-top pt-2 mt-1"><div class="section-label mb-1">Keywords</div>${allGlossaryItems}</div>`
     : '';
 
   panel.innerHTML = `

@@ -1,7 +1,8 @@
 {
   "regiments": [
-    { "file": "example-regiment.json", "name": "Example Regiment" },
-    { "file": "example-regiment-2.json", "name": "2nd Example Regiment" },
-    { "file": "example-regiment-3.json", "name": "3rd Example Regiment" }
+    { "file": "ordak-arms-group.json", "name": "Ordak Arms Group" },
+    { "file": "skarid-hunters-outfit.json", "name": "Skarid Hunters Outfit" },
+    { "file": "dolmak-heavy-guard.json", "name": "Dolmak Heavy Guard" },
+    { "file": "golman-automated-solutions.json", "name": "Golman Automated Solutions" }
   ]
 }
