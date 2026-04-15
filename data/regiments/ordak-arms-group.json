@@ -11,7 +11,7 @@
         {
           "name": "5.56mm Rifle",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "3+", "L": "13+", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": ["Assault"]
         }
@@ -28,7 +28,7 @@
         {
           "name": ".300 Win Sniper Rifle",
           "range": 4,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "1+", "L": "9+", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": ["Long", "Precision"]
         }
@@ -45,9 +45,9 @@
         {
           "name": "9mm SMG",
           "range": 1,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "5+", "L": "NA", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
-          "keywords": []
+          "keywords": ["Assault"]
         }
       ],
       "abilities": []
@@ -62,7 +62,7 @@
         {
           "name": "7.62mm LMG",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "2+", "L": "11+", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": []
         }
@@ -79,7 +79,7 @@
         {
           "name": "20mm AC",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "11-", "L": "7+", "M": "13+", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": []
         }
@@ -96,7 +96,7 @@
         {
           "name": "105mm Assault HEAT",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "NA", "L": "7-", "M": "4+", "H": "9+" },
           "fortification_damage": "NA",
           "keywords": ["Assault"]
         }
@@ -107,14 +107,14 @@
       "id": "ordak-m16-badger",
       "name": "M16 Badger",
       "tags": ["Vehicle", "Light Tank"],
-      "cost": { "mp": 15, "mats": 50 },
+      "cost": { "mp": 15, "mats": 55 },
       "mach": { "movement": 3, "armor": "M", "control": 0, "health": 3 },
       "weapons": [
         {
           "name": "40mm HE AC",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
-          "fortification_damage": "NA",
+          "penetration": { "N": "8-", "L": "5+", "M": "13+", "H": "NA" },
+          "fortification_damage": "1",
           "keywords": ["HE"]
         }
       ],
@@ -130,14 +130,14 @@
         {
           "name": "50mm AC",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "4-", "L": "2+", "M": "10+", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": ["Linked"]
         },
         {
           "name": "7.62mm MG",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "2+", "L": "11+", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": ["Linked"]
         }
@@ -154,7 +154,7 @@
         {
           "name": "130mm APFSDS",
           "range": 5,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "NA", "L": "NA", "M": "7-", "H": "3+" },
           "fortification_damage": "NA",
           "keywords": ["Frontal", "Long"]
         }
@@ -171,7 +171,7 @@
         {
           "name": "105mm HEAT",
           "range": 2,
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "NA", "L": "7-", "M": "4+", "H": "9+" },
           "fortification_damage": "NA",
           "keywords": []
         }
@@ -188,8 +188,8 @@
         {
           "name": "155mm Howitzer",
           "range": "5-7",
-          "penetration": { "N": "NA", "L": "NA", "M": "NA", "H": "NA" },
-          "fortification_damage": "NA",
+          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
+          "fortification_damage": "2",
           "keywords": ["Indirect Fire", "Blast", "Loading 2"]
         }
       ],

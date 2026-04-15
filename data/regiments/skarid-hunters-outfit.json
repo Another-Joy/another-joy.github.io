@@ -1,44 +1,121 @@
 {
-  "regiment": "2nd Example Regiment",
+  "regiment": "Skarid Hunters Outfit",
   "units": [
     {
-      "id": "goblin-runner",
-      "name": "Goblin Runner",
-      "tags": ["Infantry"],
-      "cost": { "mp": 1, "mats": 0 },
-      "mach": { "movement": 7, "armor": "N", "control": 2, "health": 2 },
+      "id": "skarid-trainees",
+      "name": "Trainees",
+      "tags": ["Skarid","Infantry"],
+      "cost": { "mp": 40, "mats": 25 },
+      "mach": { "movement": 2, "armor": "N", "control": 1, "health": 3 },
       "weapons": [
         {
-          "name": "Crude Blade",
-          "range": 0,
-          "penetration": { "N": "3+", "L": "NA", "M": "NA", "H": "NA" },
+          "name": "9mm SMG",
+          "range": 1,
+          "penetration": { "N": "5+", "L": "NA", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
-          "keywords": []
-        }
-      ],
-      "abilities": [
-        {
-          "name": "Scavenge",
-          "description": "When this unit destroys an enemy, gain 1 Mats resource."
-        }
-      ]
-    },
-    {
-      "id": "goblin-bolt-thrower",
-      "name": "Bolt Thrower",
-      "tags": ["Vehicle"],
-      "cost": { "mp": 1, "mats": 4 },
-      "mach": { "movement": 3, "armor": "M", "control": 2, "health": 5 },
-      "weapons": [
-        {
-          "name": "Heavy Bolt",
-          "range": 6,
-          "penetration": { "N": "2+", "L": "2+", "M": "3+", "H": "5+" },
-          "fortification_damage": 3,
-          "keywords": ["Piercing"]
+          "keywords": ["Assault"]
         }
       ],
       "abilities": []
+    },
+    {
+      "id": "skarid-skirmishers",
+      "name": "Skirmishers",
+      "tags": ["Skarid","Infantry","Sturdy"],
+      "cost": { "mp": 35, "mats": 30 },
+      "mach": { "movement": 2, "armor": "N", "control": 2, "health": 2 },
+      "weapons": [
+        {
+          "name": "5.56mm Rifle",
+          "range": 2,
+          "penetration": { "N": "3+", "L": "13+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Assault"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "skarid-ravagers",
+      "name": "Ravagers",
+      "tags": ["Skarid","Infantry","Brittle"],
+      "cost": { "mp": 45, "mats": 40 },
+      "mach": { "movement": 2, "armor": "L", "control": 2, "health": 3 },
+      "weapons": [
+        {
+          "name": "5.56mm CQB Rifle",
+          "range": 1,
+          "penetration": { "N": "3+", "L": "13+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Assault", "Short"]
+        },
+        {
+          "name": "20mm Short AC",
+          "range": 1,
+          "penetration": { "N": "11-", "L": "7+", "M": "13+", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Short"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "skarid-waste-braver",
+      "name": "Waste Braver",
+      "tags": ["Skarid", "Vehicle", "Armored Car", "Transport"],
+      "cost": { "mp": 25, "mats": 55 },
+      "mach": { "movement": 3, "armor": "L", "control": 0, "health": 4 },
+      "weapons": [
+        {
+          "name": "12.7mm CQB MG",
+          "range": 1,
+          "penetration": { "N": "12-", "L": "8+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Assault", "Short"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "skarid-arid-wheels",
+      "name": "Arid Wheels",
+      "tags": ["Skarid","Vehicle","Combat Bike"],
+      "cost": { "mp": 25, "mats": 65 },
+      "mach": { "movement": 5, "armor": "N", "control": 1, "health": 2 },
+      "weapons": [
+        {
+          "name": "7.62mm CQB MG",
+          "range": 1,
+          "penetration": { "N": "2+", "L": "11+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Assault", "Short"]
+        },
+        {
+          "name": "30mm Short AC",
+          "range": 1,
+          "penetration": { "N": "9-", "L": "5+", "M": "12+", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Short"]
+        }
+      ],
+      "abilities": []
+    },
+    {
+      "id": "skarid-skarid-instructor",
+      "name": "Skarid Instructor",
+      "tags": ["Skarid","Support"],
+      "cost": { "mp": 10, "mats": 15 },
+      "abilities": [
+        {
+          "name": "Skarid Training",
+          "description": "The supported unit gains the Skarid keyword. If it already has it, its weapons gain Burst 0."
+        },
+        {
+          "name": "Support: Infantry",
+          "description": "This support can be attached to an Infantry unit."
+        }
+
+      ]
     }
   ]
 }
