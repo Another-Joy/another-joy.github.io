@@ -78,8 +78,8 @@ body.builder-page {
   background-color: var(--wg-bg-panel);
 }
 
-.builder-sidebar-left  { border-right: 1px solid rgba(255, 255, 255, 0.1); }
-.builder-sidebar-right { border-left:  1px solid rgba(255, 255, 255, 0.1); }
+.builder-sidebar-left  { border-left: 1px solid rgba(255, 255, 255, 0.1); }
+.builder-sidebar-right { border-right:  1px solid rgba(255, 255, 255, 0.1); }
 
 .builder-main {
   flex: 1;
@@ -88,6 +88,106 @@ body.builder-page {
   padding: 1.25rem;
   display: flex;
   flex-direction: column;
+}
+
+/* ── Landing page tab-panel (Archetypes + Regiments) ─────────────────────────── */
+
+/* Full-width dark archetype bar */
+.lp-archetype-bar {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  background-color: color-mix(in srgb, var(--wg-bg-panel) 60%, black 40%);
+  scrollbar-width: none;
+}
+.lp-archetype-bar::-webkit-scrollbar { display: none; }
+
+.lp-archetype-bar .lp-tab-btn {
+  flex: 1 1 0;
+  min-width: 100px;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--bs-secondary-color);
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+.lp-archetype-bar .lp-tab-btn:hover {
+  color: var(--bs-body-color);
+  background-color: rgba(255,255,255,0.04);
+}
+.lp-archetype-bar .lp-tab-btn.active {
+  color: var(--bs-body-color);
+  font-weight: 600;
+  border-bottom-color: var(--wg-accent);
+  background-color: rgba(255,255,255,0.06);
+}
+
+/* Generic tabs (Regiments etc.) */
+.lp-section-tabs {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  background-color: color-mix(in srgb, var(--wg-bg-panel) 60%, black 40%);
+  scrollbar-width: none;
+}
+.lp-section-tabs::-webkit-scrollbar { display: none; }
+
+.lp-section-tabs .lp-tab-btn {
+  flex: 1 1 0;
+  min-width: 100px;
+  padding: 1rem 0.5rem;
+  text-align: center;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  color: var(--bs-secondary-color);
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: color 0.15s, background-color 0.15s, border-color 0.15s;
+}
+.lp-section-tabs .lp-tab-btn:hover {
+  color: var(--bs-body-color);
+  background-color: rgba(255,255,255,0.04);
+}
+.lp-section-tabs .lp-tab-btn.active {
+  color: var(--bs-body-color);
+  font-weight: 600;
+  border-bottom-color: var(--wg-accent);
+  background-color: rgba(255,255,255,0.06);
+}
+
+.lp-panel {
+  padding: 2rem 0 1rem;
+}
+.lp-panel-icon   { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.lp-panel-title  { font-size: 1.4rem; font-weight: 700; margin-bottom: 0.2rem; }
+.lp-panel-subtext { font-size: 0.9rem; color: var(--bs-secondary-color); font-style: italic; margin-bottom: 0.75rem; }
+.lp-panel-desc   { max-width: 640px; color: var(--bs-secondary-color); line-height: 1.6; }
+
+.lp-archetype-img {
+  width: 100%;
+  max-width: 320px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  opacity: 0.9;
+}
+.lp-archetype-img-placeholder {
+  width: 280px;
+  height: 200px;
+  border: 2px dashed rgba(255,255,255,0.15);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--bs-secondary-color);
+  font-size: 0.8rem;
+  flex-shrink: 0;
 }
 
 /* ── Unit cards (left sidebar) ────────────────────────────────────────────────  */

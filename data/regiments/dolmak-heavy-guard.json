@@ -1,5 +1,7 @@
 {
   "regiment": "3rd Example Regiment",
+  "subtext": "Placeholder subtext",
+  "description": "Placeholder description for this regiment.",
   "units": [
     {
       "id": "ork-warrior",
