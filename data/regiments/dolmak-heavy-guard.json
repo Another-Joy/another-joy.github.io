@@ -1,5 +1,7 @@
 {
   "regiment": "Dolmak Heavy Guard",
+  "subtext": "Placeholder subtext",
+  "description": "Placeholder description for this regiment.",
   "rule":{
     "name": "Dolmak Scaling Systems",
     "type": "Passive",

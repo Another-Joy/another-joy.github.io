@@ -1,5 +1,7 @@
 {
   "regiment": "Ordak Arms Group",
+  "subtext": "Professional mercenaries with standardised loadouts",
+  "description": "The Ordak Arms Group is a licensed private military contractor fielding disciplined infantry equipped with standard-issue rifles and long-range support assets. They excel in flexible mid-range engagements.",
   "units": [
     {
       "id": "ordak-rookie-squad",
