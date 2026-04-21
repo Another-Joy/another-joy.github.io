@@ -1,15 +1,5 @@
 {
   "regiment": "Ordak Arms Group",
-  "rule":{
-    "name": "Versatile Arsenal",
-    "type": "Activated",
-    "description": "Units in this regiment can be fielded with any weapon loadout from their unit type. For example, a Rookie Squad could be equipped with sniper rifles instead of assault rifles, or a M14 Puma could be armed with APFSDS instead of HEAT."
-  },
-  "scheme":{
-    "name": "Armory Scheme",
-    "timing": "2 Cycles",
-    "description": "When building your army, you can choose to field any weapon loadout for your units, as long as it is valid for their unit type. This allows for greater flexibility and customization in your army composition."
-  },
   "units": [
     {
       "id": "ordak-rookie-squad",

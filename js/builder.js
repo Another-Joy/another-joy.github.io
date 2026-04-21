@@ -1,6 +1,6 @@
 import supabase from './supabase-client.js';
 import { requireAuth, signOut } from './auth.js';
-import { MAIN_TAGS, KEYWORDS, TAG_DESCRIPTIONS } from './config.js';
+import { MAIN_TAGS, KEYWORDS, TAG_DESCRIPTIONS, BASE_COMMANDS } from './config.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
 
@@ -162,12 +162,59 @@ function renderList() {
 
   container.innerHTML = '';
 
-  // ── Rules & Schemes (auto-included from allowed regiments) ────────────────
+  // ── Allowed regiments for this list ──────────────────────────────────────
   const allowedRegs = listData?.allowed_regiments;
   const activeRegiments = (allowedRegs && allowedRegs.length > 0)
     ? allRegiments.filter(r => allowedRegs.includes(r.regiment))
     : allRegiments;
 
+  // ── Commands slot (single section, grouped by source) ────────────────────
+  const regimentCommands = activeRegiments
+    .filter(r => Array.isArray(r.commands) && r.commands.length > 0)
+    .map(r => ({ regiment: r.regiment, commands: r.commands }));
+
+  const hasAnyCommands = BASE_COMMANDS.length > 0 || regimentCommands.length > 0;
+
+  if (hasAnyCommands) {
+    const hdr = document.createElement('div');
+    hdr.className = 'list-section-header';
+    hdr.textContent = 'Commands';
+    container.appendChild(hdr);
+
+    const commandsCard = document.createElement('div');
+    commandsCard.className = 'card bg-body-secondary border-secondary mb-2';
+    const cardBody = document.createElement('div');
+    cardBody.className = 'card-body p-0';
+
+    // Base commands
+    if (BASE_COMMANDS.length > 0) {
+      const subHdr = document.createElement('div');
+      subHdr.className = 'command-group-header';
+      subHdr.textContent = 'Base';
+      cardBody.appendChild(subHdr);
+      BASE_COMMANDS.forEach(cmd => {
+        const row = makeCommandRow({ ...cmd, _source: 'Base', _type: 'command' });
+        cardBody.appendChild(row);
+      });
+    }
+
+    // Regiment commands
+    regimentCommands.forEach(({ regiment, commands }) => {
+      const subHdr = document.createElement('div');
+      subHdr.className = 'command-group-header';
+      subHdr.textContent = regiment;
+      cardBody.appendChild(subHdr);
+      commands.forEach(cmd => {
+        const row = makeCommandRow({ ...cmd, _source: regiment, _type: 'command' });
+        cardBody.appendChild(row);
+      });
+    });
+
+    commandsCard.appendChild(cardBody);
+    container.appendChild(commandsCard);
+  }
+
+  // ── Rules & Schemes (auto-included from allowed regiments) ────────────────
   const rules   = activeRegiments.filter(r => r.rule)
     .map(r => ({ ...r.rule,   regiment: r.regiment, _type: 'rule' }));
   const schemes = activeRegiments.filter(r => r.scheme)
@@ -313,6 +360,28 @@ function renderDetail() {
     return;
   }
 
+  // ── Command display ────────────────────────────────────────────────────────
+  if (selectedUnit._type === 'command') {
+    const cmd = selectedUnit;
+    const sourceLabel = cmd._source === 'Base' ? 'Base Command' : `${escapeHtml(cmd._source || '')} Command`;
+    panel.innerHTML = `
+      <div class="p-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h6 class="fw-bold mb-0">${escapeHtml(cmd.name)}</h6>
+          <span class="badge bg-accent">${escapeHtml(cmd.cost || '')}</span>
+        </div>
+        <div class="text-secondary small mb-3">${sourceLabel}</div>
+        <table class="table table-sm table-dark table-bordered mb-0 command-detail-table">
+          <tbody>
+            <tr><th style="width:5rem">When</th><td>${escapeHtml(cmd.when || '—')}</td></tr>
+            <tr><th>Targets</th><td>${escapeHtml(cmd.targets || '—')}</td></tr>
+            <tr><th>Effects</th><td style="white-space:pre-line">${escapeHtml(cmd.effects || '—')}</td></tr>
+          </tbody>
+        </table>
+      </div>`;
+    return;
+  }
+
   // ── Unit display ───────────────────────────────────────────────────────────
   const u = selectedUnit;
 
@@ -441,17 +510,34 @@ function updateTotals() {
 
 // ── List mutations ────────────────────────────────────────────────────────────
 
+function makeCommandRow(cmd) {
+  const row = document.createElement('div');
+  row.className = 'command-row';
+  row.innerHTML = `
+    <span class="command-row-name">${escapeHtml(cmd.name)}</span>
+    <span class="badge bg-secondary command-row-cost">${escapeHtml(cmd.cost || '')}</span>`;
+  row.addEventListener('click', () => selectCommand(cmd, row));
+  return row;
+}
+
 function selectUnit(unit, cardEl) {
-  document.querySelectorAll('.unit-card.selected, .rule-scheme-card.selected').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.unit-card.selected, .rule-scheme-card.selected, .command-row.selected').forEach(c => c.classList.remove('selected'));
   cardEl.classList.add('selected');
   selectedUnit = unit;
   renderDetail();
 }
 
 function selectRuleOrScheme(item, cardEl) {
-  document.querySelectorAll('.unit-card.selected, .rule-scheme-card.selected').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.unit-card.selected, .rule-scheme-card.selected, .command-row.selected').forEach(c => c.classList.remove('selected'));
   cardEl.classList.add('selected');
   selectedUnit = item;
+  renderDetail();
+}
+
+function selectCommand(cmd, rowEl) {
+  document.querySelectorAll('.unit-card.selected, .rule-scheme-card.selected, .command-row.selected').forEach(c => c.classList.remove('selected'));
+  rowEl.classList.add('selected');
+  selectedUnit = cmd;
   renderDetail();
 }
 

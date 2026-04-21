@@ -1,5 +1,37 @@
 {
   "regiment": "Dolmak Heavy Guard",
+  "rule":{
+    "name": "Dolmak Scaling Systems",
+    "type": "Passive",
+    "description": "Shots against allied Dolmak vehicles get -1AP per size of the ally above the enemy, up to -2AP and to a maximum of 9+. \nApply only when rolling up."
+  },
+  "scheme":{
+    "name": "Still Standing",
+    "timing": "2 Cycles",
+    "description": "If your opponent's units have less total Health than yours, you gain 3 VP.\nOtherwise, you gain 1 CP."
+  },
+  "commands": [
+    {
+    "name": "Ironclad Armor",
+    "cost": "1 CP",
+    "when": "When an enemy unit declares an allied Vehicle as the target for shooting",
+    "targets": "That allied Vehicle unit",
+    "effects": "If the allied unit is not a Dolmak unit, it gains the Dolmak Scaling Systems ability.\nOtherwise, double the effect of Dolmak Scaling Systems for these shots, up to -4AP.\nOther restrictions still apply."
+    },
+    {
+    "name": "Keeping Momentum",
+    "cost": "2 CP",
+    "when": "Any time on your turn",
+    "targets": "All Vehicle units on your army",
+    "effects": "Until end of cycle, those units can be Ordered to Move ignoring their M characteristic."
+    },
+    {
+    "name": "Size Matters",
+    "cost": "1 CP, 1 Secondary",
+    "when": "As a Secondary Action",
+    "targets": "An allied Dolmak vehicle unit.",
+    "effects": "Fire the target ally. That shot gains +2AP per size of the ally above the enemy, up to +4AP. "
+    }],
   "units": [
     {
       "id": "dolmak-engineer-squad",
@@ -11,7 +43,7 @@
         {
           "name": "9mm SMG",
           "range": 1,
-          "penetration": { "N": "4+", "L": "NA", "M": "4+", "H": "9+" },
+          "penetration": { "N": "5+", "L": "NA", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": []
         }
@@ -32,10 +64,10 @@
       "weapons": [
         {
           "name": "50mm Long AC",
-          "range": "5-7",
-          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
-          "fortification_damage": "2",
-          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+          "range": 4,
+          "penetration": { "N": "4-", "L": "2+", "M": "10+", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Long"]
         }
       ]
     },
@@ -48,10 +80,10 @@
       "weapons": [
         {
           "name": "130mm ATGM",
-          "range": "5-7",
-          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
-          "fortification_damage": "2",
-          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+          "range": 3,
+          "penetration": { "N": "NA", "L": "5-", "M": "9-", "H": "4-" },
+          "fortification_damage": "NA",
+          "keywords": []
         }
       ]
     },
@@ -63,11 +95,11 @@
       "mach": { "movement": 1, "armor": "H", "control": 0, "health": 5 },
       "weapons": [
         {
-          "name": "120mm HESH",
-          "range": "5-7",
-          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
-          "fortification_damage": "2",
-          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+          "name": "120mm Heavy HESH",
+          "range": 2,
+          "penetration": { "N": "NA", "L": "3+", "M": "4+", "H": "11+" },
+          "fortification_damage": "NA",
+          "keywords": ["Blast"]
         }
       ]
     },
@@ -80,9 +112,9 @@
       "weapons": [
         {
           "name": "200mm Howitzer",
-          "range": "TODO",
-          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
-          "fortification_damage": "2",
+          "range": "6-9",
+          "penetration": { "N": "10-", "L": "10-", "M": "7+", "H": "11+" },
+          "fortification_damage": "3",
           "keywords": ["Indirect Fire", "Blast", "Loading 2"]
         }
       ]

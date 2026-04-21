@@ -1,5 +1,38 @@
 {
   "regiment": "Skarid Hunters Outfit",
+  "rule":{
+    "name": "Forward Assault",
+    "type": "Triggered",
+    "description": "When you Order an Infantry to Move, you may Move an additional Hellcast unit"
+  },
+  "scheme":{
+    "name": "Press the Offensive",
+    "timing": "2 Cycles",
+    "description": "If your opponent has fewer Victory Points than you, you gain 3 VP.\nOtherwise, you gain 1 CP."
+  },
+  "commands": [
+    {
+    "name": "Double Time",
+    "cost": "1 CP, 1 Secondary",
+    "when": "As a Secondary Action",
+    "targets": "An allied Infantry unit.",
+    "effects": "Advance target unit. If its an Hellcast unit, you may then Fire it if it has an Assault weapon with no penalties."
+    },
+    {
+    "name": "Duck and Cover",
+    "cost": "1 CP",
+    "when": "When an enemy unit declares an allied Infantry as the target for shooting",
+    "targets": "That allied Infantry unit",
+    "effects": "After the enemy finishes making shots, you may Move the allied unit, or Advance it if doing so moves it into an empty Objective"
+    },
+    {
+    "name": "Overwhelming Firepower",
+    "cost": "1 CP, 1 Primary",
+    "when": "As a Primary Action",
+    "targets": "An allied unit",
+    "effects": "Salvo the target unit. All of its weapons gain +2AP this turn. If the target of this stratagem is a Hellcast unit, its weapons also gain the Burst 0 ability this turn."
+    }
+  ],
   "units": [
     {
       "id": "skarid-trainees",

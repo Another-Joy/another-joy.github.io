@@ -32,6 +32,18 @@ export const KEYWORDS = {
   'Loading':     'Loading Weapons have a Charge characteristic (X), and consume 1 Charge each time they shoot.\nAt the beginning of each cycle, restore all Loading Weapons\' Charge to full.',
 };
 
+// ── Base Commands (available in all army lists) ───────────────────────────────
+// Each command: { name, cost, when, targets, effects }
+export const BASE_COMMANDS = [
+  {
+    name:    'Runover',
+    cost:    '1 CP',
+    when:    'After an allied M or H vehicle has Advanced.',
+    targets: 'That allied M or H vehicle; Enemy infantry in the same tile.',
+    effects: 'The enemy suffers a number of 9+ Wounds equal to the ally\'s Health, suffering 2 more if the ally is Heavy and 2 less for each Armor Size of the enemy above N.\nThis Command cannot deal more than 4 damage.',
+  },
+];
+
 // ── Tag descriptions ──────────────────────────────────────────────────────────
 // Tags that have rule descriptions shown in the detail panel alongside keywords.
 // Only tags listed here will appear in the glossary section.
