@@ -156,6 +156,22 @@ function renderSidebar() {
   });
 }
 
+function makeCollapsibleSection(label, startCollapsed = false) {
+  const header = document.createElement('div');
+  header.className = 'list-section-header';
+  header.innerHTML = `<span>${escapeHtml(label)}</span><i class="bi bi-chevron-down collapse-arrow${startCollapsed ? ' collapsed' : ''}"></i>`;
+
+  const body = document.createElement('div');
+  if (startCollapsed) body.classList.add('d-none');
+
+  header.addEventListener('click', () => {
+    const isNowHidden = body.classList.toggle('d-none');
+    header.querySelector('.collapse-arrow').classList.toggle('collapsed', isNowHidden);
+  });
+
+  return { header, body };
+}
+
 function renderList() {
   const container = document.getElementById('current-units');
   const units     = listData?.units ?? [];
@@ -176,10 +192,7 @@ function renderList() {
   const hasAnyCommands = BASE_COMMANDS.length > 0 || regimentCommands.length > 0;
 
   if (hasAnyCommands) {
-    const hdr = document.createElement('div');
-    hdr.className = 'list-section-header';
-    hdr.textContent = 'Commands';
-    container.appendChild(hdr);
+    const { header, body } = makeCollapsibleSection('Commands', true);
 
     const commandsCard = document.createElement('div');
     commandsCard.className = 'card bg-body-secondary border-secondary mb-2';
@@ -211,7 +224,9 @@ function renderList() {
     });
 
     commandsCard.appendChild(cardBody);
-    container.appendChild(commandsCard);
+    body.appendChild(commandsCard);
+    container.appendChild(header);
+    container.appendChild(body);
   }
 
   // ── Rules & Schemes (auto-included from allowed regiments) ────────────────
@@ -221,10 +236,7 @@ function renderList() {
     .map(r => ({ ...r.scheme, regiment: r.regiment, _type: 'scheme' }));
 
   if (rules.length > 0) {
-    const hdr = document.createElement('div');
-    hdr.className = 'list-section-header';
-    hdr.textContent = 'Rules';
-    container.appendChild(hdr);
+    const { header, body } = makeCollapsibleSection('Rules', true);
 
     rules.forEach(rule => {
       const card = document.createElement('div');
@@ -235,15 +247,15 @@ function renderList() {
           <div class="text-secondary small">${escapeHtml(rule.regiment)} · ${escapeHtml(rule.type || '')}</div>
         </div>`;
       card.addEventListener('click', () => selectRuleOrScheme(rule, card));
-      container.appendChild(card);
+      body.appendChild(card);
     });
+
+    container.appendChild(header);
+    container.appendChild(body);
   }
 
   if (schemes.length > 0) {
-    const hdr = document.createElement('div');
-    hdr.className = 'list-section-header';
-    hdr.textContent = 'Schemes';
-    container.appendChild(hdr);
+    const { header, body } = makeCollapsibleSection('Schemes', true);
 
     schemes.forEach(scheme => {
       const card = document.createElement('div');
@@ -254,8 +266,11 @@ function renderList() {
           <div class="text-secondary small">${escapeHtml(scheme.regiment)} · ${escapeHtml(scheme.timing || '')}</div>
         </div>`;
       card.addEventListener('click', () => selectRuleOrScheme(scheme, card));
-      container.appendChild(card);
+      body.appendChild(card);
     });
+
+    container.appendChild(header);
+    container.appendChild(body);
   }
 
   // ── Units ─────────────────────────────────────────────────────────────────
@@ -289,11 +304,7 @@ function renderList() {
       return regCmp !== 0 ? regCmp : a.entry.name.localeCompare(b.entry.name);
     });
 
-    // Section header
-    const sectionHeader = document.createElement('div');
-    sectionHeader.className = 'list-section-header';
-    sectionHeader.textContent = tag;
-    container.appendChild(sectionHeader);
+    const { header, body } = makeCollapsibleSection(tag, false);
 
     group.forEach(({ entry, index }) => {
       const card = document.createElement('div');
@@ -314,8 +325,11 @@ function renderList() {
             </button>
           </div>
         </div>`;
-      container.appendChild(card);
+      body.appendChild(card);
     });
+
+    container.appendChild(header);
+    container.appendChild(body);
   });
 
   container.querySelectorAll('.btn-qty-inc').forEach(btn =>

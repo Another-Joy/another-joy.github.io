@@ -41,6 +41,36 @@ export const BASE_COMMANDS = [
     when:    'After an allied M or H vehicle has Advanced.',
     targets: 'That allied M or H vehicle; Enemy infantry in the same tile.',
     effects: 'The enemy suffers a number of 9+ Wounds equal to the ally\'s Health, suffering 2 more if the ally is Heavy and 2 less for each Armor Size of the enemy above N.\nThis Command cannot deal more than 4 damage.',
+  },  {
+    name:    'Sabotage',
+    cost:    '1 CP, 1 Secondary',
+    when:    'As a Secondary Action',
+    targets: 'An allied infantry unit;\nAn enemy vehicle unit in the same tile',
+    effects: 'The enemy suffers a number of 7+ Mortal Wounds equal to the ally\'s Health.\nThis Command always deals at least 1 damage',
+  },  {
+    name:    'Emergency Reload',
+    cost:    '1 CP',
+    when:    'Any time on your turn',
+    targets: 'An Allied unit with at least one Loading Weapon or Ability',
+    effects: 'Immediatly restore all Charges to all Loading Weapons and Abilities equipped by that unit.',
+  },  {
+    name:    'Commander\'s Luck',
+    cost:    '1 CP',
+    when:    'After you make a Penetration Check, Damage Check, or Evasion Check.',
+    targets: 'That allied unit.',
+    effects: 'Re-roll that roll or check',
+  },  {
+    name:    'Prepared shot',
+    cost:    '1 CP',
+    when:    'At the end of your turn.',
+    targets: 'An allied unit.',
+    effects: '"That unit cannot move next turn.\nThat unit\'s Weapons gain Precision in your next turn."',
+  },  {
+    name:    'Runover',
+    cost:    '1 CP',
+    when:    'After an allied M or H vehicle has Advanced.',
+    targets: 'That allied M or H vehicle; Enemy infantry in the same tile.',
+    effects: 'The enemy suffers a number of 9+ Wounds equal to the ally\'s Health, suffering 2 more if the ally is Heavy and 2 less for each Armor Size of the enemy above N.\nThis Command cannot deal more than 4 damage.',
   },
 ];
 
