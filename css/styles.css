@@ -11,6 +11,10 @@
 body {
   min-height: 100vh;
 }
+:root {
+  --bs-body-color: #e0e0e0;       /* main text */
+  --bs-secondary-color: #9a9a9a;  /* muted/secondary text */
+}
 
 /* ── Navbar ───────────────────────────────────────────────────────────────────  */
 .navbar-brand {
