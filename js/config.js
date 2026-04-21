@@ -41,7 +41,7 @@ export const TAG_DESCRIPTIONS = {
   'Transport': 'Units that can carry other units. Carried units do not contribute to MP or cost, and are not affected by damage until the transport is destroyed.',
   'Slopped Armor': '-4AP to AC; -2AP to ST and HERs targetting this unit. Ignore when rolling down.',
   'Composite Armor': '-4AP to AC and HERs; -2AP to ST, HESH, HEAT, Tandem, and APFSDSs targetting this unit. Ignore when rolling down.',
-  'ERA Armor': '-8AP to HER; -4AP to ST, AC, HESH, HEAT, APFSDS and ATGMs targetting this unit. Two charges per battle, used automatically.Ignore modifier when rolling down (still consumes a charge).',
+  'ERA Armor': '-8AP to HER; -4AP to ST, AC, HESH, HEAT, APFSDS and ATGMs targetting this unit. Two charges per battle, used automatically',
   'NERA Armor': '-4AP to HER; -2AP to HESH, HEAT and Tandem targetting this unit. Ignore when rolling down.',
   'Spaced Armor': '-2AP to ST, AC, HEAT, Tandem and HERs targetting this unit. Ignore when rolling down.',
   'Slat Armor': '-4AP to HER; -2AP to HESH and HEAT targetting this unit. Ignore when rolling down.',

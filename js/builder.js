@@ -160,17 +160,68 @@ function renderList() {
   const container = document.getElementById('current-units');
   const units     = listData?.units ?? [];
 
-  if (units.length === 0) {
-    container.innerHTML = `
-      <div class="text-center text-secondary py-5">
-        <i class="bi bi-shield display-5 d-block mb-3 opacity-25"></i>
-        <p class="mb-0">No units added yet.</p>
-        <p class="small">Select a unit from the left panel and click <strong>Add to List</strong>.</p>
-      </div>`;
-    return;
+  container.innerHTML = '';
+
+  // ── Rules & Schemes (auto-included from allowed regiments) ────────────────
+  const allowedRegs = listData?.allowed_regiments;
+  const activeRegiments = (allowedRegs && allowedRegs.length > 0)
+    ? allRegiments.filter(r => allowedRegs.includes(r.regiment))
+    : allRegiments;
+
+  const rules   = activeRegiments.filter(r => r.rule)
+    .map(r => ({ ...r.rule,   regiment: r.regiment, _type: 'rule' }));
+  const schemes = activeRegiments.filter(r => r.scheme)
+    .map(r => ({ ...r.scheme, regiment: r.regiment, _type: 'scheme' }));
+
+  if (rules.length > 0) {
+    const hdr = document.createElement('div');
+    hdr.className = 'list-section-header';
+    hdr.textContent = 'Rules';
+    container.appendChild(hdr);
+
+    rules.forEach(rule => {
+      const card = document.createElement('div');
+      card.className = 'card mb-2 bg-body-secondary border-secondary rule-scheme-card';
+      card.innerHTML = `
+        <div class="card-body py-2 px-3">
+          <div class="fw-semibold" style="font-size:0.9rem">${escapeHtml(rule.name)}</div>
+          <div class="text-secondary small">${escapeHtml(rule.regiment)} · ${escapeHtml(rule.type || '')}</div>
+        </div>`;
+      card.addEventListener('click', () => selectRuleOrScheme(rule, card));
+      container.appendChild(card);
+    });
   }
 
-  container.innerHTML = '';
+  if (schemes.length > 0) {
+    const hdr = document.createElement('div');
+    hdr.className = 'list-section-header';
+    hdr.textContent = 'Schemes';
+    container.appendChild(hdr);
+
+    schemes.forEach(scheme => {
+      const card = document.createElement('div');
+      card.className = 'card mb-2 bg-body-secondary border-secondary rule-scheme-card';
+      card.innerHTML = `
+        <div class="card-body py-2 px-3">
+          <div class="fw-semibold" style="font-size:0.9rem">${escapeHtml(scheme.name)}</div>
+          <div class="text-secondary small">${escapeHtml(scheme.regiment)} · ${escapeHtml(scheme.timing || '')}</div>
+        </div>`;
+      card.addEventListener('click', () => selectRuleOrScheme(scheme, card));
+      container.appendChild(card);
+    });
+  }
+
+  // ── Units ─────────────────────────────────────────────────────────────────
+  if (units.length === 0) {
+    const empty = document.createElement('div');
+    empty.className = 'text-center text-secondary py-5';
+    empty.innerHTML = `
+      <i class="bi bi-shield display-5 d-block mb-3 opacity-25"></i>
+      <p class="mb-0">No units added yet.</p>
+      <p class="small">Select a unit from the left panel and click <strong>Add to List</strong>.</p>`;
+    container.appendChild(empty);
+    return;
+  }
 
   // Group by main tag, preserving original indexes for qty/remove buttons
   const byTag = {};
@@ -240,6 +291,29 @@ function renderDetail() {
     return;
   }
 
+  // ── Rule / Scheme display ──────────────────────────────────────────────────
+  if (selectedUnit._type === 'rule' || selectedUnit._type === 'scheme') {
+    const item     = selectedUnit;
+    const isScheme = item._type === 'scheme';
+    const metaLabel = isScheme ? 'Timing' : 'Type';
+    const metaValue = isScheme ? (item.timing || '—') : (item.type || '—');
+    panel.innerHTML = `
+      <div class="p-3">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <h6 class="fw-bold mb-0">${escapeHtml(item.name)}</h6>
+          <span class="badge bg-secondary">${isScheme ? 'Scheme' : 'Rule'}</span>
+        </div>
+        <div class="text-secondary small mb-3">${escapeHtml(item.regiment)}</div>
+        <div class="mb-2">
+          <span class="fw-semibold small">${metaLabel}:</span>
+          <span class="text-secondary small ms-1">${escapeHtml(metaValue)}</span>
+        </div>
+        <p class="text-secondary small mb-0" style="line-height:1.6">${escapeHtml(item.description || '')}</p>
+      </div>`;
+    return;
+  }
+
+  // ── Unit display ───────────────────────────────────────────────────────────
   const u = selectedUnit;
 
   // Tags
@@ -368,9 +442,16 @@ function updateTotals() {
 // ── List mutations ────────────────────────────────────────────────────────────
 
 function selectUnit(unit, cardEl) {
-  document.querySelectorAll('.unit-card.selected').forEach(c => c.classList.remove('selected'));
+  document.querySelectorAll('.unit-card.selected, .rule-scheme-card.selected').forEach(c => c.classList.remove('selected'));
   cardEl.classList.add('selected');
   selectedUnit = unit;
+  renderDetail();
+}
+
+function selectRuleOrScheme(item, cardEl) {
+  document.querySelectorAll('.unit-card.selected, .rule-scheme-card.selected').forEach(c => c.classList.remove('selected'));
+  cardEl.classList.add('selected');
+  selectedUnit = item;
   renderDetail();
 }
 

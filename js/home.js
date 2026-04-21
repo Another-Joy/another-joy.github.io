@@ -57,7 +57,7 @@ function openNewListModal() {
       const div = document.createElement('div');
       div.className = 'form-check';
       div.innerHTML = `
-        <input class="form-check-input" type="checkbox" value="${escapeHtml(r.name)}" id="${id}" checked>
+        <input class="form-check-input" type="checkbox" value="${escapeHtml(r.name)}" id="${id}">
         <label class="form-check-label" for="${id}">${escapeHtml(r.name)}</label>`;
       container.appendChild(div);
     });

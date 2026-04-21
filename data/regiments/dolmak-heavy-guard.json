@@ -1,47 +1,102 @@
 {
-  "regiment": "3rd Example Regiment",
+  "regiment": "Dolmak Heavy Guard",
   "units": [
     {
-      "id": "ork-warrior",
-      "name": "Ork Warrior",
-      "tags": ["Infantry"],
-      "cost": { "mp": 2, "mats": 0 },
-      "mach": { "movement": 4, "armor": "L", "control": 3, "health": 5 },
+      "id": "dolmak-engineer-squad",
+      "name": "Engineer Squad",
+      "tags": ["Dolmak","Infantry"],
+      "cost": { "mp": 40, "mats": 15 },
+      "mach": { "movement": 2, "armor": "N", "control": 1, "health": 3 },
       "weapons": [
         {
-          "name": "Ork Axe",
-          "range": 0,
-          "penetration": { "N": "2+", "L": "3+", "M": "NA", "H": "NA" },
-          "fortification_damage": 1,
+          "name": "9mm SMG",
+          "range": 1,
+          "penetration": { "N": "4+", "L": "NA", "M": "4+", "H": "9+" },
+          "fortification_damage": "NA",
           "keywords": []
         }
       ],
       "abilities": [
         {
-          "name": "Brutal Charge",
-          "description": "When this unit moves at least 3 hexes before attacking, add +1 to all Penetration checks this activation."
+          "name": "Field Repairs",
+          "description": "As a Secondary Action: An allied vehicle in this unit's tile recovers 1 HP.\nThis ability has Loading 1."
         }
       ]
     },
     {
-      "id": "ork-bunker",
-      "name": "Ork Bunker",
-      "tags": ["Fortification"],
-      "cost": { "mp": 0, "mats": 6 },
-      "mach": { "movement": 0, "armor": "H", "control": 0, "health": 8 },
+      "id": "dolmak-vs-light",
+      "name": "VS Light",
+      "tags": ["Dolmak", "Vehicle", "Tank Hunter", "NERA Armor"],
+      "cost": { "mp": 15, "mats": 45 },
+      "mach": { "movement": 1, "armor": "M", "control": 0, "health": 4 },
       "weapons": [
         {
-          "name": "Mounted Gun",
-          "range": 4,
-          "penetration": { "N": "2+", "L": "3+", "M": "4+", "H": "NA" },
-          "fortification_damage": "NA",
-          "keywords": ["Suppressing", "Reliable"]
+          "name": "50mm Long AC",
+          "range": "5-7",
+          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
+          "fortification_damage": "2",
+          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
         }
-      ],
+      ]
+    },
+    {
+      "id": "dolmak-vs-medium",
+      "name": "VS Medium",
+      "tags": ["Dolmak", "Vehicle", "MBT", "Composite Armor"],
+      "cost": { "mp": 15, "mats": 55 },
+      "mach": { "movement": 1, "armor": "H", "control": 0, "health": 4 },
+      "weapons": [
+        {
+          "name": "130mm ATGM",
+          "range": "5-7",
+          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
+          "fortification_damage": "2",
+          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+        }
+      ]
+    },
+    {
+      "id": "dolmak-super-heavy",
+      "name": "Super Heavy",
+      "tags": ["Dolmak", "Vehicle", "MBT", "Composite Armor", "Large"],
+      "cost": { "mp": 15, "mats": 70 },
+      "mach": { "movement": 1, "armor": "H", "control": 0, "health": 5 },
+      "weapons": [
+        {
+          "name": "120mm HESH",
+          "range": "5-7",
+          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
+          "fortification_damage": "2",
+          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+        }
+      ]
+    },
+    {
+      "id": "dolmak-heavy-art",
+      "name": "Heavy Art",
+      "tags": ["Dolmak", "Vehicle", "Artillery"],
+      "cost": { "mp": 15, "mats": 80 },
+      "mach": { "movement": 0, "armor": "M", "control": 0, "health": 3 },
+      "weapons": [
+        {
+          "name": "200mm Howitzer",
+          "range": "TODO",
+          "penetration": { "N": "9-", "L": "5+", "M": "9+", "H": "13+" },
+          "fortification_damage": "2",
+          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+        }
+      ]
+    },
+    {
+      "id": "ordak-reboque",
+      "name": "Reboque",
+      "tags": ["Dolmak", "Vehicle", "Artillery", "Sturdy"],
+      "cost": { "mp": 15, "mats": 35 },
+      "mach": { "movement": 3, "armor": "L", "control": 0, "health": 3 },
       "abilities": [
         {
-          "name": "Cover",
-          "description": "Adjacent friendly units with None armor gain Light armor for the purpose of incoming Penetration checks."
+          "name": "Towing",
+          "description": "At the end of your turn, you may link or unlink this unit with another Vehicle on the same tile.\nWhile these units are linked, they can't shoot, the other unit cannot move, and the Movement characteristic of this unit becomes the other unit's M +1, up to 3.\nWhen this unit moves, the linked unit moves with it and is considered part of its model for movement legality.\nThis unit can start the battle linked to another unit."
         }
       ]
     }
