@@ -1,0 +1,175 @@
+{
+  "regiment": "The Nullion Circle",
+  "rule":{
+    "name": "Confusion Gas",
+    "type": "Passive",
+    "description": "Units inside your Smoke have a Movement characteristic of at most 1, -1 to Control and cannot be the target of Commands."
+  },
+  "scheme":{
+    "name": "Prevent Advancements",
+    "timing": "3 Cycles",
+    "description": "If there are no enemy units in your half of the map, you gain 5 VP.\nOtherwise, you gain 1 CP."
+  },
+  "commands": [
+    {
+    "name": "Cut Coms",
+    "cost": "2 CP",
+    "when": "When an enemy player makes an Action",
+    "targets": "That player",
+    "effects": "Cancel that Action unless that player pays 1CP"
+    },
+    {
+    "name": "Provoke Interference",
+    "cost": "1 CP",
+    "when": "When an enemy player makes an Action that targets an enemy unit.",
+    "targets": "That enemy unit.\nAn allied unit within 2 Tiles with Line of Sight to the enemy.",
+    "effects": "Cancel that Action unless that player pays 1 Secondary Order."
+    },
+    {
+    "name": "Mixed Signals",
+    "cost": "1 CP",
+    "when": "When an enemy unit declares targets for an Indirect Fire weapon",
+    "targets": "That enemy unit",
+    "effects": "Change the target of that weapon's shots to a legal target of your choice."
+    }
+  ],
+  "units": [
+    {
+      "id": "nullion-cp-gen",
+      "name": "CP Gen",
+      "tags": ["Nullion","Infantry"],
+      "cost": { "mp": 25, "mats": 5 },
+      "mach": { "movement": 2, "armor": "N", "control": 1, "health": 2 },
+      "weapons": [
+        {
+          "name": "5.56mm Rifle",
+          "range": 2,
+          "penetration": { "N": "3+", "L": "13+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA"
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Collect Field Info",
+          "description": "As a Primary Action: as an additional cost, spend a Secondary Action. You gain 1 CP.\nThis ability has Loading 1."
+        }
+      ]
+    },
+    {
+      "id": "nullion-smoke-launcher-vehicle",
+      "name": "Smoke Launcher Vehicle",
+      "tags": ["Nullion","Vehicle","IFV"],
+      "cost": { "mp": 15, "mats": 65 },
+      "mach": { "movement": 3, "armor": "L", "control": 0, "health": 3 },
+      "weapons": [
+        {
+          "name": "60mm AC",
+          "range": 2,
+          "penetration": { "N": "2-", "L": "1+", "M": "9+", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Linked"]
+        },
+        {
+          "name": "5.56mm Scoped LMG",
+          "range": 2,
+          "penetration": { "N": "3+", "L": "13+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Linked", "Precision"]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Smoke Generator",
+          "description": "As a secondary action: place Smoke on target adjacent tile. That Smoke has Timed 8."
+        }
+      ]
+    },
+    {
+      "id": "nullion-conquer-car",
+      "name": "Conquer Car",
+      "tags": ["Nullion", "Vehicle", "APC", "Brittle"],
+      "cost": { "mp": 45, "mats": 65 },
+      "mach": { "movement": 2, "armor": "M", "control": 2, "health": 3 },
+      "weapons": [
+        {
+          "name": "20mm Scoped AC",
+          "range": 2,
+          "penetration": { "N": "11-", "L": "7+", "M": "13+", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Precision"]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Quick Clear",
+          "description": "This unit can Conquer and Occupy adjacent empty Objective."
+        }
+      ]
+    },
+    {
+      "id": "nullion-observation-post",
+      "name": "Observation Post",
+      "tags": ["Nullion", "Fortification"],
+      "cost": { "mp": 15, "mats": 55 },
+      "mach": { "health": 4 },
+      "weapons": [
+        {
+          "name": "12.7mm Fixed MG",
+          "range": 2,
+          "penetration": { "N": "12-", "L": "8+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Frontal", "Precision"]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Thermal Movement",
+          "description": "When an opponent Orders an enemy unit inside Smoke, that unit looses 3 Dodge until the end of the next turn."
+        }
+      ]
+    },
+    {
+      "id": "nullion-signal-scrambler",
+      "name": "Signal Scrambler",
+      "tags": ["Nullion","Vehicle","Light Tank", "ERA"],
+      "cost": { "mp": 15, "mats": 65 },
+      "mach": { "movement": 2, "armor": "M", "control": 0, "health": 4 },
+      "weapons": [
+        {
+          "name": "40mm AC",
+          "range": 2,
+          "penetration": { "N": "6-", "L": "3+", "M": "11+", "H": "NA" },
+          "fortification_damage": "NA",
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Short Jam",
+          "description": "When an opponent makes an Action that targets an enemy unit within 2 tiles, you may cancel that action and refund its costs. That opponent cannot make that exact Action again this turn.\nThis ability has Loading 2."
+        }
+      ]
+    },
+    {
+      "id": "nullion-smoke-art",
+      "name": "Smoke Art",
+      "tags": ["Nullion","Vehicle","Artillery"],
+      "cost": { "mp": 15, "mats": 55 },
+      "mach": { "movement": 1, "armor": "L", "control": 0, "health": 2 },
+      "weapons": [
+        {
+          "name": "130mm Smoke Howitzer",
+          "range": "4-6",
+          "penetration": { "N": "8-", "L": "7+", "M": "11+", "H": "NA" },
+          "fortification_damage": "2",
+          "keywords": ["Indirect Fire", "Blast", "Loading 2"]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Provide Cover",
+          "description": "As a Primary action: place Smoke on 2 target tiles within Range that are adjaent to each other. That Smoke has Timed 8"
+        }
+      ]
+    }
+  ]
+}

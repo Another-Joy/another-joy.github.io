@@ -3,6 +3,7 @@
     { "file": "ordak-arms-group.json", "name": "Ordak Arms Group" },
     { "file": "skarid-hunters-outfit.json", "name": "Skarid Hunters Outfit" },
     { "file": "dolmak-heavy-guard.json", "name": "Dolmak Heavy Guard" },
-    { "file": "golman-automated-solutions.json", "name": "Golman Automated Solutions" }
+    { "file": "golman-automated-solutions.json", "name": "Golman Automated Solutions" },
+    { "file": "the-nullion-circle.json", "name": "The Nullion Circle" }
   ]
 }

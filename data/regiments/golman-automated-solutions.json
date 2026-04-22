@@ -3,7 +3,7 @@
   "rule":{
     "name": "Pack Tactics",
     "type": "Triggered",
-    "description": "When you Order an Autonomous unit to Move, you may either Advance it or Move an extra Autonomous unit instead."
+    "description": "When you Order an Created Autonomous unit to Move, you may either Advance it or Move an extra Autonomous unit instead."
   },
   "scheme":{
     "name": "Assured Destruction",
@@ -22,7 +22,7 @@
     "name": "Quick Detonation",
     "cost": "1 CP",
     "when": "As a Secondary Action",
-    "targets": "An allied Kmine unit",
+    "targets": "An allied K-mine unit",
     "effects": "Fire the target unit."
     },
     {
@@ -30,7 +30,7 @@
     "cost": "1 CP",
     "when": "Any time on your turn",
     "targets": "None",
-    "effects": "Until the end of the Cycle, ignore your Kmine unit limit.\nAt the end of the Cycle, if you exceed this limit, repeatedly choose an allied Kmine unit to Fire until your number of Kmine units equals the limit."
+    "effects": "Until the end of the Cycle, ignore your K-mine unit limit.\nAt the end of the Cycle, if you exceed this limit, repeatedly choose an allied K-mine unit to Fire until your number of K-mine units equals the limit."
     }
   ],
   "units": [
@@ -76,12 +76,12 @@
       "mach": {"health": 8 },
       "abilities": [
         {
-          "name": "Camine Factory",
-          "description": "As a Secondary Action: create a Kmine on this unit's tile. It is a 2/N/0/1 Golman Autonomous Infantry Created unit. Equip it with an AP Mine or AT Mine.\nThis ability has Loading 2"
+          "name": "K-mine Factory",
+          "description": "As a Secondary Action: create a K-mine on this unit's tile. It is a 2/N/0/1 Golman Autonomous Infantry Created unit. Equip it with an AP Mine or AT Mine.\nThis ability has Loading 2"
         },
         {
           "name": "Process Parenting",
-          "description": "For each allied Fabricator beyond the first, your Kmine unit limit is increased by 2."
+          "description": "For each allied Fabricator beyond the first, your K-mine unit limit is increased by 2."
         }
       ]
     },
@@ -103,7 +103,7 @@
       "abilities": [
         {
           "name": "Mobile Production",
-          "description": "As a Primary Action: create a Kmine on this unit's tile. It is a 2/N/0/1 Golman Autonomous Infantry Created unit. Equip it with an AP Mine or AT Mine.\nThis ability has Loading 2"
+          "description": "As a Primary Action: create a K-mine on this unit's tile. It is a 2/N/0/1 Golman Autonomous Infantry Created unit. Equip it with an AP Mine or AT Mine.\nThis ability has Loading 2"
         }
       ]
     },
@@ -139,34 +139,34 @@
   ],
   "tokens": [
     {
-      "id": "golman-kmine",
-      "name": "Kmine",
-      "tags": ["Golman", "Infantry", "Autonomous", "Created"],
+      "id": "golman-k-mine",
+      "name": "K-mine",
+      "tags": ["Golman", "Created", "Infantry", "Autonomous", "Dodge 6"],
       "mach": { "movement": 2, "armor": "N", "control": 0, "health": 1 },
       "weapons": [
         {
           "name": "AP Mine",
           "range": 0,
-          "penetration": { "N": "3+", "L": "NA", "M": "NA", "H": "NA" },
+          "penetration": { "N": "10-", "L": "6+", "M": "NA", "H": "NA" },
           "fortification_damage": "NA",
           "keywords": ["Blast"]
         },
         {
           "name": "AT Mine",
           "range": 0,
-          "penetration": { "N": "NA", "L": "5+", "M": "4+", "H": "6+" },
+          "penetration": { "N": "NA", "L": "NA", "M": "9-", "H": "7+" },
           "fortification_damage": "NA",
-          "keywords": []
+          "keywords": ["Blast"]
         }
       ],
       "abilities": [
         {
-          "name": "Fire",
-          "description": "When this unit Fires, it detonates, dealing its weapon's damage to everything in the tile, then is removed from the battlefield. Equip with AP Mine or AT Mine when created."
+          "name": "Detonation",
+          "description": "When you Fire this unit, ignore the Fire roll penalty, then destroy it"
         },
         {
-          "name": "Kmine Limit",
-          "description": "You may have at most 4 Kmine units at any time (modified by abilities)."
+          "name": "K-mine Limit",
+          "description": "You may have at most 4 K-mine units at any time (modified by abilities)."
         }
       ]
     }
