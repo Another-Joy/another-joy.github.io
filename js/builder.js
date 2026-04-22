@@ -273,6 +273,30 @@ function renderList() {
     container.appendChild(body);
   }
 
+  // ── Created / Token units ─────────────────────────────────────────────────
+  const tokens = activeRegiments
+    .filter(r => Array.isArray(r.tokens) && r.tokens.length > 0)
+    .flatMap(r => r.tokens.map(t => ({ ...t, _regiment: r.regiment, _type: 'token' })));
+
+  if (tokens.length > 0) {
+    const { header, body } = makeCollapsibleSection('Created', true);
+
+    tokens.forEach(token => {
+      const card = document.createElement('div');
+      card.className = 'card mb-2 bg-body-secondary border-secondary rule-scheme-card';
+      card.innerHTML = `
+        <div class="card-body py-2 px-3">
+          <div class="fw-semibold" style="font-size:0.9rem">${escapeHtml(token.name)}</div>
+          <div class="text-secondary small">${escapeHtml(token._regiment)} · Created</div>
+        </div>`;
+      card.addEventListener('click', () => selectRuleOrScheme(token, card));
+      body.appendChild(card);
+    });
+
+    container.appendChild(header);
+    container.appendChild(body);
+  }
+
   // ── Units ─────────────────────────────────────────────────────────────────
   if (units.length === 0) {
     const empty = document.createElement('div');
@@ -369,7 +393,7 @@ function renderDetail() {
           <span class="fw-semibold small">${metaLabel}:</span>
           <span class="text-secondary small ms-1">${escapeHtml(metaValue)}</span>
         </div>
-        <p class="text-secondary small mb-0" style="line-height:1.6">${escapeHtml(item.description || '')}</p>
+        <p class="detail-desc small mb-0" style="line-height:1.6">${escapeHtml(item.description || '')}</p>
       </div>`;
     return;
   }
@@ -404,15 +428,29 @@ function renderDetail() {
     ? `<div class="mb-3">${u.tags.map(t => `<span class="badge bg-secondary me-1 mb-1">${escapeHtml(t)}</span>`).join('')}</div>`
     : '';
 
-  // MACH stat block (horizontal 4-cell row)
+  // MACH stat block — layout depends on unit type
   const mach = u.mach ?? {};
-  const machHtml = `
-    <div class="mach-row mb-3">
-      <div class="mach-cell"><div class="mach-label">MOV</div><div class="mach-value">${mach.movement ?? '—'}</div></div>
-      <div class="mach-cell"><div class="mach-label">ARM</div><div class="mach-value">${mach.armor ?? '—'}</div></div>
-      <div class="mach-cell"><div class="mach-label">CON</div><div class="mach-value">${mach.control ?? '—'}</div></div>
-      <div class="mach-cell"><div class="mach-label">HP</div><div class="mach-value">${mach.health ?? '—'}</div></div>
-    </div>`;
+  const isFort    = u.tags?.includes('Fortification');
+  const isSupport = u.tags?.includes('Support');
+  let machHtml = '';
+  if (isSupport) {
+    // Support units have no MACH block
+    machHtml = '';
+  } else if (isFort) {
+    // Fortifications only show HP
+    machHtml = `
+      <div class="mach-row mb-3">
+        <div class="mach-cell"><div class="mach-label">HP</div><div class="mach-value">${mach.health ?? '—'}</div></div>
+      </div>`;
+  } else {
+    machHtml = `
+      <div class="mach-row mb-3">
+        <div class="mach-cell"><div class="mach-label">MOV</div><div class="mach-value">${mach.movement ?? '—'}</div></div>
+        <div class="mach-cell"><div class="mach-label">ARM</div><div class="mach-value">${mach.armor ?? '—'}</div></div>
+        <div class="mach-cell"><div class="mach-label">CON</div><div class="mach-value">${mach.control ?? '—'}</div></div>
+        <div class="mach-cell"><div class="mach-label">HP</div><div class="mach-value">${mach.health ?? '—'}</div></div>
+      </div>`;
+  }
 
   // Weapons table
   let weaponsHtml = '';
@@ -447,7 +485,7 @@ function renderDetail() {
   let abilitiesHtml = '';
   if (u.abilities?.length) {
     const items = u.abilities.map(a =>
-      `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(a.name)}.</span> <span class="text-secondary small">${escapeHtml(a.description)}</span></div>`
+      `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(a.name)}.</span> <span class="detail-desc small">${escapeHtml(a.description)}</span></div>`
     ).join('');
     abilitiesHtml = `<div class="section-label mb-1">Abilities</div><div class="mb-3">${items}</div>`;
   }
@@ -465,7 +503,7 @@ function renderDetail() {
     .map(kw => {
       const desc = getKeywordDesc(kw);
       return desc
-        ? `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(kw)}</span><span class="text-secondary small"> — ${escapeHtml(desc)}</span></div>`
+        ? `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(kw)}</span><span class="detail-desc small"> — ${escapeHtml(desc)}</span></div>`
         : null;
     })
     .filter(Boolean);
@@ -473,7 +511,7 @@ function renderDetail() {
   // Tag descriptions — only tags that have an entry in TAG_DESCRIPTIONS
   const tagGlossaryItems = (u.tags ?? [])
     .filter(t => TAG_DESCRIPTIONS[t])
-    .map(t => `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(t)}</span><span class="text-secondary small"> — ${escapeHtml(TAG_DESCRIPTIONS[t])}</span></div>`);
+    .map(t => `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(t)}</span><span class="detail-desc small"> — ${escapeHtml(TAG_DESCRIPTIONS[t])}</span></div>`);
 
   const allGlossaryItems = [...tagGlossaryItems, ...kwGlossaryItems].join('');
   const keywordGlossaryHtml = allGlossaryItems
@@ -491,12 +529,12 @@ function renderDetail() {
       ${weaponsHtml}
       ${abilitiesHtml}
       ${keywordGlossaryHtml}
-      <button class="btn btn-accent w-100 mt-2" id="btn-add-unit">
-        <i class="bi bi-plus-lg me-1"></i>Add to List
-      </button>
+      ${u._type === 'token' ? '<div class="text-center text-secondary small mt-2"><i class="bi bi-info-circle me-1"></i>Created unit — not added to list costs</div>' : '<button class="btn btn-accent w-100 mt-2" id="btn-add-unit"><i class="bi bi-plus-lg me-1"></i>Add to List</button>'}
     </div>`;
 
-  document.getElementById('btn-add-unit').addEventListener('click', () => addUnit(u));
+  if (u._type !== 'token') {
+    document.getElementById('btn-add-unit').addEventListener('click', () => addUnit(u));
+  }
 }
 
 function updateTotals() {

@@ -3,7 +3,7 @@
   "rule":{
     "name": "Forward Assault",
     "type": "Triggered",
-    "description": "When you Order an Infantry to Move, you may Move an additional Hellcast unit"
+    "description": "When you Order an Infantry to Move, you may Move an additional Skarid unit"
   },
   "scheme":{
     "name": "Press the Offensive",
