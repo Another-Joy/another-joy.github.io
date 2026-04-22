@@ -139,7 +139,7 @@
           "name": "40mm AC",
           "range": 2,
           "penetration": { "N": "6-", "L": "3+", "M": "11+", "H": "NA" },
-          "fortification_damage": "NA",
+          "fortification_damage": "NA"
         }
       ],
       "abilities": [

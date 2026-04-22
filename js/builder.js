@@ -485,7 +485,7 @@ function renderDetail() {
   let abilitiesHtml = '';
   if (u.abilities?.length) {
     const items = u.abilities.map(a =>
-      `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(a.name)}.</span> <span class="detail-desc small">${escapeHtml(a.description)}</span></div>`
+      `<div class="mb-1"><span class="fw-semibold small">${escapeHtml(a.name)}:</span> <span class="detail-desc small">${escapeHtml(a.description)}</span></div>`
     ).join('');
     abilitiesHtml = `<div class="section-label mb-1">Abilities</div><div class="mb-3">${items}</div>`;
   }
