@@ -4,6 +4,7 @@
     { "file": "skarid-hunters-outfit.json", "name": "Skarid Hunters Outfit" },
     { "file": "dolmak-heavy-guard.json", "name": "Dolmak Heavy Guard" },
     { "file": "golman-automated-solutions.json", "name": "Golman Automated Solutions" },
-    { "file": "the-nullion-circle.json", "name": "The Nullion Circle" }
+    { "file": "the-nullion-circle.json", "name": "The Nullion Circle" },
+    { "file": "stormwatch-corps.json", "name": "Stormwatch Corps" }
   ]
 }

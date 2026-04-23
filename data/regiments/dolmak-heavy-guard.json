@@ -37,7 +37,7 @@
       "id": "dolmak-engineer-squad",
       "name": "Engineer Squad",
       "tags": ["Dolmak","Infantry"],
-      "cost": { "mp": 40, "mats": 15 },
+      "cost": { "mp": 40, "mats": 20 },
       "mach": { "movement": 2, "armor": "N", "control": 1, "health": 3 },
       "weapons": [
         {

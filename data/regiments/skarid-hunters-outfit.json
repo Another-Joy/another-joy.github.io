@@ -16,7 +16,7 @@
     "cost": "1 CP, 1 Secondary",
     "when": "As a Secondary Action",
     "targets": "An allied Infantry unit.",
-    "effects": "Advance target unit. If its an Hellcast unit, you may then Fire it if it has an Assault weapon with no penalties."
+    "effects": "Advance target unit. If its a Skarid unit, you may then Fire it if it has an Assault weapon with no penalties."
     },
     {
     "name": "Duck and Cover",
@@ -30,7 +30,7 @@
     "cost": "1 CP, 1 Primary",
     "when": "As a Primary Action",
     "targets": "An allied unit",
-    "effects": "Salvo the target unit. All of its weapons gain +2AP this turn. If the target of this stratagem is a Hellcast unit, its weapons also gain the Burst 0 ability this turn."
+    "effects": "Salvo the target unit. All of its weapons gain +2AP this turn. If the target of this stratagem is a Skarid unit, its weapons also gain the Burst 0 ability this turn."
     }
   ],
   "units": [

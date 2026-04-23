@@ -1,0 +1,192 @@
+{
+  "regiment": "Stormwatch Corps",
+  "rule":{
+    "name": "Weather The Storm ",
+    "type": "Activated",
+    "description": "As a Primary Action: create a Stormwatch Emplacement of your choice on an allied Stormwatch unit's tile.\nThis ability has Loading 1."
+  },
+  "scheme":{
+    "name": "Determine Territory",
+    "timing": "2 Cycles",
+    "description": "If you control more objectives than your opponent, you gain 3 VP.\nOtherwise, you gain 1 CP."
+  },
+  "commands": [
+    {
+    "name": "Transfer Equipment",
+    "cost": "1 CP",
+    "when": "As a Secondary Action",
+    "targets": "An allied Stormwatch Emplacement.\nAn allied Stormwatch unit on adjacent tiles.",
+    "effects": "That fortification moves to the unit's tile."
+    },
+    {
+    "name": "Adaptive Defense",
+    "cost": "1 CP, 1 Secondary",
+    "when": "As a Secondary Action",
+    "targets": "An allied Stormwatch Emplacement.\nAn allied Stormwatch unit on the same tile.",
+    "effects": "That Emplacement becomes the type of your choice."
+    },
+    {
+    "name": "Take Cover",
+    "cost": "1 CP",
+    "when": "When an enemy unit declares an allied Infantry that shares a tile with a Fortification as the target for shooting",
+    "targets": "That allied Infantry unit",
+    "effects": "Until end of turn, that allied unit gains 3 Dodge."
+    }
+  ],
+  "units": [
+    {
+      "id": "stormwatch-engineer-structs",
+      "name": "Engineer Structs",
+      "tags": ["Stormwatch","Infantry"],
+      "cost": { "mp": 40, "mats": 20 },
+      "mach": { "movement": 2, "armor": "N", "control": 1, "health": 3 },
+      "weapons": [
+        {
+          "name": "9mm SMG",
+          "range": 1,
+          "penetration": { "N": "5+", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA"
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Structural Repairs",
+          "description": "As a Primary Action: A non-Objective Fortification on this unit's tile recovers 2 HP. If it is a Stormwatch Emplacement, its health can be increased to 3.\nThis ability has Loading 1."
+        }
+      ]
+    },
+    {
+      "id": "stormwatch-transport-car",
+      "name": "Transport Car",
+      "tags": ["Stormwatch","Vehicle","APC", "Transport"],
+      "cost": { "mp": 30, "mats": 60 },
+      "mach": { "movement": 4, "armor": "M", "control": 0, "health": 2 },
+      "weapons": [
+        {
+          "name": "12.7mm MG",
+          "range": 2,
+          "penetration": { "N": "12-", "L": "8+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA"
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Portable Emplacements",
+          "description": "Once per game, you may use the Weather The Storm ability on this unit's tile without spending a charge."
+        }
+      ]
+    },
+    {
+      "id": "stormwatch-high-conquer-inf",
+      "name": "High Conquer Inf",
+      "tags": ["Stormwatch", "Infantry"],
+      "cost": { "mp": 55, "mats": 30 },
+      "mach": { "movement": 2, "armor": "N", "control": 2, "health": 3 },
+      "weapons": [
+        {
+          "name": "7.62mm Rifle",
+          "range": 2,
+          "penetration": { "N": "2+", "L": "11+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Assault"]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Position Broadcasting",
+          "description": "When you Order this unit to Conquer or Occupy, you may have it gain +1 Control until end of phase. \nIf you do, it can be targetted by enemy shots as if it was not inside a Fortification and those wepaons had 1 extra Range."
+        }
+      ]
+    },
+    {
+      "id": "stormwatch-conquer-jeep",
+      "name": "Conquer Jeep",
+      "tags": ["Stormwatch", "Vehicle", "Armored Car", "Transport", "Sturdy"],
+      "cost": { "mp": 35, "mats": 55 },
+      "mach": { "movement": 3, "armor": "L", "control": 2, "health": 3 }
+    },
+    {
+      "id": "stormwatch-building-sniper",
+      "name": "Building Sniper",
+      "tags": ["Stormwatch","Infantry"],
+      "cost": { "mp": 25, "mats": 30 },
+      "mach": { "movement": 2, "armor": "N", "control": 1, "health": 2 },
+      "weapons": [
+        {
+          "name": ".300 Win Sniper Rifle",
+          "range": 4,
+          "penetration": { "N": "1+", "L": "9+", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA",
+          "keywords": ["Precision", "Long"]
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Stabilizing Tripod",
+          "description": "While this unit is inside a Fortification, its weapons gain Burst 2."
+        }
+      ]
+    },
+    {
+      "id": "stormwatch-builder-team",
+      "name": "Builder Team",
+      "tags": ["Stormwatch","Infantry", "Autonomous"],
+      "cost": { "mp": 20, "mats": 55 },
+      "mach": { "movement": 1, "armor": "N", "control": 1, "health": 2 },
+      "weapons": [
+        {
+          "name": "9mm SMG",
+          "range": 1,
+          "penetration": { "N": "5+", "L": "NA", "M": "NA", "H": "NA" },
+          "fortification_damage": "NA"
+        }
+      ],
+      "abilities": [
+        {
+          "name": "Construction speciallists",
+          "description": "While this unit is in Reserves, the Weather The Storm ability has Loading 2 instead of 1."
+        },
+        {
+          "name": "Compact Deployment",
+          "description": "This unit can be Deployed from Reserves when you create an Emplacement. Deploy it on that Emplacement's tile."
+        }
+      ]
+    }
+  ],
+  "tokens": [
+    {
+      "id": "stormwatch-framework-emplacement",
+      "name": "Framework Emplacement",
+      "tags": ["Stormwatch", "Fortification", "Emplacement"],
+      "mach": { "health": 2 },
+      "abilities": [
+        {
+          "name": "Structural Reinforcement",
+          "description": "Fortifications on this tile cannot be dealt more than 1 damage per shot."
+        }
+      ]
+    },{
+      "id": "stormwatch-onslaught-emplacement",
+      "name": "Onslaught Emplacement",
+      "tags": ["Stormwatch", "Fortification", "Emplacement"],
+      "mach": { "health": 2 },
+      "abilities": [
+        {
+          "name": "Endless Ammunition",
+          "description": "Allied Infantry units on this tile gain Blast on their weapons."
+        }
+      ]
+    },{
+      "id": "stormwatch-iron-wall-emplacement",
+      "name": "Iron Wall Emplacement",
+      "tags": ["Stormwatch", "Fortification", "Emplacement"],
+      "mach": { "health": 2 },
+      "abilities": [
+        {
+          "name": "Covering Steel",
+          "description": "Units on this tile gain 2 Dodge."
+        }
+      ]
+    }
+  ]
+}
