@@ -17,14 +17,16 @@ async function init() {
   document.getElementById('btn-logout').addEventListener('click', () => signOut());
   document.getElementById('btn-new-list').addEventListener('click', openNewListModal);
   document.getElementById('btn-create-list').addEventListener('click', submitNewList);
+  document.getElementById('btn-save-edit-list').addEventListener('click', submitEditList);
 
-  // Populate game size select from config
-  const sizeSelect = document.getElementById('new-list-size');
-  GAME_SIZES.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value       = JSON.stringify({ mp: s.mp, mats: s.mats });
-    opt.textContent = `${s.label} — ${s.mp} MP / ${s.mats} Mats`;
-    sizeSelect.appendChild(opt);
+  // Populate game size selects from config
+  [document.getElementById('new-list-size'), document.getElementById('edit-list-size')].forEach(sel => {
+    GAME_SIZES.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value       = JSON.stringify({ mp: s.mp, mats: s.mats });
+      opt.textContent = `${s.label} — ${s.mp} MP / ${s.mats} Mats`;
+      sel.appendChild(opt);
+    });
   });
 
   await Promise.all([loadLists(), loadRegimentsIndex()]);
@@ -177,11 +179,11 @@ async function loadLists() {
     });
   });
 
-  // Edit button
+  // Edit button — opens settings modal
   tbody.querySelectorAll('.btn-edit').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      window.location.href = `/builder?id=${btn.dataset.id}`;
+      openEditModal(btn.dataset.id);
     });
   });
 
@@ -196,7 +198,122 @@ async function loadLists() {
 
   tableEl.classList.remove('d-none');
 }
+// ── Edit list settings modal ───────────────────────────────────────────────────────────
 
+let editingList = null;  // full list object currently being edited
+
+async function openEditModal(id) {
+  // Fetch full list data (need units + allowed_regiments + limits)
+  const { data, error } = await supabase
+    .from('army_lists')
+    .select('id, name, mp_limit, mats_limit, allowed_regiments, units')
+    .eq('id', id)
+    .eq('user_id', currentUser.id)
+    .single();
+
+  if (error || !data) {
+    showToast('Could not load list settings.', 'danger');
+    return;
+  }
+
+  editingList = data;
+  if (!Array.isArray(editingList.units)) editingList.units = [];
+  if (!Array.isArray(editingList.allowed_regiments)) editingList.allowed_regiments = [];
+
+  // Pre-select current size
+  const sizeSelect = document.getElementById('edit-list-size');
+  const matchIdx = GAME_SIZES.findIndex(s => s.mp === data.mp_limit && s.mats === data.mats_limit);
+  sizeSelect.value = matchIdx >= 0
+    ? JSON.stringify({ mp: GAME_SIZES[matchIdx].mp, mats: GAME_SIZES[matchIdx].mats })
+    : sizeSelect.options[0]?.value;
+
+  // Populate regiment checkboxes, pre-ticking current selection
+  const container = document.getElementById('edit-list-regiments');
+  container.innerHTML = '';
+  if (regimentsList.length === 0) {
+    container.innerHTML = '<p class="text-secondary small mb-0">No regiments found.</p>';
+  } else {
+    regimentsList.forEach((r, i) => {
+      const checkId = `edit-reg-check-${i}`;
+      const checked = editingList.allowed_regiments.includes(r.name);
+      const div = document.createElement('div');
+      div.className = 'form-check';
+      div.innerHTML = `
+        <input class="form-check-input" type="checkbox" value="${escapeHtml(r.name)}" id="${checkId}"${checked ? ' checked' : ''}>
+        <label class="form-check-label" for="${checkId}">${escapeHtml(r.name)}</label>`;
+      container.appendChild(div);
+    });
+  }
+
+  // Hide any previous warning
+  const warningEl = document.getElementById('edit-list-warning');
+  warningEl.classList.add('d-none');
+  const saveBtn = document.getElementById('btn-save-edit-list');
+  saveBtn.dataset.confirmed = '';
+  saveBtn.innerHTML = '<i class="bi bi-floppy me-1"></i>Save';
+
+  bootstrap.Modal.getOrCreateInstance(document.getElementById('modal-edit-list')).show();
+}
+
+async function submitEditList() {
+  if (!editingList) return;
+
+  const { mp: mpLimit, mats: matsLimit } =
+    JSON.parse(document.getElementById('edit-list-size').value);
+
+  const newRegiments = Array.from(
+    document.querySelectorAll('#edit-list-regiments .form-check-input:checked')
+  ).map(cb => cb.value);
+
+  // Find units that belong to regiments being removed
+  const removed = editingList.allowed_regiments.filter(r => !newRegiments.includes(r));
+  const orphaned = (editingList.units || []).filter(u => removed.includes(u.regiment));
+
+  const saveBtn   = document.getElementById('btn-save-edit-list');
+  const warningEl = document.getElementById('edit-list-warning');
+
+  if (orphaned.length > 0 && saveBtn.dataset.confirmed !== 'yes') {
+    // Show warning and ask for confirmation
+    const names = [...new Set(orphaned.map(u => u.name))].join(', ');
+    document.getElementById('edit-list-warning-text').textContent =
+      `${orphaned.length} unit${orphaned.length > 1 ? 's' : ''} will be removed because their regiment is no longer allowed: ${names}. Click Save again to confirm.`;
+    warningEl.classList.remove('d-none');
+    saveBtn.dataset.confirmed = 'yes';
+    return;
+  }
+
+  // Filter out orphaned units
+  const updatedUnits = (editingList.units || []).filter(u => !removed.includes(u.regiment));
+
+  // Recompute costs from remaining units
+  const mpCost   = updatedUnits.reduce((s, e) => s + e.count * (e.mp_per_unit   ?? 0), 0);
+  const matsCost = updatedUnits.reduce((s, e) => s + e.count * (e.mats_per_unit ?? 0), 0);
+
+  saveBtn.disabled = true;
+
+  const { error } = await supabase
+    .from('army_lists')
+    .update({
+      mp_limit:          mpLimit,
+      mats_limit:        matsLimit,
+      allowed_regiments: newRegiments,
+      units:             updatedUnits,
+      mp_cost:           mpCost,
+      mats_cost:         matsCost,
+    })
+    .eq('id', editingList.id);
+
+  saveBtn.disabled = false;
+
+  if (error) {
+    showToast('Could not save settings: ' + error.message, 'danger');
+    return;
+  }
+
+  bootstrap.Modal.getInstance(document.getElementById('modal-edit-list')).hide();
+  showToast('Settings saved.', 'success');
+  await loadLists();
+}
 // ── Delete list ───────────────────────────────────────────────────────────────
 
 async function deleteList(id) {
