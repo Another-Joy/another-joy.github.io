@@ -1,5 +1,7 @@
 {
   "regiment": "Stormwatch Corps",
+  "subtext": "Placeholder subtext",
+  "description": "Placeholder description for this regiment.",
   "rule":{
     "name": "Weather The Storm ",
     "type": "Activated",

@@ -1,5 +1,7 @@
 {
   "regiment": "Golman Automated Solutions",
+  "subtext": "Placeholder subtext",
+  "description": "Placeholder description for this regiment.",
   "rule":{
     "name": "Pack Tactics",
     "type": "Triggered",

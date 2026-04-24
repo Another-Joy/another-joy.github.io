@@ -1,5 +1,7 @@
 {
   "regiment": "The Nullion Circle",
+  "subtext": "Placeholder subtext",
+  "description": "Placeholder description for this regiment.",
   "rule":{
     "name": "Confusion Gas",
     "type": "Passive",

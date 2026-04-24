@@ -1,7 +1,7 @@
 {
   "regiment": "Skarid Hunters Outfit",
-  "subtext": "Ambush specialists from the frontier territories",
-  "description": "The Skarid Hunters Outfit draws from generations of tracking and survival expertise. Their forces move faster than standard infantry and rely on disrupting enemy formations before closing for the kill.",
+  "subtext": "Placeholder subtext",
+  "description": "Placeholder description for this regiment.",
   "rule":{
     "name": "Forward Assault",
     "type": "Triggered",
