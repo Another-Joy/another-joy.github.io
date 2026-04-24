@@ -1,7 +1,7 @@
 {
   "regiment": "Stormwatch Corps",
-  "subtext": "Placeholder subtext",
-  "description": "Placeholder description for this regiment.",
+  "subtext": "Fortifying the frontline, enduring the assault",
+  "description": "From a military engineering background, the Stormwatch  have made a name for themselves as experts in conquering and fortifying objectives. Using a variety of fortifications to create strong defensive positions, any commander can be sure these units will hold their ground.",
   "rule":{
     "name": "Weather The Storm ",
     "type": "Activated",

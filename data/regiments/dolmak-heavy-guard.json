@@ -1,7 +1,7 @@
 {
   "regiment": "Dolmak Heavy Guard",
-  "subtext": "Placeholder subtext",
-  "description": "Placeholder description for this regiment.",
+  "subtext": "Armored dominance on the battlefield",
+  "description": "The Dolmak Heavy Guard is renowned for its formidable armored units, capable of withstanding intense enemy fire for much longer than would seem possible. Like a rolling wave, their advance is slow but unstoppable.",
   "rule":{
     "name": "Dolmak Scaling Systems",
     "type": "Passive",

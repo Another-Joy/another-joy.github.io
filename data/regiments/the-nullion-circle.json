@@ -1,7 +1,7 @@
 {
   "regiment": "The Nullion Circle",
-  "subtext": "Placeholder subtext",
-  "description": "Placeholder description for this regiment.",
+  "subtext": "Disrupting the enemy's plays",
+  "description": "The Nullion Circle started its work during the Heating, as a mostly pacifist group of private security against the rising protests and rallies. Now hired for their practised disruption abilities, they can steer the course of battle without firing a single bullet.",
   "rule":{
     "name": "Confusion Gas",
     "type": "Passive",
@@ -32,7 +32,7 @@
     "cost": "1 CP",
     "when": "When an enemy unit declares targets for an Indirect Fire weapon",
     "targets": "That enemy unit",
-    "effects": "Change the target of that weapon's shots to a legal target of your choice."
+    "effects": "Change the target of that weapon's shots to a legal target of your choice. The target tile must include an allied unit."
     }
   ],
   "units": [
