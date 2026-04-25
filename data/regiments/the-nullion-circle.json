@@ -2,6 +2,7 @@
   "regiment": "The Nullion Circle",
   "subtext": "Disrupting the enemy's plays",
   "description": "The Nullion Circle started its work during the Heating, as a mostly pacifist group of private security against the rising protests and rallies. Now hired for their practised disruption abilities, they can steer the course of battle without firing a single bullet.",
+  "archetypes": ["Control", "Disruption"],
   "rule":{
     "name": "Confusion Gas",
     "type": "Passive",

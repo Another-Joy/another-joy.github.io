@@ -2,6 +2,7 @@
   "regiment": "Golman Automated Solutions",
   "subtext": "Automating the art of war",
   "description": "originally a branch of a civilian rebotics company, Golman refocused the designs on military applications. Due to the continuos and cheap production of autonomous units, Golman armies excel at consistent damage output.",
+  "archetypes": ["Aggro", "Attrition"],
   "rule":{
     "name": "Pack Tactics",
     "type": "Triggered",

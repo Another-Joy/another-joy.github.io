@@ -2,6 +2,7 @@
   "regiment": "Skarid Hunters Outfit",
   "subtext": "Aggressive hit-and-run tactics",
   "description": "Originating from the hunting teachings of the now lost Skarid Tribe, the Skarid use speed and aggression to gain an advantage early in the battle, but may struggle to maintain momentum as the fight drags on.",
+  "archetypes": ["Aggro", "Blitz"],
   "rule":{
     "name": "Forward Assault",
     "type": "Triggered",

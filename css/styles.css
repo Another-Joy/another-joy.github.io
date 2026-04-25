@@ -110,6 +110,10 @@ body.builder-page {
   flex: 1 1 0;
   min-width: 100px;
   padding: 1rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
   text-align: center;
   background: transparent;
   border: none;
@@ -192,6 +196,20 @@ body.builder-page {
   color: var(--bs-secondary-color);
   font-size: 0.8rem;
   flex-shrink: 0;
+}
+.lp-archetype-tab-img {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0.85;
+}
+.lp-archetype-tab-placeholder {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  border: 1px dashed rgba(255,255,255,0.2);
 }
 
 /* ── Unit cards (left sidebar) ────────────────────────────────────────────────  */

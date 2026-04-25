@@ -2,6 +2,7 @@
   "regiment": "Ordak Arms Group",
   "subtext": "Standardized loadouts for all occasions",
   "description": "Versatility at their core, Ordak was the first company to make their services available to the Ledger. Their wide range of available units make them a reliable choice for fresh commanders, and a great choice to fill the gaps in veterans' armies.",
+  "archetypes": ["Versatile"],
   "units": [
     {
       "id": "ordak-rookie-squad",

@@ -8,38 +8,33 @@ const REGIMENTS_INDEX = '/data/regiments/index.json';
 // If image is null or the file doesn't exist, a placeholder box is shown instead.
 const ARCHETYPES = [
   {
-    icon: '🔫',
     name: 'Aggro',
     subtext: 'Hit fast, hit hard',
     description: 'Aggro regiments are built around overwhelming firepower and relentless forward pressure. They trade durability for raw damage output, closing the distance before the enemy can react.',
     image: null, // e.g. '/img/archetypes/aggro.png'
   },
   {
-    icon: '👢',
     name: 'Blitz',
-    subtext: 'Speed is the weapon',
-    description: 'Blitz regiments sacrifice staying power for exceptional mobility. They strike where the enemy is weakest, then reposition before a counter-attack can land.',
+    subtext: 'First to the point',
+    description: 'Blitz regiments prioritize speed and mobility to gain early control of the battlefield. They create an early Objective advantage and use it to snowball point-based victories.',
     image: null,
   },
   {
-    icon: '🛡️',
     name: 'Attrition',
-    subtext: 'Every inch is paid for',
+    subtext: 'Outlast, then outgun',
     description: 'Attrition regiments excel in prolonged engagements, wearing down opponents over time. High Health totals and defensive abilities keep them fighting long after others have collapsed.',
     image: null,
   },
   {
-    icon: '🧱',
     name: 'Control',
-    subtext: 'Shape the battlefield',
-    description: 'Control regiments dictate the pace and space of every engagement. Through suppression, area denial and superior positioning, they ensure the enemy never fights on even terms.',
+    subtext: 'Creating strongholds',
+    description: 'Control Regiments focus on creating and maintaining zone and positioning advantages. Albeit slow, they can set up devastating defensive lines or lock down objectives ',
     image: null,
   },
   {
-    icon: '🚫',
     name: 'Disruption',
     subtext: 'Deny. Disrupt. Dismantle.',
-    description: 'Disruption regiments specialise in degrading enemy effectiveness before the main clash. Jamming Control, removing keywords and interfering with activations leave opponents unable to execute their plans.',
+    description: 'Disruption regiments specialize in undermining the enemy\'s strategy by denying key actions and dismantling advantages. While often less combat or objective-worthy, they can tip the balance of battle in your favor to let others shine.',
     image: null,
   },
 ];
@@ -60,7 +55,14 @@ function buildTabPanel(tabsEl, panelEl, items, renderPanel) {
   items.forEach((item, i) => {
     const btn = document.createElement('button');
     btn.className = 'lp-tab-btn' + (i === 0 ? ' active' : '');
-    btn.textContent = item._tabLabel;
+    if (item._tabIconHtml !== undefined) {
+      btn.innerHTML = item._tabIconHtml;
+      const label = document.createElement('span');
+      label.textContent = item._tabLabel;
+      btn.appendChild(label);
+    } else {
+      btn.textContent = item._tabLabel;
+    }
     btn.addEventListener('click', () => {
       tabsEl.querySelectorAll('.lp-tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
@@ -80,7 +82,6 @@ function renderArchetypePanel(panelEl, item) {
     <div class="d-flex align-items-start gap-4 flex-wrap">
       ${imgHtml}
       <div>
-        <div class="lp-panel-icon">${item.icon}</div>
         <div class="lp-panel-title">${escapeHtml(item.name)}</div>
         <div class="lp-panel-subtext">${escapeHtml(item.subtext)}</div>
         <div class="lp-panel-desc">${escapeHtml(item.description)}</div>
@@ -89,21 +90,19 @@ function renderArchetypePanel(panelEl, item) {
 }
 
 function renderRegimentPanel(panelEl, item) {
-  const units = item.units ?? [];
-  const tagCounts = {};
-  units.forEach(u => (u.tags ?? []).forEach(t => { tagCounts[t] = (tagCounts[t] || 0) + 1; }));
-  const tagBadges = Object.entries(tagCounts)
-    .map(([t, n]) => `<span class="badge bg-secondary me-1">${escapeHtml(t)} ×${n}</span>`)
+  const archetypes = item.archetypes ?? [];
+  const archetypeBadges = archetypes
+    .map(a => `<span class="badge bg-secondary me-1">${escapeHtml(a)}</span>`)
     .join('');
 
-  const subtext     = item.subtext ?? `${units.length} unit${units.length !== 1 ? 's' : ''}`;
+  const subtext     = item.subtext ?? '';
   const description = item.description ?? '';
 
   panelEl.innerHTML = `
     <div class="lp-panel-title">${escapeHtml(item.regiment)}</div>
     <div class="lp-panel-subtext">${escapeHtml(subtext)}</div>
     ${description ? `<div class="lp-panel-desc mb-3">${escapeHtml(description)}</div>` : ''}
-    <div class="mt-2">${tagBadges}</div>`;
+    ${archetypeBadges ? `<div class="mt-2">${archetypeBadges}</div>` : ''}`;
 }
 
 // ── Init ───────────────────────────────────────────────────────────────────────
@@ -122,7 +121,13 @@ async function init() {
   }
 
   // Archetypes
-  const archetypeItems = ARCHETYPES.map(a => ({ ...a, _tabLabel: `${a.icon} ${a.name}` }));
+  const archetypeItems = ARCHETYPES.map(a => ({
+    ...a,
+    _tabLabel: a.name,
+    _tabIconHtml: a.image
+      ? `<img src="${escapeHtml(a.image)}" alt="" class="lp-archetype-tab-img" aria-hidden="true">`
+      : `<span class="lp-archetype-tab-placeholder" aria-hidden="true"></span>`,
+  }));
   buildTabPanel(
     document.getElementById('archetype-tabs'),
     document.getElementById('archetype-panel'),
