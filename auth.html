@@ -118,7 +118,8 @@
           document.getElementById('login-email').value.trim(),
           document.getElementById('login-password').value
         );
-        window.location.href = '/lists';
+        const next = new URLSearchParams(window.location.search).get('next');
+        window.location.href = next || '/lists';
       } catch (err) {
         errEl.textContent = err.message;
         errEl.classList.remove('d-none');

@@ -42,7 +42,8 @@ export async function getUser() {
 export async function requireAuth() {
   const user = await getUser();
   if (!user) {
-    window.location.href = AUTH_PAGE;
+    const next = encodeURIComponent(window.location.pathname);
+    window.location.href = AUTH_PAGE + '?next=' + next;
     return null;
   }
   return user;
@@ -50,9 +51,12 @@ export async function requireAuth() {
 
 /**
  * Call at the top of auth.html.
- * Redirects to /home if the user is already signed in.
+ * Redirects to /lists (or ?next path) if the user is already signed in.
  */
 export async function redirectIfAuthenticated() {
   const user = await getUser();
-  if (user) window.location.href = HOME_PAGE;
+  if (user) {
+    const next = new URLSearchParams(window.location.search).get('next');
+    window.location.href = next || HOME_PAGE;
+  }
 }
