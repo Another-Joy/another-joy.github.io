@@ -27,7 +27,7 @@ async function init() {
   listId = params.get('id');
 
   if (!listId) {
-    window.location.href = '/home';
+    window.location.href = '/lists';
     return;
   }
 
@@ -48,7 +48,7 @@ async function loadList() {
 
   if (error || !data) {
     alert('Army list not found or access denied.');
-    window.location.href = '/home';
+    window.location.href = '/lists';
     return;
   }
 

@@ -1,7 +1,7 @@
 import supabase from './supabase-client.js';
 
 const AUTH_PAGE = '/auth';
-const HOME_PAGE = '/home';
+const HOME_PAGE = '/lists';
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
