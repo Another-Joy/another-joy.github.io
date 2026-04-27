@@ -39,7 +39,7 @@
   "units": [
     {
       "id": "nullion-cp-gen",
-      "name": "CP Gen",
+      "name": "{CP Gen}",
       "tags": ["Nullion","Infantry"],
       "cost": { "mp": 25, "mats": 5 },
       "mach": { "movement": 2, "armor": "N", "control": 1, "health": 2 },
@@ -60,7 +60,7 @@
     },
     {
       "id": "nullion-smoke-launcher-vehicle",
-      "name": "Smoke Launcher Vehicle",
+      "name": "{Smoke Launcher Vehicle}",
       "tags": ["Nullion","Vehicle","IFV"],
       "cost": { "mp": 15, "mats": 65 },
       "mach": { "movement": 3, "armor": "L", "control": 0, "health": 3 },
@@ -89,7 +89,7 @@
     },
     {
       "id": "nullion-conquer-car",
-      "name": "Conquer Car",
+      "name": "{Conquer Car}",
       "tags": ["Nullion", "Vehicle", "APC", "Brittle"],
       "cost": { "mp": 45, "mats": 65 },
       "mach": { "movement": 2, "armor": "M", "control": 2, "health": 3 },
@@ -111,7 +111,7 @@
     },
     {
       "id": "nullion-observation-post",
-      "name": "Observation Post",
+      "name": "{Observation Post}",
       "tags": ["Nullion", "Fortification"],
       "cost": { "mp": 15, "mats": 55 },
       "mach": { "health": 4 },
@@ -133,7 +133,7 @@
     },
     {
       "id": "nullion-signal-scrambler",
-      "name": "Signal Scrambler",
+      "name": "{Signal Scrambler}",
       "tags": ["Nullion","Vehicle","Light Tank", "ERA"],
       "cost": { "mp": 15, "mats": 65 },
       "mach": { "movement": 2, "armor": "M", "control": 0, "health": 4 },
@@ -154,7 +154,7 @@
     },
     {
       "id": "nullion-smoke-art",
-      "name": "Smoke Art",
+      "name": "{Smoke Art}",
       "tags": ["Nullion","Vehicle","Artillery"],
       "cost": { "mp": 15, "mats": 55 },
       "mach": { "movement": 1, "armor": "L", "control": 0, "health": 2 },

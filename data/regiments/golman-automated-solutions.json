@@ -1,7 +1,7 @@
 {
   "regiment": "Golman Automated Solutions",
   "subtext": "Automating the art of war",
-  "description": "originally a branch of a civilian rebotics company, Golman refocused the designs on military applications. Due to the continuos and cheap production of autonomous units, Golman armies excel at consistent damage output.",
+  "description": "Originally a branch of a civilian robotics company, Golman refocused the designs on military applications. Due to the continuous and cheap production of autonomous units, Golman armies excel at consistent damage output.",
   "archetypes": ["Aggro", "Attrition"],
   "rule":{
     "name": "Pack Tactics",
@@ -39,7 +39,7 @@
   "units": [
     {
       "id": "golman-network-node-car",
-      "name": "Network Node Car",
+      "name": "{Network Node Car}",
       "tags": ["Golman", "Vehicle", "Armored Car"],
       "cost": { "mp": 15, "mats": 25 },
       "mach": { "movement": 3, "armor": "L", "control": 0, "health": 3 },
@@ -52,7 +52,7 @@
     },
     {
       "id": "golman-transport",
-      "name": "Transport",
+      "name": "{Transport}",
       "tags": ["Golman","Vehicle","APC", "Autonomous", "Transport"],
       "cost": { "mp": 25, "mats": 50 },
       "mach": { "movement": 4, "armor": "L", "control": 0, "health": 2 },

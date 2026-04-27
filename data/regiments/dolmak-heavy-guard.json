@@ -38,7 +38,7 @@
   "units": [
     {
       "id": "dolmak-engineer-squad",
-      "name": "Engineer Squad",
+      "name": "{Engineer Squad}",
       "tags": ["Dolmak","Infantry"],
       "cost": { "mp": 40, "mats": 20 },
       "mach": { "movement": 2, "armor": "N", "control": 1, "health": 3 },
@@ -60,7 +60,7 @@
     },
     {
       "id": "dolmak-vs-light",
-      "name": "VS Light",
+      "name": "{VS Light}",
       "tags": ["Dolmak", "Vehicle", "Tank Hunter", "NERA Armor"],
       "cost": { "mp": 15, "mats": 45 },
       "mach": { "movement": 1, "armor": "M", "control": 0, "health": 4 },
@@ -76,7 +76,7 @@
     },
     {
       "id": "dolmak-vs-medium",
-      "name": "VS Medium",
+      "name": "{VS Medium}",
       "tags": ["Dolmak", "Vehicle", "MBT", "Composite Armor"],
       "cost": { "mp": 15, "mats": 55 },
       "mach": { "movement": 1, "armor": "H", "control": 0, "health": 4 },
@@ -92,7 +92,7 @@
     },
     {
       "id": "dolmak-super-heavy",
-      "name": "Super Heavy",
+      "name": "{Super Heavy}",
       "tags": ["Dolmak", "Vehicle", "MBT", "Composite Armor", "Large"],
       "cost": { "mp": 15, "mats": 70 },
       "mach": { "movement": 1, "armor": "H", "control": 0, "health": 5 },
@@ -108,7 +108,7 @@
     },
     {
       "id": "dolmak-heavy-art",
-      "name": "Heavy Art",
+      "name": "{Heavy Art}",
       "tags": ["Dolmak", "Vehicle", "Artillery"],
       "cost": { "mp": 15, "mats": 80 },
       "mach": { "movement": 0, "armor": "M", "control": 0, "health": 3 },
@@ -124,7 +124,7 @@
     },
     {
       "id": "ordak-reboque",
-      "name": "Reboque",
+      "name": "{Reboque}",
       "tags": ["Dolmak", "Vehicle", "Artillery", "Sturdy"],
       "cost": { "mp": 15, "mats": 35 },
       "mach": { "movement": 3, "armor": "L", "control": 0, "health": 3 },
