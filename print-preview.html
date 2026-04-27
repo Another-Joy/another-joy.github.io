@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Print Preview — Lead Ledger</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+
+    /* ── Print setup ─────────────────────────────────────────────────────────── */
+    @page { size: A4; margin: 14mm 14mm 16mm 14mm; }
+    @media print {
+      #toolbar   { display: none !important; }
+      body       { background: white; margin: 0; font-size: 9.5pt; }
+      .print-page { padding: 0; box-shadow: none; max-width: none; margin: 0; }
+      .page-break { break-before: page; }
+    }
+
+    /* ── Screen wrapper ──────────────────────────────────────────────────────── */
+    @media screen {
+      body         { background: #888; }
+      .print-page  { background: white; max-width: 210mm; margin: 0 auto; padding: 14mm; min-height: 297mm; box-shadow: 0 4px 32px rgba(0,0,0,.4); margin-bottom: 2rem; }
+    }
+
+    /* ── Toolbar ─────────────────────────────────────────────────────────────── */
+    #toolbar {
+      position: sticky; top: 0; z-index: 200;
+      background: #1a1a1a; color: #fff;
+      padding: .6rem 1.25rem;
+      display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+      border-bottom: 2px solid #444;
+    }
+    #toolbar .brand  { font-weight: 700; font-size: .85rem; letter-spacing: .05em; text-transform: uppercase; white-space: nowrap; }
+    #toolbar label   { font-size: .82rem; color: #ccc; cursor: pointer; user-select: none; }
+    #toolbar input   { cursor: pointer; }
+
+    /* ── Base typography ─────────────────────────────────────────────────────── */
+    body { font-family: system-ui, "Segoe UI", Arial, sans-serif; font-size: 9.5pt; color: #111; line-height: 1.4; }
+
+    /* ── List header ─────────────────────────────────────────────────────────── */
+    .list-header        { border-bottom: 2px solid #222; padding-bottom: .5rem; margin-bottom: 1rem; }
+    .list-header h1     { font-size: 17pt; font-weight: 800; margin: 0 0 .1rem; }
+    .list-header .meta  { font-size: 8.5pt; color: #555; }
+
+    /* ── Section title ───────────────────────────────────────────────────────── */
+    .section-title {
+      font-size: 11pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; border-bottom: 1.5px solid #333;
+      margin: 0 0 .6rem; padding-bottom: .2rem;
+    }
+
+    /* ── Regiment sub-heading ────────────────────────────────────────────────── */
+    .regiment-heading {
+      font-size: 8.5pt; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .07em; color: #555;
+      border-bottom: 1px solid #ddd; padding-bottom: .1rem; margin: .7rem 0 .35rem;
+    }
+
+    /* ── Rule / Scheme blocks ────────────────────────────────────────────────── */
+    .rs-grid            { display: grid; grid-template-columns: 1fr; gap: .5rem; }
+    .rs-block           { border: 1px solid #bbb; border-radius: 3px; padding: .35rem .55rem; page-break-inside: avoid; }
+    .rs-block .rs-type  { font-size: 7pt; text-transform: uppercase; letter-spacing: .06em; color: #888; margin-bottom: .1rem; }
+    .rs-block .rs-name  { font-weight: 700; font-size: 9.5pt; }
+    .rs-block .rs-meta  { font-size: 7.5pt; color: #666; margin-bottom: .15rem; }
+    .rs-block .rs-desc  { font-size: 8pt; white-space: pre-line; color: #222; }
+
+    /* ── Command table ───────────────────────────────────────────────────────── */
+    .cmd-table               { width: 100%; border-collapse: collapse; font-size: 8pt; margin-bottom: .65rem; table-layout: fixed; }
+    .cmd-table thead th      { background: #2a2a2a; color: #fff; padding: 3px 6px; font-weight: 600; text-align: left; }
+    .cmd-table tbody td      { border: 1px solid #ccc; padding: 3px 6px; vertical-align: top; word-wrap: break-word; overflow-wrap: break-word; }
+    .cmd-table tbody tr:nth-child(even) td { background: #f5f5f5; }
+    .cmd-table .col-name     { font-weight: 600; }
+    .cmd-table .col-effects  { white-space: pre-line; font-size: 7pt; }
+
+    /* ── Units grid ──────────────────────────────────────────────────────────── */
+    .units-grid              { columns: 1; column-gap: .75rem; }
+    .units-grid .unit-block  { break-inside: avoid; }
+
+    /* ── Unit block ──────────────────────────────────────────────────────────── */
+    .unit-block              { border: 1px solid #333; border-radius: 3px; margin-bottom: .5rem; page-break-inside: avoid; }
+    .unit-block-header       { background: #2a2a2a; color: #fff; padding: 3px 8px; display: flex; align-items: baseline; gap: .4rem; border-radius: 2px 2px 0 0; }
+    .unit-block-name         { font-weight: 700; font-size: 9.5pt; }
+    .unit-block-count        { font-size: 8.5pt; opacity: .8; }
+    .unit-block-cost         { font-size: 8pt; opacity: .75; margin-left: auto; white-space: nowrap; }
+    .unit-block-body         { padding: 3px 7px 5px; }
+    .unit-tags               { font-size: 7.5pt; color: #555; margin-bottom: 3px; }
+
+    /* Token header is slightly lighter */
+    .unit-block.token .unit-block-header { background: #555; }
+
+    /* ── MACH row ────────────────────────────────────────────────────────────── */
+    .mach-row       { display: flex; gap: 1rem; margin-bottom: 3px; }
+    .mach-cell      { font-size: 8.5pt; }
+    .mach-cell b    { font-size: 7pt; text-transform: uppercase; color: #666; margin-right: 2px; }
+
+    /* ── Weapons table ───────────────────────────────────────────────────────── */
+    .wpn-table               { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin-bottom: 3px; table-layout: fixed; }
+    .wpn-table thead th      { background: #555; color: #fff; padding: 2px 4px; font-weight: 600; text-align: left; word-wrap: break-word; overflow-wrap: break-word; }
+    .wpn-table tbody td      { border: 1px solid #ddd; padding: 2px 4px; word-wrap: break-word; overflow-wrap: break-word; }
+    .wpn-table tbody tr:nth-child(even) td { background: #f8f8f8; }
+    .wpn-table .col-name     { font-weight: 500; }
+    .wpn-table .col-num      { text-align: center; }
+
+    /* ── Abilities ───────────────────────────────────────────────────────────── */
+    .ability-list  { font-size: 8pt; margin-top: 3px; }
+    .ability-item  { margin-bottom: 2px; white-space: pre-line; }
+    .ability-name  { font-weight: 700; }
+
+    /* ── Glossary ────────────────────────────────────────────────────────────── */
+    .glossary-cols       { columns: 2; column-gap: 1.25rem; }
+    .glossary-item       { font-size: 8.5pt; margin-bottom: .35rem; break-inside: avoid; white-space: pre-line; }
+    .glossary-item strong { font-weight: 700; }
+
+    /* ── Helpers ─────────────────────────────────────────────────────────────── */
+    .empty { color: #999; font-style: italic; font-size: 8.5pt; padding: .3rem 0; }
+    .page-break { break-before: page; }
+
+  </style>
+</head>
+<body>
+
+<!-- ── Toolbar ────────────────────────────────────────────────────────────────── -->
+<div id="toolbar">
+  <span class="brand"><i class="bi bi-file-earmark-text me-1"></i>Lead Ledger — Print Preview</span>
+
+  <div class="d-flex align-items-center gap-3 flex-wrap">
+    <div class="form-check form-switch mb-0">
+      <input class="form-check-input section-toggle" type="checkbox" id="tog-rules" data-target="sec-rules" checked>
+      <label class="form-check-label" for="tog-rules">Rules &amp; Schemes</label>
+    </div>
+    <div class="form-check form-switch mb-0">
+      <input class="form-check-input section-toggle" type="checkbox" id="tog-commands" data-target="sec-commands" checked>
+      <label class="form-check-label" for="tog-commands">Commands</label>
+    </div>
+    <div class="form-check form-switch mb-0">
+      <input class="form-check-input section-toggle" type="checkbox" id="tog-units" data-target="sec-units" checked>
+      <label class="form-check-label" for="tog-units">Units &amp; Tokens</label>
+    </div>
+    <div class="form-check form-switch mb-0">
+      <input class="form-check-input section-toggle" type="checkbox" id="tog-keywords" data-target="sec-keywords" checked>
+      <label class="form-check-label" for="tog-keywords">Keyword Glossary</label>
+    </div>
+  </div>
+
+  <div class="d-flex align-items-center gap-2 ms-auto flex-shrink-0">
+    <span id="toolbar-title" class="text-secondary" style="font-size:.8rem"></span>
+    <button class="btn btn-sm btn-light" onclick="window.print()">
+      <i class="bi bi-printer me-1"></i>Print / Save PDF
+    </button>
+  </div>
+</div>
+
+<!-- ── Print page ─────────────────────────────────────────────────────────────── -->
+<div class="print-page">
+  <div id="content-root">
+    <p class="empty" style="padding:2rem">Loading preview…</p>
+  </div>
+</div>
+
+<script>
+  // ── Section toggle visibility + page-break management ──────────────────────
+  const SECTION_ORDER = ['sec-rules', 'sec-commands', 'sec-units', 'sec-keywords'];
+
+  function updatePageBreaks() {
+    let foundFirst = false;
+    SECTION_ORDER.forEach(id => {
+      const sec    = document.getElementById(id);
+      const marker = sec?.querySelector('.page-break-marker');
+      if (!sec || !marker) return;
+      const visible = sec.style.display !== 'none';
+      if (visible) {
+        marker.classList.toggle('page-break', foundFirst);
+        foundFirst = true;
+      }
+    });
+  }
+
+  document.querySelectorAll('.section-toggle').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const sec = document.getElementById(cb.dataset.target);
+      if (sec) sec.style.display = cb.checked ? '' : 'none';
+      updatePageBreaks();
+    });
+  });
+</script>
+
+<script type="module">
+  import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+  import { KEYWORDS, TAG_DESCRIPTIONS, BASE_COMMANDS, MAIN_TAGS } from './js/config.js';
+
+  const SUPABASE_URL      = 'https://eioywqjcpgonrwqvetpw.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVpb3l3cWpjcGdvbnJ3cXZldHB3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNjMwNjEsImV4cCI6MjA5MTczOTA2MX0.eByKeagQlhdYP6kPLPp795xxW2V_IqTHPwj04eAgsG8';
+  const supabase          = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const REGIMENTS_INDEX = 'data/regiments/index.json';
+  const root = document.getElementById('content-root');
+
+  function showError(msg) {
+    root.innerHTML = `<div style="padding:3rem;text-align:center">
+      <p style="color:#c00;font-size:11pt;font-weight:700">${msg}</p>
+      <p style="color:#555;font-size:9pt">Open this page from the army list builder using the <strong>Export PDF</strong> button.</p>
+    </div>`;
+  }
+
+  // ── Load list ID from URL ───────────────────────────────────────────────────
+  const listId = new URLSearchParams(window.location.search).get('id');
+  if (!listId) { showError('No list ID provided.'); throw new Error(); }
+
+  // ── Auth check ──────────────────────────────────────────────────────────────
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) { showError('You must be signed in to view this preview.'); throw new Error(); }
+
+  // ── Fetch list from Supabase ────────────────────────────────────────────────
+  const { data: listData, error: listError } = await supabase
+    .from('army_lists')
+    .select('*')
+    .eq('id', listId)
+    .eq('user_id', user.id)
+    .single();
+
+  if (listError || !listData) { showError('Army list not found or access denied.'); throw new Error(); }
+  if (!Array.isArray(listData.units)) listData.units = [];
+
+  // ── Load regiment JSONs (same as builder) ───────────────────────────────────
+  let allRegiments = [];
+  try {
+    const indexRes = await fetch(REGIMENTS_INDEX);
+    const { regiments: regIndex } = await indexRes.json();
+    const results = await Promise.all(
+      (regIndex || []).map(r =>
+        fetch(`data/regiments/${r.file}`).then(res => res.ok ? res.json() : null).catch(() => null)
+      )
+    );
+    allRegiments = results.filter(Boolean);
+    allRegiments.forEach(regiment => {
+      regiment.units.forEach(u => { u._regiment = regiment.regiment; });
+      (regiment.tokens || []).forEach(u => { u._regiment = regiment.regiment; });
+    });
+  } catch { allRegiments = []; }
+
+  // ── Filter to allowed regiments ─────────────────────────────────────────────
+  const allowed   = listData.allowed_regiments;
+  const regiments = (allowed?.length > 0)
+    ? allRegiments.filter(r => allowed.includes(r.regiment))
+    : allRegiments;
+
+  // ── Build unit lookup & resolve list entries ────────────────────────────────
+  const unitMap = {};
+  regiments.forEach(r => {
+    (r.units  || []).forEach(u => { unitMap[u.id] = u; });
+    (r.tokens || []).forEach(u => { unitMap[u.id] = u; });
+  });
+
+  const units = listData.units.map(entry => {
+    const full = unitMap[entry.unit_id] || {};
+    return {
+      unit_id:       entry.unit_id,
+      count:         entry.count,
+      mp_per_unit:   entry.mp_per_unit  ?? full.cost?.mp   ?? 0,
+      mats_per_unit: entry.mats_per_unit ?? full.cost?.mats ?? 0,
+      name:          full.name      || entry.name,
+      tags:          full.tags      || [],
+      mach:          full.mach      || null,
+      weapons:       full.weapons   || [],
+      abilities:     full.abilities || [],
+      _regiment:     full._regiment || entry.regiment,
+      _main_tag:     entry.main_tag,
+    };
+  });
+
+  const totalMp    = units.reduce((s, u) => s + u.count * u.mp_per_unit,   0);
+  const totalMats  = units.reduce((s, u) => s + u.count * u.mats_per_unit, 0);
+  const totalUnits = units.reduce((s, u) => s + u.count, 0);
+
+  // ── Collect glossary entries actually used ──────────────────────────────────
+  const usedKeywords = new Set();
+  const usedTags     = new Set();
+  [...units, ...regiments.flatMap(r => (r.tokens || []))].forEach(u => {
+    (u.weapons || []).forEach(w => (w.keywords || []).forEach(k => usedKeywords.add(k)));
+    (u.tags    || []).forEach(t => usedTags.add(t));
+  });
+
+  const keywordGlossary = {};
+  usedKeywords.forEach(k => {
+    const desc = KEYWORDS[k] ?? KEYWORDS[k.replace(/\s+\S+$/, '')];
+    if (desc) keywordGlossary[k] = desc;
+  });
+  const tagGlossary = {};
+  usedTags.forEach(t => { if (TAG_DESCRIPTIONS[t]) tagGlossary[t] = TAG_DESCRIPTIONS[t]; });
+
+  // ── Set title ───────────────────────────────────────────────────────────────
+  document.title = `${listData.name} — Print Preview`;
+  document.getElementById('toolbar-title').textContent = listData.name;
+
+  // ── Escape HTML ─────────────────────────────────────────────────────────────
+  function esc(str) {
+    if (str == null) return '';
+    const d = document.createElement('div');
+    d.appendChild(document.createTextNode(String(str)));
+    return d.innerHTML;
+  }
+
+  // ── Render helpers ──────────────────────────────────────────────────────────
+
+  function sectionWrap(id, content) {
+    return `<div id="${id}"><div class="page-break-marker"></div>${content}</div>`;
+  }
+
+  function renderMach(u) {
+    if (u.tags?.includes('Support')) return '';
+    const m = u.mach || {};
+    if (u.tags?.includes('Fortification')) {
+      return `<div class="mach-row"><span class="mach-cell"><b>HP</b>${esc(m.health ?? '—')}</span></div>`;
+    }
+    return `<div class="mach-row">
+      <span class="mach-cell"><b>MOV</b>${esc(m.movement ?? '—')}</span>
+      <span class="mach-cell"><b>ARM</b>${esc(m.armor   ?? '—')}</span>
+      <span class="mach-cell"><b>CON</b>${esc(m.control ?? '—')}</span>
+      <span class="mach-cell"><b>HP</b>${esc(m.health  ?? '—')}</span>
+    </div>`;
+  }
+
+  function renderWeapons(weapons) {
+    if (!weapons?.length) return '';
+    const rows = weapons.map(w => {
+      const p  = w.penetration || {};
+      const kw = (w.keywords || []).join(', ') || '—';
+      return `<tr>
+        <td class="col-name">${esc(w.name)}</td>
+        <td class="col-num">${esc(w.range)}</td>
+        <td class="col-num">${esc(p.N ?? 'NA')}</td>
+        <td class="col-num">${esc(p.L ?? 'NA')}</td>
+        <td class="col-num">${esc(p.M ?? 'NA')}</td>
+        <td class="col-num">${esc(p.H ?? 'NA')}</td>
+        <td class="col-num">${esc(w.fortification_damage ?? 'NA')}</td>
+        <td>${esc(kw)}</td>
+      </tr>`;
+    }).join('');
+    return `<table class="wpn-table">
+      <colgroup>
+        <col style="width:30%"> <!-- Weapon name -->
+        <col style="width:6%">  <!-- Range -->
+        <col style="width:7%">  <!-- N -->
+        <col style="width:7%">  <!-- L -->
+        <col style="width:7%">  <!-- M -->
+        <col style="width:7%">  <!-- H -->
+        <col style="width:7%">  <!-- Fort -->
+        <col style="width:29%"> <!-- Keywords -->
+      </colgroup>
+      <thead><tr>
+        <th>Weapon</th><th>Rng</th><th>N</th><th>L</th><th>M</th><th>H</th><th>Fort</th><th>Keywords</th>
+      </tr></thead>
+      <tbody>${rows}</tbody>
+    </table>`;
+  }
+
+  function renderAbilities(abilities) {
+    if (!abilities?.length) return '';
+    const items = abilities.map(a =>
+      `<div class="ability-item"><span class="ability-name">${esc(a.name)}:</span> ${esc(a.description)}</div>`
+    ).join('');
+    return `<div class="ability-list">${items}</div>`;
+  }
+
+  function renderUnitBlock(u, count, isToken = false) {
+    const mp   = u.mp_per_unit   ?? u.cost?.mp   ?? 0;
+    const mats = u.mats_per_unit ?? u.cost?.mats ?? 0;
+    return `
+      <div class="unit-block${isToken ? ' token' : ''}">
+        <div class="unit-block-header">
+          <span class="unit-block-name">${esc(u.name)}</span>
+          ${count > 1 ? `<span class="unit-block-count">${count}×</span>` : ''}
+          <span class="unit-block-cost">${mp} MP / ${mats} Mats</span>
+        </div>
+        <div class="unit-block-body">
+          <div class="unit-tags">${(u.tags || []).join(' · ')}</div>
+          ${renderMach(u)}
+          ${renderWeapons(u.weapons)}
+          ${renderAbilities(u.abilities)}
+        </div>
+      </div>`;
+  }
+
+  // ── Section 1: Rules & Schemes ──────────────────────────────────────────────
+
+  function renderRulesSchemes() {
+    let html = `<div class="list-header">
+      <h1>${esc(listData.name)}</h1>
+      <div class="meta">
+        ${totalUnits} unit${totalUnits !== 1 ? 's' : ''}
+        &nbsp;·&nbsp;
+        ${totalMp}${listData.mp_limit ? ' / ' + listData.mp_limit : ''} MP
+        &nbsp;·&nbsp;
+        ${totalMats}${listData.mats_limit ? ' / ' + listData.mats_limit : ''} Mats
+        &nbsp;·&nbsp;
+        Regiments: ${regiments.map(r => r.regiment).join(', ')}
+      </div>
+    </div>`;
+
+    const withRules   = regiments.filter(r => r.rule);
+    const withSchemes = regiments.filter(r => r.scheme);
+
+    if (!withRules.length && !withSchemes.length) {
+      return html + `<p class="empty">No rules or schemes for the selected regiments.</p>`;
+    }
+
+    if (withRules.length) {
+      html += `<div class="section-title">Rules</div><div class="rs-grid">`;
+      withRules.forEach(r => {
+        html += `<div class="rs-block">
+          <div class="rs-type">${esc(r.regiment)}</div>
+          <div class="rs-name">${esc(r.rule.name)}</div>
+          <div class="rs-meta">${esc(r.rule.type || '')}</div>
+          <div class="rs-desc">${esc(r.rule.description || '')}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+
+    if (withSchemes.length) {
+      html += `<div class="section-title" style="margin-top:.75rem">Schemes</div><div class="rs-grid">`;
+      withSchemes.forEach(r => {
+        html += `<div class="rs-block">
+          <div class="rs-type">${esc(r.regiment)}</div>
+          <div class="rs-name">${esc(r.scheme.name)}</div>
+          <div class="rs-meta">Timing: ${esc(r.scheme.timing || '—')}</div>
+          <div class="rs-desc">${esc(r.scheme.description || '')}</div>
+        </div>`;
+      });
+      html += `</div>`;
+    }
+    return html;
+  }
+
+  // ── Section 2: Commands ─────────────────────────────────────────────────────
+
+  function renderCommands() {
+    let html = `<div class="section-title">Commands</div>`;
+
+    function cmdTable(commands) {
+      const rows = commands.map(cmd => `<tr>
+        <td class="col-name">${esc(cmd.name)}</td>
+        <td class="col-cost">${esc(cmd.cost || '—').replace(/,\s*/g, ',<br>')}</td>
+        <td>${esc(cmd.when || '—')}</td>
+        <td>${esc(cmd.targets || '—')}</td>
+        <td class="col-effects">${esc(cmd.effects || '—')}</td>
+      </tr>`).join('');
+      return `<table class="cmd-table">
+        <colgroup>
+          <col style="width:14%"> <!-- Name -->
+          <col style="width:10%"> <!-- Cost -->
+          <col style="width:19%"> <!-- When -->
+          <col style="width:19%"> <!-- Targets -->
+          <col style="width:38%"> <!-- Effects -->
+        </colgroup>
+        <thead><tr><th>Name</th><th>Cost</th><th>When</th><th>Targets</th><th>Effects</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+    }
+
+    if (BASE_COMMANDS?.length) {
+      html += `<div class="regiment-heading">Base Commands</div>` + cmdTable(BASE_COMMANDS);
+    }
+    regiments.forEach(r => {
+      if (!r.commands?.length) return;
+      html += `<div class="regiment-heading">${esc(r.regiment)}</div>` + cmdTable(r.commands);
+    });
+    return html;
+  }
+
+  // ── Section 3: Units & Tokens ───────────────────────────────────────────────
+
+  function renderUnitsAndTokens() {
+    let html = `<div class="section-title">Units</div>`;
+
+    if (!units.length) {
+      html += `<p class="empty">No units in this list.</p>`;
+    } else {
+      MAIN_TAGS.forEach(tag => {
+        const group = units.filter(u => u._main_tag === tag);
+        if (!group.length) return;
+        html += `<div class="regiment-heading">${esc(tag)}</div><div class="units-grid">`;
+        group.forEach(u => { html += renderUnitBlock(u, u.count, false); });
+        html += `</div>`;
+      });
+    }
+
+    const tokens = regiments.flatMap(r => (r.tokens || []).map(t => ({ ...t, _regiment: r.regiment })));
+    if (tokens.length) {
+      html += `<div class="section-title" style="margin-top:.75rem">Created</div><div class="units-grid">`;
+      tokens.forEach(t => { html += renderUnitBlock(t, 1, true); });
+      html += `</div>`;
+    }
+    return html;
+  }
+
+  // ── Section 4: Keyword Glossary ─────────────────────────────────────────────
+
+  function renderGlossary() {
+    let html = `<div class="section-title">Keyword &amp; Tag Glossary</div>`;
+    const kwEntries  = Object.entries(keywordGlossary).filter(([, v]) => v).sort((a, b) => a[0].localeCompare(b[0]));
+    const tagEntries = Object.entries(tagGlossary).filter(([, v]) => v).sort((a, b) => a[0].localeCompare(b[0]));
+
+    if (!kwEntries.length && !tagEntries.length) {
+      return html + `<p class="empty">No keyword or tag descriptions for this list.</p>`;
+    }
+    html += `<div class="glossary-cols">`;
+    [...kwEntries, ...tagEntries].forEach(([k, desc]) => {
+      html += `<div class="glossary-item"><strong>${esc(k)}</strong> — ${esc(desc)}</div>`;
+    });
+    html += `</div>`;
+    return html;
+  }
+
+  // ── Assemble ────────────────────────────────────────────────────────────────
+  root.innerHTML =
+    sectionWrap('sec-rules',    renderRulesSchemes()) +
+    sectionWrap('sec-commands', renderCommands()) +
+    sectionWrap('sec-units',    renderUnitsAndTokens()) +
+    sectionWrap('sec-keywords', renderGlossary());
+
+  updatePageBreaks();
+</script>
+</body>
+</html>

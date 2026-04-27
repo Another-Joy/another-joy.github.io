@@ -1,5 +1,5 @@
 import supabase from './supabase-client.js';
-import { requireAuth, signOut } from './auth.js';
+import { requireAuth, signOut, navigate } from './auth.js';
 
 // ── Required Supabase setup ───────────────────────────────────────────────────
 //
@@ -98,7 +98,7 @@ async function init() {
     .single();
 
   if (error || !profile?.is_admin) {
-    window.location.href = '/lists';
+    navigate('/lists');
     return;
   }
 

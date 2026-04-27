@@ -1,5 +1,5 @@
 import supabase from './supabase-client.js';
-import { requireAuth, signOut } from './auth.js';
+import { requireAuth, signOut, navigate } from './auth.js';
 
 let currentUser = null;
 
@@ -128,7 +128,7 @@ async function handleDeleteAccount() {
   //   2. Call supabase.functions.invoke('delete-account') here before signOut.
   //
   await supabase.auth.signOut();
-  window.location.href = '/auth?deleted=1';
+  navigate('/auth?deleted=1');
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
