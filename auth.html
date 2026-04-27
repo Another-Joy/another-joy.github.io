@@ -94,7 +94,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module">
-    import { signIn, signUp, redirectIfAuthenticated } from './js/auth.js';
+    import { signIn, signUp, redirectIfAuthenticated, navigate } from './js/auth.js';
 
     // Redirect to home if already logged in
     await redirectIfAuthenticated();
@@ -119,7 +119,7 @@
           document.getElementById('login-password').value
         );
         const next = new URLSearchParams(window.location.search).get('next');
-        window.location.href = next || '/lists';
+        navigate(next || '/lists');
       } catch (err) {
         errEl.textContent = err.message;
         errEl.classList.remove('d-none');

@@ -1,5 +1,5 @@
 import supabase from './supabase-client.js';
-import { requireAuth, signOut } from './auth.js';
+import { requireAuth, signOut, navigate } from './auth.js';
 import { GAME_SIZES } from './config.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
@@ -114,7 +114,7 @@ async function submitNewList() {
   }
 
   bootstrap.Modal.getInstance(document.getElementById('modal-new-list')).hide();
-  window.location.href = `/builder?id=${data.id}`;
+  navigate(`/builder?id=${data.id}`);
 }
 
 // ── Load & render list table ──────────────────────────────────────────────────
@@ -175,7 +175,7 @@ async function loadLists() {
   // Row click opens builder
   tbody.querySelectorAll('.list-row').forEach(row => {
     row.addEventListener('click', () => {
-      window.location.href = `/builder?id=${row.dataset.id}`;
+      navigate(`/builder?id=${row.dataset.id}`);
     });
   });
 

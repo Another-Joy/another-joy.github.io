@@ -1,6 +1,7 @@
 import supabase from './supabase-client.js';
-import { requireAuth, signOut } from './auth.js';
+import { requireAuth, signOut, navigate } from './auth.js';
 import { MAIN_TAGS, KEYWORDS, TAG_DESCRIPTIONS, BASE_COMMANDS } from './config.js';
+import { openPdfPreview } from './pdf-export.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
 
@@ -22,12 +23,13 @@ async function init() {
 
   document.getElementById('btn-logout').addEventListener('click', () => signOut());
   document.getElementById('btn-save').addEventListener('click', saveList);
+  document.getElementById('btn-export-pdf').addEventListener('click', () => openPdfPreview(listId));
 
   const params = new URLSearchParams(window.location.search);
   listId = params.get('id');
 
   if (!listId) {
-    window.location.href = '/lists';
+    navigate('/lists');
     return;
   }
 
@@ -48,7 +50,7 @@ async function loadList() {
 
   if (error || !data) {
     alert('Army list not found or access denied.');
-    window.location.href = '/lists';
+    navigate('/lists');
     return;
   }
 
