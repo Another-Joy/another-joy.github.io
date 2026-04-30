@@ -80,7 +80,7 @@ export const BASE_COMMANDS = [
 export const TAG_DESCRIPTIONS = {
   'Brittle': '+2AP to all shots that target this unit.',
   'Sturdy': '-2AP to all shots that target this unit. Cannot push a roll result under 4.',
-  'Transport': 'Units that can carry other units. Carried units do not contribute to MP or cost, and are not affected by damage until the transport is destroyed.',
+  'Transport': 'Can transport an Infantry unit. The transported unit cannot shoot or be targeted by shots, but can still be targeted by Commands and Abilities.',
   'Slopped Armor': '-4AP to AC; -2AP to ST and HERs targetting this unit. Ignore when rolling down.',
   'Composite Armor': '-4AP to AC and HERs; -2AP to ST, HESH, HEAT, Tandem, and APFSDSs targetting this unit. Ignore when rolling down.',
   'ERA Armor': '-8AP to HER; -4AP to ST, AC, HESH, HEAT, APFSDS and ATGMs targetting this unit. Two charges per battle, used automatically',

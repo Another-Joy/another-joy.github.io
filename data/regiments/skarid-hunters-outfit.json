@@ -110,7 +110,12 @@
           "keywords": ["Assault", "Short"]
         }
       ],
-      "abilities": []
+      "abilities": [
+        {
+          "name": "Focused Disembark",
+          "description": "You may Disembark units from this Transport as a Secondary Action.\nIf you do, they can only disembark into Objectives."
+        }
+      ]
     },
     {
       "id": "skarid-arid-wheels",

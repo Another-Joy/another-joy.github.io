@@ -7,6 +7,6 @@ import { navigate } from './auth.js';
  */
 export function openPdfPreview(listId) {
   const base = window.location.pathname.replace(/\/[^/]*$/, ''); // strip current filename
-  const url  = `${base}/print-preview.html?id=${encodeURIComponent(listId)}`;
+  const url  = `${base}/print-preview?id=${encodeURIComponent(listId)}`;
   window.open(url, '_blank');
 }
