@@ -27,6 +27,9 @@
             <a class="nav-link" href="/lists">My Lists</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="/rules/">Rules</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/account">Account</a>
           </li>
         </ul>
@@ -48,9 +51,15 @@
             The tabletop wargame where strategic planning matters more than dice.
           </p>
         </div>
-        <a href="/lists" class="btn btn-accent btn-lg flex-shrink-0">
-          <i class="bi bi-pencil-square me-2"></i>Open Army Builder
-        </a>
+        <div class="d-flex gap-2 flex-wrap flex-shrink-0">
+          <a href="/lists" class="btn btn-accent btn-lg">
+            <i class="bi bi-pencil-square me-2"></i>Open Army Builder
+          </a>
+          <a href="/rules/LeadLedger%20RuleBook.pdf" target="_blank" rel="noopener"
+             class="btn btn-outline-secondary btn-lg">
+            <i class="bi bi-file-earmark-pdf me-2"></i>Rulebook
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -105,6 +114,40 @@
       <div class="lp-section-tabs" id="regiment-tabs"></div>
       <div class="container">
         <div class="lp-panel" id="regiment-panel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Rules ──────────────────────────────────────────────────────────────── -->
+  <section class="py-5 border-top">
+    <div class="container">
+      <h2 class="h4 mb-1">Rules</h2>
+      <p class="text-secondary small mb-4">Read the full rulebook or browse the numbered rules reference.</p>
+      <div class="rules-landing-grid">
+
+        <!-- PDF card — set a cover image by saving rules/cover.jpg
+             (screenshot of the PDF's first page). The image will appear
+             as a blurred, foggy background. Without it, a dark gradient shows. -->
+        <a href="/rules/LeadLedger%20RuleBook.pdf" target="_blank" rel="noopener"
+           class="rules-pdf-card">
+          <div class="rules-pdf-bg" style="background-image:url('/rules/cover.jpg')"></div>
+          <div class="rules-pdf-overlay"></div>
+          <div class="rules-card-content">
+            <i class="bi bi-file-earmark-pdf rules-card-icon"></i>
+            <div class="rules-card-title">Rulebook</div>
+            <div class="rules-card-sub">Download the full PDF</div>
+          </div>
+        </a>
+
+        <!-- Extended rules card -->
+        <a href="/rules/" class="rules-ext-card">
+          <div class="rules-card-content">
+            <i class="bi bi-book rules-card-icon"></i>
+            <div class="rules-card-title">Extended Rules</div>
+            <div class="rules-card-sub">Comprehensive numbered rules reference</div>
+          </div>
+        </a>
+
       </div>
     </div>
   </section>

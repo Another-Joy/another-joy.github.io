@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extended Rules — Lead Ledger</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg bg-body-secondary border-bottom">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Lead Ledger</a>
+      <button class="navbar-toggler" type="button"
+        data-bs-toggle="collapse" data-bs-target="#navMenu"
+        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/lists">My Lists</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/rules/">Rules</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/account">Account</a>
+          </li>
+        </ul>
+        <div class="d-flex align-items-center gap-2" id="nav-auth-area">
+          <!-- populated by rules.js -->
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Page header ──────────────────────────────────────────────────────── -->
+  <div class="border-bottom py-3" style="background: var(--wg-bg-panel)">
+    <div class="container d-flex align-items-center justify-content-between gap-3 flex-wrap">
+      <div>
+        <h1 class="h4 fw-bold mb-0">Extended Rules</h1>
+        <p class="text-secondary small mb-0">Comprehensive numbered rules reference</p>
+      </div>
+      <a href="/rules/LeadLedger%20RuleBook.pdf" target="_blank" rel="noopener"
+         class="btn btn-outline-secondary btn-sm flex-shrink-0">
+        <i class="bi bi-file-earmark-pdf me-1"></i>Open Rulebook PDF
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Two-column layout ────────────────────────────────────────────────── -->
+  <div class="rules-page-wrapper">
+
+    <!-- Left: sticky section navigation -->
+    <nav class="rules-sidenav" id="rules-nav" aria-label="Rules sections">
+      <!-- populated by rules.js -->
+    </nav>
+
+    <!-- Right: scrollable rules content -->
+    <main class="rules-content" id="rules-main">
+      <!-- populated by rules.js -->
+    </main>
+
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="../js/rules.js"></script>
+</body>
+</html>

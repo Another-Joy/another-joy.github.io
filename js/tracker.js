@@ -12,8 +12,9 @@ import supabase from './supabase-client.js';
 (async () => {
   try {
     const { data: { user } } = await supabase.auth.getUser();
+    const path = window.location.pathname.replace(/\.html$/i, '') || '/';
     await supabase.from('page_views').insert({
-      path:    window.location.pathname,
+      path,
       user_id: user?.id ?? null,
     });
   } catch {
