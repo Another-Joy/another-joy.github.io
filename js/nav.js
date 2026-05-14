@@ -5,7 +5,7 @@ import { getUser, signOut } from './auth.js';
 const NAV_LINKS = [
   { id: 'home',    label: 'Home',    href: '/'        },
   { id: 'lists',   label: 'Lists',   href: '/lists'   },
-  { id: 'rules',   label: 'Rules',   href: '/rules/'  },
+  { id: 'rules',   label: 'Rules',   href: '/rules'  },
   { id: 'account', label: 'Account', href: '/account' },
 ];
 
@@ -33,7 +33,7 @@ export async function initNav(activePage) {
 
   const nav = document.createElement('nav');
   nav.id = 'site-navbar';
-  nav.className = 'navbar navbar-expand-lg bg-body-secondary border-bottom';
+  nav.className = 'navbar navbar-expand-lg bg-body-secondary border-bottom sticky-top';
   nav.innerHTML = `
     <div class="container-fluid">
       <a class="navbar-brand" href="/">Lead Ledger</a>

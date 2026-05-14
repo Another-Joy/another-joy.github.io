@@ -5,6 +5,8 @@
   --wg-bg-panel:      #1a1a1a;
   --wg-sidebar-width: 280px;
   --wg-sidebar-right-width: 560px;
+  --navbar-h:         56px;
+  --rules-pdf-bar-h:  78px;
 }
 
 /* ── Global ───────────────────────────────────────────────────────────────────  */
@@ -455,6 +457,13 @@ body.builder-page {
 .rules-ext-card .rules-card-sub  { color: var(--bs-secondary-color); }
 
 /* ── Extended rules page ─────────────────────────────────────────────────────── */
+.rules-pdf-bar {
+  position: sticky;
+  top: var(--navbar-h);
+  z-index: 1010;
+  background: var(--wg-bg-panel);
+}
+
 .rules-page-wrapper {
   display: flex;
   align-items: flex-start;
@@ -465,8 +474,8 @@ body.builder-page {
   width: 220px;
   flex-shrink: 0;
   position: sticky;
-  top: 0;
-  height: 100vh;
+  top: calc(var(--navbar-h) + var(--rules-pdf-bar-h));
+  height: calc(100vh - var(--navbar-h) - var(--rules-pdf-bar-h));
   overflow-y: auto;
   padding: 1.25rem 0;
   border-right: 1px solid rgba(255,255,255,0.1);
