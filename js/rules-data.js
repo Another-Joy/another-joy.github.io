@@ -269,35 +269,31 @@ export const RULES = [
 
     // 403. Fortifications
     { type: 'subsection', id: '403', title: 'Fortifications' },
-    { type: 'rule', id: '403.1', text: 'A Tile may contain a Fortification. Fortifications are represented by a variable number of Fortification Slots.' },
-    { type: 'rule', id: '403.2', text: 'Each Fortification has a Health value, tracked with pips. Pips can be depleted by shots from units.' },
-    { type: 'subrule', id: '403.2a', text: 'When a Fortification takes damage, remove the corresponding number of Health pips from its Slots, prioritizing the already damaged Slots, then the outermost Slots.' },
-    { type: 'rule', id: '403.3', text: 'Pips have a color that represents which player controls that portion of the Fortification. Neutral pips have no color.' },
-    { type: 'subrule', id: '403.3a', text: 'Fortifications can be owned by a player, Objectives, or be simple map elements.' },
-    { type: 'rule', id: '403.4', text: 'Some Fortifications are Objective Fortifications. Objective Fortifications contribute to Scoring at the end of each Cycle (see rule 502.1).' },
-    { type: 'rule', id: '403.5', text: 'All Fortifications block Line of Sight.' },
+    { type: 'rule', id: '403.1', text: 'A Tile may contain a Fortification. Fortifications are represented by Slots occupied by their Health pips.' },
+    { type: 'rule', id: '403.2', text: 'Fortifications can be owned by a player, placed as Objectives, or be simple map terrain elements.' },
+    { type: 'rule', id: '403.3', text: 'Some Fortifications are Objective Fortifications. Objective Fortifications contribute to Scoring at the end of each Cycle (see rule 502.1).' },
+    { type: 'rule', id: '403.4', text: 'A Fortification\'s Health physically occupies Slots on its Tile. Each Slot holds at most 3 Health pips. As Health is removed, occupied Slots are freed, allowing larger units to enter.' },
+    { type: 'subrule', id: '403.4a', text: 'Fortifications always occupy the least amount of slots possible. Moving pips around to optimize slot usage is a state-based action and called "Compacting Fortifications". The position of the pips within the Fortification Slots is not relevant for rule purposes.' },
+    { type: 'subrule', id: '403.4b', text: 'To Compact a Fortification, move its pips from the most damaged slots to other already damaged slots until all slots are optimally filled, without changing the pips color. (e.g. two slots with 1 blue pip and 2 neutral pips respectively, become a single slot with 1 blue pip and 2 neutral pips)' },
+    { type: 'subrule', id: '403.4c', text: 'Only the outer slots of a fortification can be removed. Creating "holes" in the middle of a fortification is not allowed.' },
+    { type: 'rule', id: '403.5', text: 'Pips can have a color that represents which player controls that portion of the Fortification. Neutral pips have no color.' },
+    { type: 'subrule', id: '403.5a', text: 'Fortifications placed by players have their pips colored according to the controlling player.' },
+    { type: 'subrule', id: '403.5b', text: 'Objective Fortifications start with all their pips neutral, but can be claimed by players during the game.' },
+    { type: 'rule', id: '403.6', text: 'When a Fortification takes damage, do not roll for Penetration. Instead, remove that amount of Health pips directly.' },
+    { type: 'subrule', id: '403.6a', text: 'Pips are removed one at a time, starting from the most common color. In case of a tie, remove by priority: Neutral > Enemy > Ally.\nPips are removed from already damaged sections if possible.' },
+    { type: 'subrule', id: '403.6b', text: 'Enemy units inside the Fortification suffer a number of 10+ Wounds equal to the damage dealt.' },
+    { type: 'rule', id: '403.7', text: 'When a Fortification has less Health than the combined Health of all units inside, each unit inside may shoot another until either no enemy units remain inside, or the combined Health of units inside no longer exceeds the Fortification\'s Health.' },
+    { type: 'subrule', id: '403.7a', text: 'Shots resolve starting from the unit with the least Health. In the event of a tie, the unit controlled by the active player fires first.' },
+    { type: 'rule', id: '403.8', text: 'Units inside a Fortification can only be targeted by shots at Range 0, but they can shoot units outside the Fortification.' },
 
     // 404. Distances and Visibility
     { type: 'subsection', id: '404', title: 'Distances and Visibility' },
     { type: 'rule', id: '404.1', text: 'Distances are measured in Tiles using the most direct path possible. The origin Tile counts as distance 0; the first adjacent Tile is distance 1, and so on.' },
-    { type: 'rule', id: '404.2', text: 'Unit A is visible to Unit B if an uninterrupted straight line can be drawn between the center of A\'s main Slot (the centermost triangle) and any part of B\'s model.' },~
+    { type: 'rule', id: '404.2', text: 'Unit A is visible to Unit B if an uninterrupted straight line can be drawn between the center of A\'s main Slot and any part of B\'s model.' },
+    { type: 'subrule', id: '404.2a', text: 'If a unit has more than one main Slot, visibility is can be determined from either of the main Slots.' },
     { type: 'rule', id: '404.3', text: 'If a tile (or objects on a tile) blocks Line of Sight, that tile is still visible, but tiles beyond are not.' },
     { type: 'rule', id: '404.4', text: 'Enemy units block Line of Sight. Allied units do not block Line of Sight.' },
-    { type: 'rule', id: '404.5', text: 'Fortifications block Line of Sight, except as noted in rule 405.5.' },
-
-    // 405. Objectives
-    { type: 'subsection', id: '405', title: 'Objectives' },
-    { type: 'rule', id: '405.1', text: 'Map Fortifications are structures placed on the battlefield by missions. They differ from Fortification Assets (see rule 303) and Created Fortifications (see rule 202).' },
-    { type: 'rule', id: '405.2', text: 'Each Map Fortification occupies at least one Tile. Within the Fortification Tiles, some Slots are occupied by Health pips. The color of these pips indicates which player controls the Fortification.' },
-    { type: 'rule', id: '405.3', text: 'A Fortification\'s Health physically occupies Slots on its Tile. Each Slot holds at most 3 Health pips. As Health is removed, occupied Slots are freed, allowing larger units to enter.' },
-    { type: 'rule', id: '405.4', text: 'When a Map Fortification takes damage, do not roll for Penetration. Instead, remove that amount of Health pips directly.' },
-    { type: 'subrule', id: '405.4a', text: 'Pips are removed one at a time, starting from the most common color. In case of a tie, remove by priority: Neutral > Enemy > Ally.' },
-    { type: 'subrule', id: '405.4b', text: 'Enemy units inside the Fortification suffer a number of 10+ Wounds equal to the damage dealt.' },
-    { type: 'rule', id: '405.5', text: 'Units inside a Map Fortification are visible to units outside, but the Fortification itself blocks Line of Sight for units outside.' },
-    { type: 'rule', id: '405.6', text: 'A unit inside a Map Fortification can only be targeted by shots at Range 0, but it may shoot any unit outside the Fortification at any range.' },
-    { type: 'rule', id: '405.7', text: 'When a unit enters a Map Fortification, its movement ends immediately, regardless of how many Movement Sub-Actions remain.' },
-    { type: 'rule', id: '405.8', text: 'Health Checks: when a Fortification has less Health than the combined Health of all units inside, each unit inside may shoot another unit inside, resolving from the unit with the least Health first. This continues until either no enemy units remain inside, or the combined Health of units inside no longer exceeds the Fortification\'s Health.' },
-    { type: 'subrule', id: '405.8a', text: 'In the event of a tie in Health for shot priority, the unit controlled by the player who last damaged the Fortification fires first.' },
+    { type: 'rule', id: '404.5', text: 'Fortifications block Line of Sight. However, units inside a Fortification are still visible to units outside.' },
 
   // ══════════════════════════════════════════════════════════════════════════
   // 5. TURN STRUCTURE
@@ -378,6 +374,7 @@ export const RULES = [
     { type: 'rule', id: '700.1', text: 'Moving a unit is done by performing a number of Movement Sub-Actions (MSAs) as specified by the Action or ability causing the movement.' },
     { type: 'rule', id: '700.2', text: 'An MSA is legal only if it observes all applicable restrictions and, at the end of its resolution, the unit does not overlap any other unit.' },
     { type: 'rule', id: '700.3', text: 'A unit cannot move if all destinations available to it would result in an illegal overlap. If it has no legal MSA available, it simply does not move.' },
+    { type: 'rule', id: '700.4', text: 'When a unit enters a Fortification, its movement ends immediately, regardless of how many Movement Sub-Actions remain.' },
 
     // 701. Freedom of Movement
     { type: 'subsection', id: '701', title: 'Freedom of Movement' },
@@ -444,13 +441,13 @@ export const RULES = [
     // 803. Extra Armors Table
     { type: 'subsection', id: '803', title: 'Extra Armors Table' },
     { type: 'rule', id: '803.1', text: 'The Extra Armors Table defines how each Extra Armor type modifies the AP of a shot, based on the ammo type used. Modifiers that show "ignore if rolling down" are not applied when the Penetration Check is a rolling-down check.' },
-    { type: 'rule', id: '803.2', text: 'Sloped: -2 AP against ST and AC. No effect against HESH, HEAT, T-HEAT, APFSDS, or ATGM. -2 AP against HER. Ignore if rolling down.' },
+    { type: 'rule', id: '803.2', text: 'Sloped: -2 AP against ST. -4 AP against AC. No effect against HESH, HEAT, T-HEAT, APFSDS, or ATGM. -2 AP against HER. Ignore if rolling down.' },
     { type: 'rule', id: '803.3', text: 'Composite: -2 AP against ST. -4 AP against AC. -2 AP against HESH, HEAT, T-HEAT, and APFSDS. -4 AP against HER. No effect against ATGM. Ignore if rolling down.' },
-    { type: 'rule', id: '803.4', text: 'ERA (Explosive Reactive Armor): -4 AP against ST, AC, HESH, HEAT, and APFSDS. No effect against T-HEAT. -8 AP against HER. -2 AP against ATGM. ERA has only 2 uses per battle; after both uses are spent, it provides no further modifier. Ignore if rolling down.' },
-    { type: 'rule', id: '803.5', text: 'NERA (Non-Explosive Reactive Armor): No effect against ST, AC, or ATGM. -2 AP against HESH, HEAT, T-HEAT, and APFSDS. -4 AP against HER. Ignore if rolling down.' },
+    { type: 'rule', id: '803.4', text: 'ERA (Explosive Reactive Armor): -4 AP against ST, AC, HESH, HEAT, APFSDS, and ATGM. No effect against T-HEAT. -8 AP against HER. ERA has only 2 uses per battle; after both uses are spent, it provides no further modifier. Ignore if rolling down.' },
+    { type: 'rule', id: '803.5', text: 'NERA (Non-Explosive Reactive Armor): No effect against ST, AC, APFSDS, or ATGM. -2 AP against HESH, HEAT, and T-HEAT. -4 AP against HER. Ignore if rolling down.' },
     { type: 'rule', id: '803.6', text: 'Spaced: -2 AP against ST, AC, HEAT, and T-HEAT. No effect against HESH, APFSDS, or ATGM. -2 AP against HER. Ignore if rolling down.' },
-    { type: 'rule', id: '803.7', text: 'Slat: No effect against ST, AC, APFSDS, or ATGM. -2 AP against HESH, HEAT, and HER (the HEAT and HER values use the half-circle modifier). -4 AP against HER. Ignore if rolling down.' },
-    { type: 'rule', id: '803.8', text: 'APS (Active Protection System): Grants a 2/4 Dodge bonus (2 against half-circle entries, 4 against full-circle entries). APS is NOT ignored when rolling down, unlike other Extra Armor types.' },
+    { type: 'rule', id: '803.7', text: 'Slat: -2 AP against HESH and HEAT. -4 AP against HER. No effect against ST, AC, T-HEAT, APFSDS, or ATGM. Ignore if rolling down.' },
+    { type: 'rule', id: '803.8', text: 'APS (Active Protection System): No effect against ST, AC, or APFSDS. +2 Dodge against HESH and T-HEAT. +4 Dodge against HEAT, HER, and ATGM. APS is not ignored when rolling down.' },
 
   // ══════════════════════════════════════════════════════════════════════════
   // 9. COMMANDS, ABILITIES, AND EFFECTS
@@ -467,16 +464,15 @@ export const RULES = [
     // 901. Generic Commands
     { type: 'subsection', id: '901', title: 'Generic Commands' },
     { type: 'rule', id: '901.1', text: 'Generic Commands are available to all players regardless of regiment composition.' },
-    { type: 'rule', id: '901.2', text: 'Runover — Cost: 1 CP. When: after an allied Medium or Heavy Vehicle has used Advance. Targets: that allied Vehicle and enemy Infantry units on the same Tile. Effect: each targeted enemy unit suffers a number of 10+ Wounds equal to the Vehicle\'s Health. This total increases by 2 if the Vehicle is Heavy, and decreases by 2 for each Armor Size the enemy has above Unarmored. This Command cannot deal more than 4 damage total.' },
-    { type: 'rule', id: '901.3', text: 'Sabotage — Cost: 1 CP + 1 Minor Action. When: as a Minor Action. Targets: an allied Infantry unit and an enemy Vehicle unit on the same Tile as that Infantry. Effect: the enemy Vehicle suffers a number of 9+ Mortal Wounds equal to the allied Infantry\'s Health. This Command always deals at least 1 damage.' },
-    { type: 'rule', id: '901.4', text: 'Emergency Reload — Cost: 1 CP. When: any time on your Turn. Targets: an allied unit that has at least one Loading Weapon. Effect: immediately restore all Ammo to all Loading Weapons on that unit.' },
-    { type: 'rule', id: '901.5', text: 'Commander\'s Luck — Cost: 1 CP. When: after you make a Penetration Check, Damage Check, or Evasion Check for an allied unit. Targets: that allied unit. Effect: re-roll that check.' },
-    { type: 'rule', id: '901.6', text: 'Prepared Shot — Cost: 1 CP. When: at the end of your Turn. Targets: an allied unit. Effect: that unit cannot move on its next Turn. In exchange, all of that unit\'s Weapons gain the Precision keyword for your next Turn.' },
+    { type: 'rule', id: '901.2', text: 'Runover — Cost: 1 CP. When: after an allied M or H Vehicle has Advanced. Targets: that allied Vehicle; enemy Infantry in the same Tile. Effect: the enemy suffers a number of 9+ Wounds equal to the ally\'s Health, suffering 2 more if the ally is Heavy and 2 less for each Armor Size of the enemy above N. This Command cannot deal more than 4 damage.' },
+    { type: 'rule', id: '901.3', text: 'Sabotage — Cost: 1 CP + 1 Secondary. When: as a Secondary Action. Targets: an allied Infantry unit; an enemy Vehicle unit in the same Tile. Effect: the enemy suffers a number of 7+ Mortal Wounds equal to the ally\'s Health. This Command always deals at least 1 damage.' },
+    { type: 'rule', id: '901.4', text: 'Emergency Reload — Cost: 1 CP. When: any time on your Turn. Targets: an allied unit with at least one Loading Weapon or Ability. Effect: immediately restore all Charges to all Loading Weapons and Abilities on that unit.' },
+    { type: 'rule', id: '901.5', text: 'Commander\'s Luck — Cost: 1 CP. When: after you make a Penetration Check, Damage Check, or Evasion Check. Targets: that allied unit. Effect: re-roll that check.' },
+    { type: 'rule', id: '901.6', text: 'Prepared Shot — Cost: 1 CP. When: at the end of your Turn. Targets: an allied unit. Effect: that unit cannot move next Turn. That unit\'s Weapons gain Precision for your next Turn.' },
 
     // 902. Schemes
     { type: 'subsection', id: '902', title: 'Schemes' },
-    { type: 'rule', id: '902.1', text: 'Each Regiment provides one Scheme. A player must choose which Scheme to use at the start of the game (see rule 104.4) and cannot change it during play.' },
-    { type: 'rule', id: '902.2', text: 'A Scheme is a conditional bonus that activates when its stated requirements are met, at the timing stated in its entry.' },
+    { type: 'rule', id: '902.1', text: 'Each Regiment provides one Scheme. A player must choose which Scheme to use at the start of the game (see rule 104.4) and cannot change it during play.' }
     { type: 'rule', id: '902.3', text: 'Every Scheme has a number of cycles to activate, called its Period. A Scheme activates at the end of its Period, then resets its timer.' },
 
     // 903. Abilities
@@ -494,5 +490,73 @@ export const RULES = [
     { type: 'rule', id: '904.2', text: 'When an event is replaced, the original event does not happen. Any ability or trigger that would normally activate from that event also does not activate.' },
     { type: 'rule', id: '904.3', text: 'If an event is skipped, it is treated as if nothing happened in its place.' },
     { type: 'rule', id: '904.4', text: 'A replacement effect cannot apply to itself. A replacement effect also cannot be triggered by another replacement effect that it originally caused.' },
+
+
+    // 905. Keywords
+    { type: 'subsection', id: '905', title: 'Keywords' },
+    { type: 'rule', id: '905.1', text: 'Keywords are used to summarize common rules and abilities in a concise way. For simplicity, datasheets contain small information related to each keyword.' },
+    { type: 'subrule', id: '905.1a', text: 'The rules text of a keyword is the same regardless of where it appears.' },
+    { type: 'subrule', id: '905.1b', text: 'An effect may state "[keyword] weapon/[keyword] unit" to indicate that it applies to weapons or units with that keyword.' },
+    { type: 'subrule', id: '905.1c', text: 'An effect that grants an object a keyword may also define a value associated with that keyword.' },
+    { type: 'rule', id: '905.2', text: 'Assault' },
+    { type: 'subrule', id: '905.2a', text: 'Assault is a triggered ability that triggers when a unit with an Assault weapon Advances.' },
+    { type: 'subrule', id: '905.2b', text: 'Assault\'s reminder text reads: "When you Advance a unit with an Assault weapon, you may then Order it to Fire with no penalty, and only Weapons with Assault can be selected to shoot."' },
+    { type: 'subrule', id: '905.2c', text: 'Assault allows a player to Order a unit to Fire the Assault weapon immediately after it Advances. This is a new Action that must still resolve as normal.' },
+    { type: 'subrule', id: '905.2d', text: 'When Firing from an Assault trigger, only that weapon can be selected to shoot, and they do so without the Fire Penetration penalty.' },
+    { type: 'subrule', id: '905.2e', text: 'If a unit has more than one Assault weapon, each ability triggers separately.' },
+    { type: 'rule', id: '905.3', text: 'Linked' },
+    { type: 'subrule', id: '905.3a', text: 'Linked is a passive ability.' },
+    { type: 'subrule', id: '905.3b', text: 'Linked\'s reminder text reads: "Linked Weapons can only shoot at targets in the same tile or adjacent tiles to the target of other Linked Weapons."' },
+    { type: 'subrule', id: '905.3c', text: 'While resolving Linked Weapons, each weapon must target a unit within 1 range of all previous targets of Linked Weapons of that unit.' },
+    { type: 'subrule', id: '905.3d', text: 'Linked Weapons\s restriction is applied only to weapons of the same unit, and only during until end of turn.' },
+    { type: 'rule', id: '905.4', text: 'Blast' },
+    { type: 'subrule', id: '905.4a', text: 'Blast is a passive ability.' },
+    { type: 'subrule', id: '905.4b', text: 'Blast\'s reminder text reads: "Blast Weapons target tiles, and deal damage to every unit within that tile."' },
+    { type: 'subrule', id: '905.4c', text: 'When resolving a Blast Weapon, first choose a target tile within range and line of sight. Then, every unit that could be targetted by the weapon in that tile makes an Evasion Check and Penetration Check against that shot as normal.' },
+    { type: 'subrule', id: '905.4d', text: 'Blast Weapons do NOT target units.' },
+    { type: 'rule', id: '905.5', text: "Frontal" },
+    { type: 'subrule', id: '905.5a', text: "Frontal is a passive ability." },
+    { type: 'subrule', id: '905.5b', text: 'Frontal\'s reminder text reads: "Frontal Weapons can only target enemies/tiles in the unit\'s front arc."' },
+    { type: 'subrule', id: '905.5c', text: "Frontal does not restrict the unit's Line of Sight." },
+
+    { type: 'rule', id: '905.6', text: "Lateral: (rules text pending)" },
+    { type: 'rule', id: '905.7', text: "Rear: (rules text pending)" },
+
+    { type: 'rule', id: '905.8', text: 'Precision' },
+    { type: 'subrule', id: '905.8a', text: 'Precision is a passive ability.' },
+    { type: 'subrule', id: '905.8b', text: 'Precision\'s reminder text reads: "Precision Weapons can target units within Fortifications and ignore Evasion rolls."' },
+    { type: 'subrule', id: '905.8c', text: 'When firing a Precision Weapon, the shooter can target units inside Fortifications as long as they are within Range and Line of Sight.' },
+    { type: 'subrule', id: '905.8d', text: 'When resolving a Precision Weapon shot, skip the Evasion step entirely.' },
+
+    { type: 'rule', id: '905.9', text: 'Long' },
+    { type: 'subrule', id: '905.9a', text: 'Long is a descriptive keyword used solely to indicate increased range. It has no other effects and cannot be modified.' },
+    { type: 'subrule', id: '905.9b', text: 'Long\'s reminder text reads: "Long Weapons have higher Range than normal (+2, included in the weapon profile)."' },
+    { type: 'rule', id: '905.10', text: 'Short' },
+    { type: 'subrule', id: '905.10a', text: 'Short is a descriptive keyword used solely to indicate decreased range. It has no other effects and cannot be modified.' },
+    { type: 'subrule', id: '905.10b', text: 'Short\'s reminder text reads: "Short Weapons have lower Range than normal (-1, included in the weapon profile)."' },
+
+    { type: 'rule', id: '905.11', text: 'Burst X' },
+    { type: 'subrule', id: '905.11a', text: 'Burst is a triggered ability that triggers when a Burst Weapon is fired as part of a Salvo or Fire action.' },
+    { type: 'subrule', id: '905.11b', text: 'Burst\'s reminder text reads: "Burst Weapons make an additional shot at the same target if it is within X range. This shot resolves after the first."' },
+    { type: 'subrule', id: '905.11c', text: 'When a Burst Weapon is shot as part of a Salvo or Fire action, it makes an additional shot if the target is within X range.' },
+    { type: 'subrule', id: '905.11d', text: 'The second shot from Burst is resolved after the first shot, and is impacted by any effects that trigger on shots being made or hitting.' },
+    { type: 'rule', id: '905.12', text: 'Point Blank X: (rules text pending)' },
+
+    { type: 'rule', id: '905.13', text: 'Indirect Fire' },
+    { type: 'subrule', id: '905.13a', text: 'Indirect Fire is a passive ability.' },
+    { type: 'subrule', id: '905.13b', text: 'Indirect Fire\'s reminder text reads: "Indirect Fire Weapons can target units within range within Line of Sight of allied units, regardless of the shooter\'s Line of Sight."' },
+
+    { type: 'rule', id: '905.14', text: 'HE' },
+    { type: 'subrule', id: '905.14a', text: 'HE is a descriptive keyword used solely to indicate a different penetration profile. It has no other effects and cannot be modified.' },
+    { type: 'subrule', id: '905.14b', text: 'HE\'s reminder text reads: "HE Weapons have worse penetration and more Fortification damage than normal (-2 and +1 respectively, included in the weapon profile)."' },
+
+    { type: 'rule', id: '905.15', text: 'Loading X' },
+    { type: 'subrule', id: '905.15a', text: 'Loading is a passive ability. It is present on Weapons and Abilities.' },
+    { type: 'subrule', id: '905.15b', text: 'Loading\'s reminder text reads: "Loading Weapons and Abilities have a Charge characteristic (X), and consume 1 Charge each time they are activated.At the beginning of each cycle, restore all Loading Weapons\' and Abilities\' Charge to full"' },
+    { type: 'subrule', id: '905.15c', text: "Consuming a Charge is an additional cost of making a shot or activating that ability." },
+    { type: 'subrule', id: '905.15d', text: "If there are no Charges remaining, the weapon cannot be shot or the ability cannot be activated." },
+    { type: 'subrule', id: '905.15e', text: "At the beginning of each cycle, restore all Loading Weapons' and Abilities' Charge to the amount indicated in X." },
+    { type: 'subrule', id: '905.15f', text: "Multiple instances of Loading on the same Weapon or Ability do not stack. Charges are tracked for each instance independently. If one instance is depleted, rule 905.15d applies and forbids the weapon or ability from being used." },
+    { type: 'subrule', id: '905.15g', text: "Multiple instances of Loading on different Weapons or Abilities are independent, as well as each's Charges. If one instance is depleted, rule 905.15d only forbids that weapon or ability from being used." }
 
 ];

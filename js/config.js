@@ -65,12 +65,6 @@ export const BASE_COMMANDS = [
     when:    'At the end of your turn.',
     targets: 'An allied unit.',
     effects: '"That unit cannot move next turn.\nThat unit\'s Weapons gain Precision in your next turn."',
-  },  {
-    name:    'Runover',
-    cost:    '1 CP',
-    when:    'After an allied M or H vehicle has Advanced.',
-    targets: 'That allied M or H vehicle; Enemy infantry in the same tile.',
-    effects: 'The enemy suffers a number of 9+ Wounds equal to the ally\'s Health, suffering 2 more if the ally is Heavy and 2 less for each Armor Size of the enemy above N.\nThis Command cannot deal more than 4 damage.',
   },
 ];
 
