@@ -472,7 +472,7 @@ export const RULES = [
 
     // 902. Schemes
     { type: 'subsection', id: '902', title: 'Schemes' },
-    { type: 'rule', id: '902.1', text: 'Each Regiment provides one Scheme. A player must choose which Scheme to use at the start of the game (see rule 104.4) and cannot change it during play.' }
+    { type: 'rule', id: '902.1', text: 'Each Regiment provides one Scheme. A player must choose which Scheme to use at the start of the game (see rule 104.4) and cannot change it during play.' },
     { type: 'rule', id: '902.3', text: 'Every Scheme has a number of cycles to activate, called its Period. A Scheme activates at the end of its Period, then resets its timer.' },
 
     // 903. Abilities
