@@ -1,4 +1,4 @@
-import { RULES } from './rules-data.js';
+import { RULES } from '../rules/rules-data.js';
 import { initNav } from './nav.js';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
