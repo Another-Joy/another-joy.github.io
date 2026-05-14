@@ -1,18 +1,16 @@
 import supabase from './supabase-client.js';
-import { requireAuth, signOut, navigate } from './auth.js';
+import { requireAuth, navigate } from './auth.js';
+import { initNav } from './nav.js';
 
 let currentUser = null;
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
 async function init() {
+  initNav('account');
+
   currentUser = await requireAuth();
   if (!currentUser) return;
-
-  const displayName = currentUser.user_metadata?.username || currentUser.email;
-  document.getElementById('nav-user').textContent = displayName;
-
-  document.getElementById('btn-logout').addEventListener('click', () => signOut());
 
   // Pre-fill form fields
   document.getElementById('input-username').value = currentUser.user_metadata?.username || '';

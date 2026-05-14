@@ -1,4 +1,4 @@
-import { getUser, signOut } from './auth.js';
+import { initNav } from './nav.js';
 
 const REGIMENTS_INDEX = '/data/regiments/index.json';
 
@@ -107,18 +107,7 @@ function renderRegimentPanel(panelEl, item) {
 
 // ── Init ───────────────────────────────────────────────────────────────────────
 async function init() {
-  // Auth area (non-blocking)
-  const user = await getUser();
-  const authArea = document.getElementById('nav-auth-area');
-  if (user) {
-    const name = user.user_metadata?.username || user.email;
-    authArea.innerHTML = `
-      <span class="text-secondary small">${escapeHtml(name)}</span>
-      <button class="btn btn-sm btn-outline-secondary" id="btn-logout">Sign Out</button>`;
-    document.getElementById('btn-logout').addEventListener('click', () => signOut());
-  } else {
-    authArea.innerHTML = `<a href="/auth" class="btn btn-sm btn-accent">Sign In</a>`;
-  }
+  initNav('home');
 
   // Archetypes
   const archetypeItems = ARCHETYPES.map(a => ({

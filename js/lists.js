@@ -1,5 +1,6 @@
 import supabase from './supabase-client.js';
-import { requireAuth, signOut, navigate } from './auth.js';
+import { requireAuth, navigate } from './auth.js';
+import { initNav } from './nav.js';
 import { GAME_SIZES } from './config.js';
 
 const REGIMENTS_INDEX = 'data/regiments/index.json';
@@ -8,13 +9,11 @@ let currentUser   = null;
 let regimentsList = [];  // [{ file, name }]
 
 async function init() {
+  initNav('lists');
+
   currentUser = await requireAuth();
   if (!currentUser) return;
 
-  const displayName = currentUser.user_metadata?.username || currentUser.email;
-  document.getElementById('nav-user').textContent = displayName;
-
-  document.getElementById('btn-logout').addEventListener('click', () => signOut());
   document.getElementById('btn-new-list').addEventListener('click', openNewListModal);
   document.getElementById('btn-create-list').addEventListener('click', submitNewList);
   document.getElementById('btn-save-edit-list').addEventListener('click', submitEditList);

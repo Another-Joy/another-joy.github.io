@@ -10,33 +10,7 @@
 </head>
 <body>
 
-  <nav class="navbar navbar-expand-lg bg-body-secondary border-bottom">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="/home">Lead Ledger</a>
-      <button class="navbar-toggler" type="button"
-        data-bs-toggle="collapse" data-bs-target="#navMenu"
-        aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navMenu">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/home">My Lists</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/account">Account</a>
-          </li>
-        </ul>
-        <div class="d-flex align-items-center gap-2">
-          <span class="text-secondary small" id="nav-user"></span>
-          <button class="btn btn-sm btn-outline-secondary" id="btn-logout">Sign Out</button>
-        </div>
-      </div>
-    </div>
-  </nav>
+  <!-- navbar injected by js/nav.js -->
 
   <main class="container py-4">
 
@@ -166,6 +140,6 @@
   <div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script type="module" src="js/home.js"></script>
+  <script type="module" src="js/lists.js"></script>
 </body>
 </html>

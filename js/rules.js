@@ -1,5 +1,5 @@
 import { RULES } from './rules-data.js';
-import { getUser, signOut } from './auth.js';
+import { initNav } from './nav.js';
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 function escapeHtml(str) {
@@ -59,31 +59,12 @@ function initScrollSpy(sidenav) {
   headings.forEach(h => observer.observe(h));
 }
 
-// ── Auth navbar ────────────────────────────────────────────────────────────────
-async function initAuth() {
-  const authArea = document.getElementById('nav-auth-area');
-  if (!authArea) return;
-  try {
-    const user = await getUser();
-    if (user) {
-      const name = user.user_metadata?.username || user.email;
-      authArea.innerHTML = `
-        <span class="text-secondary small">${escapeHtml(name)}</span>
-        <button class="btn btn-sm btn-outline-secondary" id="btn-logout">Sign Out</button>`;
-      document.getElementById('btn-logout').addEventListener('click', () => signOut());
-    } else {
-      authArea.innerHTML = `<a href="/auth" class="btn btn-sm btn-accent">Sign In</a>`;
-    }
-  } catch {
-    // Non-critical — silently skip
-  }
-}
-
 // ── Init ───────────────────────────────────────────────────────────────────────
+initNav('rules');
+
 const sidenav = document.getElementById('rules-nav');
 const main    = document.getElementById('rules-main');
 
 buildSidebar(sidenav);
 buildContent(main);
 initScrollSpy(sidenav);
-initAuth();
