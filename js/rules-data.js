@@ -508,7 +508,7 @@ export const RULES = [
     { type: 'subrule', id: '905.3a', text: 'Linked is a passive ability.' },
     { type: 'subrule', id: '905.3b', text: 'Linked\'s reminder text reads: "Linked Weapons can only shoot at targets in the same tile or adjacent tiles to the target of other Linked Weapons."' },
     { type: 'subrule', id: '905.3c', text: 'While resolving Linked Weapons, each weapon must target a unit within 1 range of all previous targets of Linked Weapons of that unit.' },
-    { type: 'subrule', id: '905.3d', text: 'Linked Weapons\s restriction is applied only to weapons of the same unit, and only during until end of turn.' },
+    { type: 'subrule', id: '905.3d', text: "Linked Weapons' restriction is applied only to weapons of the same unit, and only until end of turn." },
     { type: 'rule', id: '905.4', text: 'Blast' },
     { type: 'subrule', id: '905.4a', text: 'Blast is a passive ability.' },
     { type: 'subrule', id: '905.4b', text: 'Blast\'s reminder text reads: "Blast Weapons target tiles, and deal damage to every unit within that tile."' },
